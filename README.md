@@ -9,81 +9,82 @@ application and be ready for more requirements for week 2. The cut off for the p
 That afternoon students will put together their presentations and each group will do at minimum 1 practice run. Thursday 
 morning students will present their final projects.
 
+### File
+```javascript
+{
+    fileinfo: 'FileInfo'
+    data: 'byte[]'
+}
+```
+
+### FileInfo
+```javascript
+{
+    filename: 'string'
+    id: 'integer'
+}
+```
+
+### Folder
+```javascript
+{
+    foldername: 'string'
+    id: 'integer'
+}
+```
+
 ## API Endpoints
 
-### `GET /home`
+### `GET /files/{id}`
+Gets a specific file
 
 #### Response
 ```javascript
-{
-    ['File']
-    ['Folder']
-}
+'FileInfo'
 ```
 
-### `GET /home/{filename}`
+### `GET /files`
+Gets all the files at the root
 
 #### Response
 ```javascript
-{
-    filename: 'string'
-    data: 'byte[]'
-}
+['FileInfo']
 ```
 
-### `GET /home/folders/{folder}`
+### `GET /folders/{id}`
+Gets all the files of a specific folder
+
+#### Response
+```javascript
+['FileInfo']
+```
+
+### `GET /folders`
+Gets all the folders
+
+#### Response
+```javascript
+['Folder']
+```
+
+### `GET /files/{id}/download`
+Downloads a specific file
+
+#### Response
+```javascript
+'File'
+```
+
+### `GET /folders/{id}/download`
+Downloads a specific folder
 
 #### Response
 ```javascript
 ['File']
 ```
 
-### `GET /home/folders/{folder}/{filename}`
-
-#### Response
-```javascript
-{
-    filename: 'string'
-    data: 'byte[]'
-}
-```
-
-### `GET /home/download/folders/{folder}`
-
-#### Response
-```javascript
-['File']
-```
-
-### `GET /home/download/{filename}`
-
-#### Response
-```javascript
-{
-    filename: 'string'
-    data: 'byte[]'
-}
-```
-
-### `GET /home/download/folders/{folder}/{filename}`
-
-#### Response
-```javascript
-{
-    filename: 'string'
-    data: 'byte[]'
-}
-```
-
-### `GET /home/trash`
-
-#### Response
-```javascript
-[`Folder`]
-['File']
-```
-
-### `POST /home`
+### `POST /files`
+Uploads a file at the root
 
 #### Request
 ```javascript
@@ -94,11 +95,29 @@ morning students will present their final projects.
 ```
 
 #### Response
-HTTP Status 200 if successful
+```javascript
+'File'
+```
+HTTP Status 201 if successful
 HTTP Status 500 if unsuccessful
 
+### `POST /folders/{id}`
+Uploads a file to a specific folder
 
-### `POST /home/folders`
+#### Request
+```javascript
+{
+    filename: 'string'
+    data: 'byte[]'
+}
+```
+
+#### Response
+HTTP Status 201 if successful
+HTTP Status 500 if unsuccessful
+
+### `POST /folders`
+Uploads a folder
 
 #### Request
 ```javascript
@@ -109,16 +128,16 @@ HTTP Status 500 if unsuccessful
 ```
 
 #### Response
-HTTP Status 200 if successful
+HTTP Status 201 if successful
 HTTP Status 500 if unsuccessful
 
-### `POST /home/folders/{folder}`
+### `PATCH /files/{id}`
+Moves file to another folder
 
 #### Request
 ```javascript
 {
-    filename: 'string'
-    data: 'byte[]'
+    folder: 'Folder'
 }
 ```
 
@@ -126,52 +145,13 @@ HTTP Status 500 if unsuccessful
 HTTP Status 200 if successful
 HTTP Status 500 if unsuccessful
 
-### `DELETE /home/trash/{filename}`
+### `PATCH /files/{id}/trash`
+Moves file to trash or restores folder
 
 #### Request
 ```javascript
 {
-    filename: 'string'
-}
-```
-
-#### Response
-HTTP Status 200 if successful
-HTTP Status 500 if unsuccessful
-
-### `DELETE /home/trash/folders/{folder}`
-
-#### Request
-```javascript
-{
-    foldername: 'string'
-}
-```
-
-#### Response
-HTTP Status 200 if successful
-HTTP Status 500 if unsuccessful
-
-### `DELETE /home/trash/folders/{filename}`
-
-#### Request
-```javascript
-{
-    filename: 'string'
-}
-```
-
-#### Response
-HTTP Status 200 if successful
-HTTP Status 500 if unsuccessful
-
-### `PATCH /home/{filename}`
-Moves file to another folder or to the trash
-
-#### Request
-```javascript
-{
-    foldername: 'string'
+    fileinfo: 'FileInfo'
     isTrash: 'boolean'
 }
 ```
@@ -180,13 +160,13 @@ Moves file to another folder or to the trash
 HTTP Status 200 if successful
 HTTP Status 500 if unsuccessful
 
-### `PATCH /home/folders/{foldername}/{filename}`
-Moves file to another folder or to the trash
+### `PATCH /folders/{id}/trash`
+Moves folder to trash or restores folder
 
 #### Request
 ```javascript
 {
-    foldername: 'string'
+    folder: 'Folder'
     isTrash: 'boolean'
 }
 ```
@@ -195,14 +175,25 @@ Moves file to another folder or to the trash
 HTTP Status 200 if successful
 HTTP Status 500 if unsuccessful
 
-### `PATCH /home/folders/{foldername}`
-Moves files to the trash
+### `DELETE /files/{id}/trash`
 
 #### Request
 ```javascript
 {
-    foldername: 'string'
-    isTrash: 'boolean'
+    fileinfo: 'FileInfo'
+}
+```
+
+#### Response
+HTTP Status 200 if successful
+HTTP Status 500 if unsuccessful
+
+### `DELETE /folders/{id}/trash`
+
+#### Request
+```javascript
+{
+    folder: 'Folder'
 }
 ```
 
