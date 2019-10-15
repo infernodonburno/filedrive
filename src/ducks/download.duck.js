@@ -77,8 +77,8 @@ export const downloadFile = () =>
   (dispatch) => {
     dispatch(downloadFileBegin())
     fetchDownloadFile()
-      .then(({ genres }) => {
-        return dispatch(downloadFileDone(genres))
+      .then(({ files }) => {
+        return dispatch(downloadFileDone(files))
       })
       .catch(err => dispatch(downloadFileFailure(err)))
   }
@@ -87,8 +87,8 @@ export const downloadFolder = () =>
   (dispatch) => {
     dispatch(downloadFolderBegin())
     fetchDownloadFolder()
-      .then(({ genres }) => {
-        return dispatch(downloadFolderDone(genres))
+      .then(({ folders }) => {
+        return dispatch(downloadFolderDone(folders))
       })
       .catch(err => dispatch(downloadFolderFailure(err)))
   }
