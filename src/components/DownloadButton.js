@@ -1,6 +1,12 @@
 import React from 'react'
+import styled from 'styled-components'
 
-import { Button } from './Button'
+const DownloadButtonStyle = styled.button`
+  background: gray;
+  font-size: 20px;
+  padding: 15px 15px;
+  border-radius: 50%;
+`
 
 const DownloadButton = props => {
   const onClick = event => {
@@ -9,7 +15,7 @@ const DownloadButton = props => {
 
   return (
     <div>
-      <Button onClick={onClick}>Download</Button>
+      <DownloadButtonStyle onClick={onClick}>Download</DownloadButtonStyle>
     </div>
   )
 }

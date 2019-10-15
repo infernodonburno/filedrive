@@ -1,12 +1,13 @@
 import React from 'react'
 import styled from 'styled-components'
-import DownloadButton from '../components/DownloadButton'
 import FolderContainer from '../components/FolderContainer'
+import UploadButton from '../components/UploadButton'
 
 const Home = () => {
   return (
     <React.Fragment>
-      <DownloadButton />
+      <FolderContainer />
+      <UploadButton />
     </React.Fragment>
   )
 }

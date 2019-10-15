@@ -1,6 +1,7 @@
 import React from 'react'
+import styled from 'styled-components'
 
-import { Button } from './Button'
+const UploadButtonStyle = styled.button``
 
 const UploadButton = props => {
   const onClick = event => {
@@ -9,7 +10,7 @@ const UploadButton = props => {
 
   return (
     <div>
-      <Button onClick={onClick}>Upload</Button>
+      <UploadButtonStyle onClick={onClick}>Upload</UploadButtonStyle>
     </div>
   )
 }
