@@ -1,5 +1,6 @@
 import React from 'react'
-import styled from 'styled-components'
+
+import { Button } from './Button'
 
 const DownloadButton = props => {
   const onClick = event => {
@@ -8,7 +9,7 @@ const DownloadButton = props => {
 
   return (
     <div>
-      <button onClick={onClick}>DownloadButton</button>
+      <Button onClick={onClick}>Download</Button>
     </div>
   )
 }
