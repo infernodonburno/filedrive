@@ -2,9 +2,9 @@ import { NavLink } from 'react-router-dom'
 import styled from 'styled-components'
 
 const NavItem = styled(NavLink)`
-  font-size: 20pt;
+  font-size: 30pt;
   text-decoration: none;
-  color: midnightblue;
+  color: white;
   padding: 10px;
   &.active {
     color: #fff;

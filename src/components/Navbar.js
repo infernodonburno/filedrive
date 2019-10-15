@@ -5,7 +5,11 @@ import NavItem from './NavItem'
 const StyledNavBar = styled.div`
   display: flex;
   justify-content: space-around;
-  width: 100vw;
+  margin: 0px;
+  padding: 0px
+  width: 100%vw;
+  height: 100%;
+  background-color: midnightblue;
 `
 
 const NavBar = props => {
