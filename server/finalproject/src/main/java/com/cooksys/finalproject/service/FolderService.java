@@ -11,6 +11,7 @@ import com.cooksys.finalproject.dto.FileRequestDto;
 import com.cooksys.finalproject.dto.FileResponseDto;
 import com.cooksys.finalproject.dto.FolderRequestDto;
 import com.cooksys.finalproject.dto.FolderResponseDto;
+import com.cooksys.finalproject.dto.TrashRequestDto;
 import com.cooksys.finalproject.entity.FileEntity;
 import com.cooksys.finalproject.entity.FolderEntity;
 import com.cooksys.finalproject.mapper.FileMapper;
@@ -69,16 +70,17 @@ public class FolderService {
 		}
 	}
 	
-	public ResponseEntity<FolderResponseDto> trashFolder(Integer id) {
+	public ResponseEntity<FolderResponseDto> trashFolder(TrashRequestDto trashRequestDto, Integer id) {
 		if (folderRepository.getById(id) != null) {	
 			// Get all the files with that folder_id
 			FolderEntity folderToTrash = folderRepository.getById(id);
+			boolean isTrashed = trashRequestDto.getTrashed();
 			
 			for (FileEntity fileEntity : folderToTrash.getFiles()) {
-				fileEntity.setTrashed(true);
+				fileEntity.setTrashed(isTrashed);
 				fileRepository.saveAndFlush(fileEntity);
 			}
-			folderToTrash.setTrashed(true);
+			folderToTrash.setTrashed(isTrashed);
 			folderRepository.saveAndFlush(folderToTrash);
 			return new ResponseEntity<>(HttpStatus.OK);
 		} else {
@@ -86,20 +88,5 @@ public class FolderService {
 		}
 	}
 	
-	public ResponseEntity<FolderResponseDto> restoreFolder(Integer id) {
-		if (folderRepository.getById(id) != null) {	
-			// Get all the files with that folder_id
-			FolderEntity folderToRestore = folderRepository.getById(id);
-			
-			for (FileEntity fileEntity : folderToRestore.getFiles()) {
-				fileEntity.setTrashed(false);
-				fileRepository.saveAndFlush(fileEntity);
-			}
-			folderToRestore.setTrashed(false);
-			folderRepository.saveAndFlush(folderToRestore);
-			return new ResponseEntity<>(HttpStatus.OK);
-		} else {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
-	}
+
 }

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cooksys.finalproject.dto.FileRequestDto;
 import com.cooksys.finalproject.dto.FileResponseDto;
+import com.cooksys.finalproject.dto.TrashRequestDto;
 import com.cooksys.finalproject.service.FileService;
 
 
@@ -35,7 +36,7 @@ public class FileController {
     }
     
     @PatchMapping("/{id}/trash")
-    public ResponseEntity<FileResponseDto> trashFile(@PathVariable Integer id) {
-        return fileService.trashFile(id);
+    public ResponseEntity<FileResponseDto> trashFile(@RequestBody TrashRequestDto trashRequestDto, @PathVariable Integer id) {
+        return fileService.trashFile(trashRequestDto, id);
     }
 }

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.cooksys.finalproject.dto.FileRequestDto;
 import com.cooksys.finalproject.dto.FileResponseDto;
+import com.cooksys.finalproject.dto.TrashRequestDto;
 import com.cooksys.finalproject.entity.FileEntity;
 import com.cooksys.finalproject.mapper.FileMapper;
 import com.cooksys.finalproject.repository.FileRepository;
@@ -52,10 +53,10 @@ public class FileService {
 		}
 	}
 
-	public ResponseEntity<FileResponseDto> trashFile(Integer id) {
+	public ResponseEntity<FileResponseDto> trashFile(TrashRequestDto trashRequestDto, Integer id) {
 		if (fileRepository.getById(id) != null) {	
 			FileEntity fileToTrash = fileRepository.getById(id);
-			fileToTrash.setTrashed(true);
+			fileToTrash.setTrashed(trashRequestDto.getTrashed());
 			fileRepository.saveAndFlush(fileToTrash);
 			return new ResponseEntity<>(HttpStatus.OK);
 		}
