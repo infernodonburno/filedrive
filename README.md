@@ -83,6 +83,15 @@ Downloads a specific folder
 ['File']
 ```
 
+### `GET /trash`
+Gets all trash
+
+#### Response
+```javascript
+['File']
+['Folder']
+```
+
 ### `POST /files`
 Uploads a file at the root
 
