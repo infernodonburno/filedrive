@@ -51,4 +51,17 @@ public class FileService {
 	        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
+
+	public ResponseEntity<FileResponseDto> trashFile(Integer id) {
+		if (fileRepository.getById(id) != null) {	
+			FileEntity fileToTrash = fileRepository.getById(id);
+			fileToTrash.setTrashed(true);
+			fileRepository.saveAndFlush(fileToTrash);
+			return new ResponseEntity<>(HttpStatus.OK);
+		}
+		else {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	}
+	
 }

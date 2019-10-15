@@ -32,4 +32,9 @@ public class FileController {
     public ResponseEntity<FileResponseDto> uploadFile(@RequestBody FileRequestDto fileRequest) {
         return fileService.uploadFile(fileRequest);
     }
+    
+    @PatchMapping("/{id}/trash")
+    public ResponseEntity<FileResponseDto> trashFile(@PathVariable Integer id) {
+        return fileService.trashFile(id);
+    }
 }
