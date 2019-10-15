@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.cooksys.finalproject.dto.FileRequestDto;
 import com.cooksys.finalproject.dto.FolderRequestDto;
+import com.cooksys.finalproject.dto.FolderResponseDto;
 import com.cooksys.finalproject.entity.FileEntity;
 import com.cooksys.finalproject.entity.FolderEntity;
 import com.cooksys.finalproject.mapper.FileMapper;
@@ -27,7 +28,7 @@ public class FolderService {
         this.fileMapper = fileMapper;
         this.folderMapper = folderMapper;
     }
-	public ResponseEntity<FolderRequestDto> uploadFolder(FolderRequestDto folderRequest) {
+	public ResponseEntity<FolderResponseDto> uploadFolder(FolderRequestDto folderRequest) {
 		// If folder does exist, return bad status
 
 		if(folderRepository.getById(folderRequest.getFolderID()) != null){
@@ -45,20 +46,6 @@ public class FolderService {
 		        fileRepository.saveAndFlush(fileToCreate);
 			}
 			return new ResponseEntity<>(HttpStatus.CREATED);
-			
-			
 		}
-		
-		
-		// Send folder entity to database
-		// Get folderID from database
-		// Loop through all filesRequests, create an entity for each
-			// Set folderID for each fileRequest
-			// Send file entity to database
-		// Send back the whole folder and a success code
-		
-		
-		
 	}
-
 }
