@@ -42,4 +42,15 @@ public class FileService {
         return new ResponseEntity<>(fileMapper.entityToDto(fileRepository.saveAndFlush(fileToCreate)), HttpStatus.CREATED);
 	}
 
+	public ResponseEntity<FileResponseDto> downloadFile(Integer id) {
+
+		// check if the file is there
+		if (fileRepository.getById(id) != null) {
+//			System.out.print("HYHYHYHYHYH I'm Here" + " " + fileRepository.getById(id).getFolder().getId());
+			
+	        return new ResponseEntity<>(fileMapper.entityToDto(fileRepository.getById(id)), HttpStatus.OK);
+		} else {
+	        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	}
 }

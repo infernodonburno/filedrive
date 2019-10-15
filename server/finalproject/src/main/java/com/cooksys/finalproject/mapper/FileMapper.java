@@ -1,6 +1,7 @@
 package com.cooksys.finalproject.mapper;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 import com.cooksys.finalproject.entity.FileEntity;
 import com.cooksys.finalproject.dto.FileRequestDto;
@@ -11,5 +12,6 @@ public interface FileMapper {
 
 	FileEntity dtoToEntity(FileRequestDto fileRequest);
 
+	@Mapping(target = "folderID", source = "folder.id")
 	FileResponseDto entityToDto(FileEntity fileFoundInDB);
 }

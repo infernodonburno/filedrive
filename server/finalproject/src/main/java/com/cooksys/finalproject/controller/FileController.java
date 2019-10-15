@@ -1,6 +1,8 @@
 package com.cooksys.finalproject.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +22,11 @@ public class FileController {
     public FileController(FileService fileService) {
         this.fileService = fileService;
     }
-    
+  
+    @GetMapping("/{id}")
+    public ResponseEntity<FileResponseDto> downloadFile(@PathVariable Integer id) {
+        return fileService.downloadFile(id);
+    }
 
     @PostMapping
     public ResponseEntity<FileResponseDto> uploadFile(@RequestBody FileRequestDto fileRequest) {

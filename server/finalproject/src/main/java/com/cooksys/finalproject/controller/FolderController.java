@@ -6,9 +6,9 @@
 //import org.springframework.web.bind.annotation.RequestMapping;
 //import org.springframework.web.bind.annotation.RestController;
 //
-//import com.cooksys.finalproject.dto.FolderDto;
-//import com.cooksys.finalproject.service.FolderRequestDto;
+//import com.cooksys.finalproject.dto.FolderRequestDto;
 //import com.cooksys.finalproject.service.FolderService;
+//
 //
 //
 //@RestController
@@ -22,7 +22,7 @@
 //    }
 //    
 //    @PostMapping
-//    public ResponseEntity<FolderDto> uploadFolder(@RequestBody FolderRequestDto folderRequest) {
+//    public ResponseEntity<FolderRequestDto> uploadFolder(@RequestBody FolderRequestDto folderRequest) {
 //        return folderService.uploadFolder(folderRequest);
 //    }
 //}

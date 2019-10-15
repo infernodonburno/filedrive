@@ -10,6 +10,6 @@ import com.cooksys.finalproject.entity.FileEntity;
 @Repository
 public interface FileRepository extends JpaRepository<FileEntity, Integer> {
 
-	FileEntity getByFileName(String fileName);
+	FileEntity getById(Integer id);
 	
 }
