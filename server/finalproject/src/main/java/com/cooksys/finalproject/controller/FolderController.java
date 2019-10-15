@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cooksys.finalproject.dto.FileResponseDto;
 import com.cooksys.finalproject.dto.FolderRequestDto;
 import com.cooksys.finalproject.dto.FolderResponseDto;
+import com.cooksys.finalproject.dto.TrashRequestDto;
 import com.cooksys.finalproject.service.FolderService;
 
 
@@ -36,7 +37,7 @@ public class FolderController {
         return folderService.uploadFolder(folderRequest);
     }
     @PatchMapping("/{id}/trash")
-    public ResponseEntity<FileResponseDto> trashFile(@PathVariable Integer id) {
-        return folderService.trashFile(id);
+    public ResponseEntity<FolderResponseDto> trashFolder(@RequestBody TrashRequestDto trashRequestDto, @PathVariable Integer id) {
+        return folderService.trashFolder(trashRequestDto, id);
     }
 }
