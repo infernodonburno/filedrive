@@ -17,6 +17,7 @@ const FolderContainerStyle = styled.div`
 const FolderContainer = props => {
   return (
     <FolderContainerStyle>
+      List Folders
       <DownloadButton />
       <ViewButton />
       <TrashButton />{' '}

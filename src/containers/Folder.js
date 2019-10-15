@@ -1,11 +1,11 @@
 import React from 'react'
-import FolderContainer from '../components/FolderContainer'
+import FileContainer from '../components/FileContainer'
 import UploadButton from '../components/UploadButton'
 
 const Folder = () => {
   return (
     <React.Fragment>
-      <FolderContainer />
+      <FileContainer />
       <UploadButton />
     </React.Fragment>
   )
