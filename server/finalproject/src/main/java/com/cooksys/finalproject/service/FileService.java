@@ -2,21 +2,25 @@ package com.cooksys.finalproject.service;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 
 import com.cooksys.finalproject.dto.FileRequestDto;
 import com.cooksys.finalproject.dto.FileResponseDto;
 import com.cooksys.finalproject.entity.FileEntity;
 import com.cooksys.finalproject.mapper.FileMapper;
 import com.cooksys.finalproject.repository.FileRepository;
+import com.cooksys.finalproject.repository.FolderRepository;
 
-
+@Service
 public class FileService {
 
     private FileRepository fileRepository;
+    private FolderRepository folderRepository;
     private FileMapper fileMapper;
     
-    public FileService(FileRepository fileRepository, FileMapper fileMapper) {
+    public FileService(FileRepository fileRepository, FileMapper fileMapper, FolderRepository folderRepository) {
         this.fileRepository = fileRepository;
+        this.folderRepository = folderRepository;
         this.fileMapper = fileMapper;
     }
     
@@ -30,17 +34,12 @@ public class FileService {
      */
 	public ResponseEntity<FileResponseDto> uploadFile(FileRequestDto fileRequest) {
 		FileEntity fileToCreate = fileMapper.dtoToEntity(fileRequest);
-        FileEntity fileFoundInDB = fileRepository.getByFileName(fileRequest.getFileName());
-        
-        if(fileFoundInDB == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } else if (fileFoundInDB != null && fileFoundInDB.getTrashed()) {
-            fileFoundInDB.setTrashed(false);
-            fileRepository.saveAndFlush(fileFoundInDB);
-            return new ResponseEntity<>(fileMapper.entityToDto(fileFoundInDB), HttpStatus.CREATED);
+        if(folderRepository.getById(fileRequest.getFolderID()) != null){
+        	fileToCreate.setFolder(folderRepository.getById(fileRequest.getFolderID()));
         } else {
-            return new ResponseEntity<>(fileMapper.entityToDto(fileRepository.saveAndFlush(fileToCreate)), HttpStatus.CREATED);
+        	fileToCreate.setFolder(folderRepository.getById(0));
         }
+        return new ResponseEntity<>(fileMapper.entityToDto(fileRepository.saveAndFlush(fileToCreate)), HttpStatus.CREATED);
 	}
 
 }

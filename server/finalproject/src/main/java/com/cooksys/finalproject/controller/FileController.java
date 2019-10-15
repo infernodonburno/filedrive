@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cooksys.finalproject.dto.FileDto;
-import com.cooksys.finalproject.service.FileRequestDto;
+import com.cooksys.finalproject.dto.FileRequestDto;
+import com.cooksys.finalproject.dto.FileResponseDto;
 import com.cooksys.finalproject.service.FileService;
 
 
@@ -21,8 +21,9 @@ public class FileController {
         this.fileService = fileService;
     }
     
+
     @PostMapping
-    public ResponseEntity<FileDto> uploadFile(@RequestBody FileRequestDto fileRequest) {
+    public ResponseEntity<FileResponseDto> uploadFile(@RequestBody FileRequestDto fileRequest) {
         return fileService.uploadFile(fileRequest);
     }
 }

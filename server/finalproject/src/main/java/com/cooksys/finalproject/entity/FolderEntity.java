@@ -1,7 +1,6 @@
 package com.cooksys.finalproject.entity;
 
-import java.sql.Timestamp;
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,8 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.CreationTimestamp;
-
 
 @Entity
 @Table(name = "foldertable")
@@ -21,18 +18,15 @@ public class FolderEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @CreationTimestamp
-    private Timestamp created;
-
     @Column(columnDefinition = "boolean default false")
     private boolean trashed;
     
     @Column(nullable = false, unique = false)
 	private String folderName;
-
+    
     @OneToMany(mappedBy = "folder")
-    private List<FileEntity> files;
-
+    private Set<FileEntity> files;
+    
     public FolderEntity() {
     }
 
@@ -42,9 +36,7 @@ public class FolderEntity {
 	public boolean getTrashed() {
 		return this.trashed;
 	}
-	public Timestamp getCreated() {
-		return this.created;
-	}
+
 	public String getFolderName() {
 		return folderName;
 	}
@@ -55,9 +47,19 @@ public class FolderEntity {
 	public void setTrashed(boolean trashed) {
 		this.trashed = trashed;
 	}
-    public void setCreated(Timestamp created) {
-        this.created = created;
-    }
+
+	public Set<FileEntity> getFiles() {
+		return files;
+	}
+
+	public void setFiles(Set<FileEntity> files) {
+		this.files = files;
+	}
+
+	public void setFolderName(String folderName) {
+		this.folderName = folderName;
+	}
+
 	public void setFileName(String folderName) {
 		this.folderName = folderName;
 	}

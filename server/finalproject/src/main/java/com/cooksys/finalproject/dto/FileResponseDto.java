@@ -5,7 +5,8 @@ public class FileResponseDto {
     private String fileName;
     private byte[] data;
     private Integer folderID;
-
+    private Integer id;
+    
     public FileResponseDto() {
     }
 
@@ -31,6 +32,14 @@ public class FileResponseDto {
 
 	public void setFolderID(Integer folderID) {
 		this.folderID = folderID;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 }

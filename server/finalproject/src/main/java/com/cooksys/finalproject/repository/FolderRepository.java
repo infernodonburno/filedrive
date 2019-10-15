@@ -2,14 +2,14 @@ package com.cooksys.finalproject.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import com.cooksys.finalproject.entity.FileEntity;
+import com.cooksys.finalproject.entity.FolderEntity;
 
 
 
 
 @Repository
-public interface FileRepository extends JpaRepository<FileEntity, Integer> {
+public interface FolderRepository extends JpaRepository<FolderEntity, Integer> {
 
-	FileEntity getByFileName(String fileName);
+	FolderEntity getById(Integer id);
 	
 }
