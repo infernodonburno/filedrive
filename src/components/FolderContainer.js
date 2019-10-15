@@ -3,6 +3,7 @@ import styled from 'styled-components'
 
 import DownloadButton from './DownloadButton'
 import TrashButton from './TrashButton'
+import ViewButton from './ViewButton'
 
 const FolderContainerStyle = styled.div`
   display: flex;
@@ -17,6 +18,7 @@ const FolderContainer = props => {
   return (
     <FolderContainerStyle>
       <DownloadButton />
+      <ViewButton />
       <TrashButton />{' '}
     </FolderContainerStyle>
   )
