@@ -1,5 +1,5 @@
 package com.cooksys.finalproject.dto;
 
-public class FileDto {
+public class FileResponseDto {
 
 }
