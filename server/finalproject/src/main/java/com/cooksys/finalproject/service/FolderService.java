@@ -59,6 +59,7 @@ public class FolderService {
 			FolderResponseDto folderToDownload = folderMapper.entityToDto(folderRepository.getById(id));
 			List<FileResponseDto> fileResponses = new ArrayList<FileResponseDto>();
 			folderToDownload.setFiles(fileResponses);
+			folderToDownload.setFolderID(id);
 			for (FileEntity fileEntity : fileRepository.getByFolderId(id)) {
 				folderToDownload.getFiles().add(fileMapper.entityToDto(fileEntity));
 			}
