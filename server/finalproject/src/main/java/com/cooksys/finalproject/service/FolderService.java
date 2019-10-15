@@ -1,10 +1,14 @@
 package com.cooksys.finalproject.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.cooksys.finalproject.dto.FileRequestDto;
+import com.cooksys.finalproject.dto.FileResponseDto;
 import com.cooksys.finalproject.dto.FolderRequestDto;
 import com.cooksys.finalproject.dto.FolderResponseDto;
 import com.cooksys.finalproject.entity.FileEntity;
@@ -46,6 +50,21 @@ public class FolderService {
 		        fileRepository.saveAndFlush(fileToCreate);
 			}
 			return new ResponseEntity<>(HttpStatus.CREATED);
+		}
+	}
+	
+	public ResponseEntity<FolderResponseDto> downloadFolder(Integer id) {
+
+		if (folderRepository.getById(id) != null) {
+			FolderResponseDto folderToDownload = folderMapper.entityToDto(folderRepository.getById(id));
+			List<FileResponseDto> fileResponses = new ArrayList<FileResponseDto>();
+			folderToDownload.setFiles(fileResponses);
+			for (FileEntity fileEntity : fileRepository.getByFolderId(id)) {
+				folderToDownload.getFiles().add(fileMapper.entityToDto(fileEntity));
+			}
+	        return new ResponseEntity<>(folderToDownload, HttpStatus.OK);
+		} else {
+	        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
 }

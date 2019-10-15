@@ -1,5 +1,6 @@
 package com.cooksys.finalproject.entity;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -25,7 +26,7 @@ public class FolderEntity {
 	private String folderName;
     
     @OneToMany(mappedBy = "folder")
-    private Set<FileEntity> files;
+    private List<FileEntity> files;
     
     public FolderEntity() {
     }
@@ -48,11 +49,11 @@ public class FolderEntity {
 		this.trashed = trashed;
 	}
 
-	public Set<FileEntity> getFiles() {
+	public List<FileEntity> getFiles() {
 		return files;
 	}
 
-	public void setFiles(Set<FileEntity> files) {
+	public void setFiles(List<FileEntity> files) {
 		this.files = files;
 	}
 

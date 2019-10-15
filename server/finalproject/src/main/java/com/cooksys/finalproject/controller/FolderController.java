@@ -1,11 +1,14 @@
 package com.cooksys.finalproject.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cooksys.finalproject.dto.FileResponseDto;
 import com.cooksys.finalproject.dto.FolderRequestDto;
 import com.cooksys.finalproject.dto.FolderResponseDto;
 import com.cooksys.finalproject.service.FolderService;
@@ -20,6 +23,11 @@ public class FolderController {
 
     public FolderController(FolderService folderService) {
         this.folderService = folderService;
+    }
+    
+    @GetMapping("/{id}")
+    public ResponseEntity<FolderResponseDto> downloadFolder(@PathVariable Integer id) {
+        return folderService.downloadFolder(id);
     }
     
     @PostMapping
