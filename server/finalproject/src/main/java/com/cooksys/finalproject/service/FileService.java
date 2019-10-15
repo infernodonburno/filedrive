@@ -64,4 +64,16 @@ public class FileService {
 		}
 	}
 	
+	public ResponseEntity<FileResponseDto> restoreFile(Integer id) {
+		if (fileRepository.getById(id) != null) {	
+			FileEntity fileToRestore = fileRepository.getById(id);
+			fileToRestore.setTrashed(false);
+			fileRepository.saveAndFlush(fileToRestore);
+			return new ResponseEntity<>(HttpStatus.OK);
+		}
+		else {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	}
+	
 }

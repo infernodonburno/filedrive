@@ -85,4 +85,21 @@ public class FolderService {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
+	
+	public ResponseEntity<FolderResponseDto> restoreFolder(Integer id) {
+		if (folderRepository.getById(id) != null) {	
+			// Get all the files with that folder_id
+			FolderEntity folderToRestore = folderRepository.getById(id);
+			
+			for (FileEntity fileEntity : folderToRestore.getFiles()) {
+				fileEntity.setTrashed(false);
+				fileRepository.saveAndFlush(fileEntity);
+			}
+			folderToRestore.setTrashed(false);
+			folderRepository.saveAndFlush(folderToRestore);
+			return new ResponseEntity<>(HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	}
 }
