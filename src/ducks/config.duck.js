@@ -1,3 +1,5 @@
+import { fetchFiles, fetchFolders } from '../services/api'
+
 export const LOAD_FILES_BEGIN = 'LOAD_FILES_BEGIN'
 export const LOAD_FILES_FAILURE = 'LOAD_FILES_FAILURE'
 export const LOAD_FILES_DONE = 'LOAD_FILES_DONE'
@@ -43,4 +45,50 @@ export default function reducer (state = initialState, action) {
   }
 }
 
-// export const loadFilesBegin =
+const loadFilesBegin = () => ({
+  type: LOAD_FILES_BEGIN
+})
+
+const loadFilesDone = files => ({
+  type: LOAD_FILES_DONE,
+  payload: {
+    files
+  }
+})
+
+const loadFilesFailed = () => ({
+  typel: LOAD_FILES_FAILURE
+})
+
+const loadFoldersBegin = () => ({
+  type: LOAD_FOLDERS_BEGIN
+})
+
+const loadFoldersDone = folders => ({
+  type: LOAD_FOLDERS_DONE,
+  payload: {
+    folders
+  }
+})
+
+const loadFoldersFailed = () => ({
+  typel: LOAD_FOLDERS_FAILURE
+})
+
+export const loadFiles = () => dispatch => {
+  dispatch(loadFilesBegin())
+  fetchFiles()
+    .then(({ files }) => {
+      return dispatch(loadFilesDone(files))
+    })
+    .catch(err => dispatch(loadFilesFailed(err)))
+}
+
+export const loadFolders = () => dispatch => {
+  dispatch(loadFoldersBegin())
+  fetchFolders()
+    .then(({ folders }) => {
+      return dispatch(loadFoldersDone(folders))
+    })
+    .catch(err => dispatch(loadFoldersFailed(err)))
+}
