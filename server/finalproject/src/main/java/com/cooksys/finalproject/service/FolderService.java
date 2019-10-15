@@ -69,7 +69,7 @@ public class FolderService {
 		}
 	}
 	
-	public ResponseEntity<FileResponseDto> trashFile(Integer id) {
+	public ResponseEntity<FolderResponseDto> trashFolder(Integer id) {
 		if (folderRepository.getById(id) != null) {	
 			// Get all the files with that folder_id
 			FolderEntity folderToTrash = folderRepository.getById(id);
