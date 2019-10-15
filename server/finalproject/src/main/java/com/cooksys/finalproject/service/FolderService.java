@@ -68,4 +68,21 @@ public class FolderService {
 	        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
+	
+	public ResponseEntity<FileResponseDto> trashFile(Integer id) {
+		if (folderRepository.getById(id) != null) {	
+			// Get all the files with that folder_id
+			FolderEntity folderToTrash = folderRepository.getById(id);
+			
+			for (FileEntity fileEntity : folderToTrash.getFiles()) {
+				fileEntity.setTrashed(true);
+				fileRepository.saveAndFlush(fileEntity);
+			}
+			folderToTrash.setTrashed(true);
+			folderRepository.saveAndFlush(folderToTrash);
+			return new ResponseEntity<>(HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	}
 }

@@ -2,6 +2,7 @@ package com.cooksys.finalproject.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,5 +34,9 @@ public class FolderController {
     @PostMapping
     public ResponseEntity<FolderResponseDto> uploadFolder(@RequestBody FolderRequestDto folderRequest) {
         return folderService.uploadFolder(folderRequest);
+    }
+    @PatchMapping("/{id}/trash")
+    public ResponseEntity<FileResponseDto> trashFile(@PathVariable Integer id) {
+        return folderService.trashFile(id);
     }
 }
