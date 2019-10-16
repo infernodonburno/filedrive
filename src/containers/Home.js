@@ -11,7 +11,6 @@ const Home = () => {
     <React.Fragment>
       <MainCard>
         <EnhancedTable />
-        <FileContainer />
       </MainCard>
       <UploadButton />
     </React.Fragment>
