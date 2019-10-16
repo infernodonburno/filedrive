@@ -1,6 +1,7 @@
 package com.cooksys.finalproject.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,5 +39,10 @@ public class FileController {
     @PatchMapping("/{id}/trash")
     public ResponseEntity<FileResponseDto> trashFile(@RequestBody TrashRequestDto trashRequestDto, @PathVariable Integer id) {
         return fileService.trashFile(trashRequestDto, id);
+    }
+    
+    @DeleteMapping("/{id}/trash")
+    public ResponseEntity<FileResponseDto> deleteFile(@PathVariable Integer id) {
+        return fileService.deleteFile(id);
     }
 }
