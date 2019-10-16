@@ -6,8 +6,8 @@ import FolderContainer from '../components/FolderContainer'
 const StyledCard = styled.div`
   box-shadow: 5px 5px 5px #ccc;
   border: 1px solid #ccc;
-  height: 500px;
-  width: 450px;
+  height: 700px;
+  width: 1000px;
   display: flex;
   flex-direction: column;
   align-items: center;
