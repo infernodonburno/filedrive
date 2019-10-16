@@ -12,7 +12,7 @@ const App = props => (
     <NavBar />
     <Route path='/' component={Header} />
     <Route exact path='/' component={Home} />
-    <Route path='/trash/' component={Trash} />
+    <Route exact path='/trash' component={Trash} />
     <Route path='/view' exact component={View} />
   </div>
 )
