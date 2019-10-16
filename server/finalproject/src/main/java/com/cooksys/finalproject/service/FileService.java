@@ -8,6 +8,7 @@ import com.cooksys.finalproject.dto.FileRequestDto;
 import com.cooksys.finalproject.dto.FileResponseDto;
 import com.cooksys.finalproject.dto.TrashRequestDto;
 import com.cooksys.finalproject.entity.FileEntity;
+import com.cooksys.finalproject.entity.FolderEntity;
 import com.cooksys.finalproject.mapper.FileMapper;
 import com.cooksys.finalproject.repository.FileRepository;
 import com.cooksys.finalproject.repository.FolderRepository;
@@ -39,8 +40,14 @@ public class FileService {
 		FileEntity fileToCreate = fileMapper.dtoToEntity(fileRequest);
         if(folderRepository.getById(folderID) != null){
         	fileToCreate.setFolder(folderRepository.getById(folderID));
-        } else {
-        	fileToCreate.setFolder(folderRepository.getById(0));
+        }
+        else if (folderRepository.getById(0) == null) {
+        	FolderEntity folderToCreate = new FolderEntity();
+        	folderRepository.saveAndFlush(folderToCreate);
+        	fileToCreate.setFolder(folderToCreate);
+        }
+        else {
+        	return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(fileMapper.entityToDto(fileRepository.saveAndFlush(fileToCreate)), HttpStatus.CREATED);
 	}
