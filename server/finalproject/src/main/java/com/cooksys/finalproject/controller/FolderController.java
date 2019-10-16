@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cooksys.finalproject.dto.FolderRequestDto;
 import com.cooksys.finalproject.dto.FolderResponseDto;
+import com.cooksys.finalproject.dto.FoldersResponseDto;
 import com.cooksys.finalproject.dto.TrashRequestDto;
 import com.cooksys.finalproject.service.FolderService;
 
@@ -25,6 +26,11 @@ public class FolderController {
 
     public FolderController(FolderService folderService) {
         this.folderService = folderService;
+    }
+    
+    @GetMapping
+    public ResponseEntity<FoldersResponseDto> getFolders(){
+    	return folderService.getFolders(1);
     }
     
     @GetMapping("/{id}")

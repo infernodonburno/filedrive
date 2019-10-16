@@ -11,6 +11,7 @@ import com.cooksys.finalproject.dto.FileRequestDto;
 import com.cooksys.finalproject.dto.FileResponseDto;
 import com.cooksys.finalproject.dto.FolderRequestDto;
 import com.cooksys.finalproject.dto.FolderResponseDto;
+import com.cooksys.finalproject.dto.FoldersResponseDto;
 import com.cooksys.finalproject.dto.TrashRequestDto;
 import com.cooksys.finalproject.entity.FileEntity;
 import com.cooksys.finalproject.entity.FolderEntity;
@@ -34,20 +35,11 @@ public class FolderService {
         this.folderMapper = folderMapper;
     }
 	public ResponseEntity<FolderResponseDto> uploadFolder(FolderRequestDto folderRequest) {
+		System.out.print("HELLLLLLLLOOOOOOOOOO");
 		// If folder does exist, return bad status
 
-		if(folderRepository.getById(folderRequest.getFolderID()) != null){
-	        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
-		// If folder doesn't exist, create folder entity
-		else if (folderRepository.getById(1) == null) {
-			// create a root folder
-        	FolderEntity rootFolderToCreate = new FolderEntity();
-        	rootFolderToCreate.setFolderName("Root");
-        	rootFolderToCreate.setFolderID(0);
-        	folderRepository.saveAndFlush(rootFolderToCreate);
+		if (folderRepository.getById(folderRequest.getFolderID()) != null) {
         	// create the folder requested
-        	folderRequest.setFolderID(1);
 			FolderEntity folderToCreate = folderMapper.dtoToEntity(folderRequest);
 			FolderEntity folder = folderRepository.saveAndFlush(folderToCreate);
 
@@ -56,9 +48,34 @@ public class FolderService {
 				fileToCreate.setFolder(folder);
 		        fileRepository.saveAndFlush(fileToCreate);
 			}
-			return new ResponseEntity<>(HttpStatus.CREATED);
+			return new ResponseEntity<>(HttpStatus.CREATED);			
+		}
+		// If folder doesn't exist, create folder entity
+		else if (folderRepository.getById(1) == null) {
+			// create a root folder
+        	FolderEntity rootFolderToCreate = new FolderEntity();
+        	rootFolderToCreate.setFolderName("Root");
+        	rootFolderToCreate.setFolderID(0);
+        	folderRepository.saveAndFlush(rootFolderToCreate);
+        	
+        	if(folderRequest.getFolderID() == 1) {
+            	// create the folder requested if mapped to root
+    			FolderEntity folderToCreate = folderMapper.dtoToEntity(folderRequest);
+    			FolderEntity folder = folderRepository.saveAndFlush(folderToCreate);
+
+    			for (FileRequestDto fileRequest : folderRequest.getFileRequests()) {
+    				FileEntity fileToCreate = fileMapper.dtoToEntity(fileRequest);
+    				fileToCreate.setFolder(folder);
+    		        fileRepository.saveAndFlush(fileToCreate);
+    			}
+    			return new ResponseEntity<>(HttpStatus.CREATED);
+        	} else {
+        		System.out.print("I'm here");
+    			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        	}
         }
 		else {
+    		System.out.print("I'm here2");
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
@@ -110,6 +127,19 @@ public class FolderService {
 			return new ResponseEntity<>(HttpStatus.OK); 
 		}
 		else {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	}
+	public ResponseEntity<FoldersResponseDto> getFolders(Integer folderID) {
+		FoldersResponseDto responseToSendBack = new FoldersResponseDto();
+		responseToSendBack.setFolders(new ArrayList<>());
+		List<FolderEntity> foldersToSendBack = folderRepository.getAllFoldersByfolderID(folderID);
+		if(foldersToSendBack != null) {
+			for(FolderEntity folderEntity: foldersToSendBack) {
+				responseToSendBack.getFolders().add(folderMapper.entityToDto(folderEntity));
+			}
+			return new ResponseEntity<FoldersResponseDto>(responseToSendBack, HttpStatus.OK);
+		} else {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}

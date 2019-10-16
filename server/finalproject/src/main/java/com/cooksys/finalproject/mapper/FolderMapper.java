@@ -12,6 +12,5 @@ public interface FolderMapper {
 	
 	FolderEntity dtoToEntity(FolderRequestDto folderRequest);
 	FolderResponseDto entityToDto(FolderEntity folderFoundInDB);
-
 }
 

@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cooksys.finalproject.dto.FileRequestDto;
 import com.cooksys.finalproject.dto.FileResponseDto;
+import com.cooksys.finalproject.dto.FolderResponseDto;
 import com.cooksys.finalproject.dto.TrashRequestDto;
 import com.cooksys.finalproject.service.FileService;
+import com.cooksys.finalproject.service.FolderService;
 
 
 @RestController
@@ -21,11 +23,17 @@ import com.cooksys.finalproject.service.FileService;
 public class FileController {
 
     private FileService fileService;
-
-    public FileController(FileService fileService) {
+    private FolderService folderService;
+    
+    public FileController(FileService fileService, FolderService folderService) {
         this.fileService = fileService;
+        this.folderService = folderService;
     }
-  
+    @GetMapping
+    public ResponseEntity<FolderResponseDto> getFiles(){
+    	return folderService.downloadFolder(1);
+    }
+    
     @GetMapping("/{id}")
     public ResponseEntity<FileResponseDto> downloadFile(@PathVariable Integer id) {
         return fileService.downloadFile(id);
