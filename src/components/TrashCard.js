@@ -6,8 +6,8 @@ import TrashContainer from '../components/TrashContainer'
 const StyledCard = styled.div`
   box-shadow: 5px 5px 5px #ccc;
   border: 1px solid #ccc;
-  height: 700px;
-  width: 1000px;
+  height: 500px;
+  width: 750px;
   display: flex;
   flex-direction: column;
   align-items: center;

@@ -14,6 +14,7 @@ const routes = [
   { path: '/',
     exact: true,
     sidebar: () => <div>home!</div>,
+    main: () => <h2>Home</h2>
   },
   { path: '/folder',
     sidebar: () => <div>FolderContent!</div>,
@@ -35,7 +36,7 @@ const SidebarExample = () => (
       <div style={{
         padding: '10px',
         width: '10%',
-        height: '150',
+        height: '150px',
         background: 'lightgray',
         margin: 'auto 0',
         float: 'left'
@@ -64,7 +65,7 @@ const SidebarExample = () => (
         ))}
       </div>
 
-      <div style={{ flex: 1, padding: '10px' }}>
+      <div style={{ flex: 1, padding: '0px' }}>
         {routes.map((route, index) => (
           // Render more <Route>s with the same paths as
           // above, but different components this time.
