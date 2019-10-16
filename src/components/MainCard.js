@@ -20,8 +20,6 @@ const MainCard = props => {
   return (
     <StyledCard>
       <FolderContainer />
-      <FolderContainer />
-      <FolderContainer />
       <FileContainer />
     </StyledCard>
   )
