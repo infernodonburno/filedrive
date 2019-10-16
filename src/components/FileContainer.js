@@ -5,34 +5,46 @@ import DownloadButton from './DownloadButton'
 import TrashButton from './TrashButton'
 import ViewButton from './ViewButton'
 
-const FolderContainerStyle = styled.table`
-table {
-  font-family: arial, sans-serif;
-  border-collapse: collapse;
-  width: 100%;
-}
+import { rootFiles as files } from '../data'
 
-td, th {
-  border: 1px solid #dddddd;
-  text-align: left;
-  padding: 8px;
-}
+const FileContainerStyle = styled.table`
+  table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100vw;
+  }
 
-tr:nth-child(even) {
-  background-color: #dddddd;
-}
+  td,
+  th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+  }
+
+  tr:nth-child(even) {
+    background-color: #dddddd;
+  }
 `
 
 const FileContainer = props => {
+  const fileNames = files.map(file => (
+    <tr key={file.id}>
+      <td>{file.fileName}</td>
+      <td>
+        <DownloadButton />
+      </td>
+      <td>
+        <ViewButton />
+      </td>
+      <td>
+        <TrashButton />
+      </td>
+    </tr>
+  ))
   return (
-    <FolderContainerStyle>
-      <tr>
-        <td>FILENAMEHERE</td>
-        <td><DownloadButton /></td>
-        <td><ViewButton /></td>
-        <td><TrashButton /></td>
-      </tr>
-    </FolderContainerStyle>
+    <FileContainerStyle>
+      <tbody>{fileNames}</tbody>
+    </FileContainerStyle>
   )
 }
 

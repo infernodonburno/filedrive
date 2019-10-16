@@ -5,33 +5,46 @@ import DownloadButton from './DownloadButton'
 import TrashButton from './TrashButton'
 import ViewButton from './ViewButton'
 
+// TODO: Remove folders in data refs
+import { folders } from '../data'
+
 const FolderContainerStyle = styled.table`
-table {
-  font-family: arial, sans-serif;
-  border-collapse: collapse;
-  width: 100%;
-}
+  table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
 
-td, th {
-  border: 1px solid #dddddd;
-  text-align: left;
-  padding: 8px;
-}
+  td,
+  th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+  }
 
-tr:nth-child(even) {
-  background-color: #dddddd;
-}
+  tr:nth-child(even) {
+    background-color: #dddddd;
+  }
 `
 
 const FolderContainer = props => {
+  const folderNames = folders.map(folder => (
+    <tr key={folder.id}>
+      <td>{folder.folderName}</td>
+      <td>
+        <DownloadButton />
+      </td>
+      <td>
+        <ViewButton />
+      </td>
+      <td>
+        <TrashButton />
+      </td>
+    </tr>
+  ))
   return (
     <FolderContainerStyle>
-      <tr>
-        <td>FILENAMEHERE</td>
-        <td><DownloadButton /></td>
-        <td><ViewButton /></td>
-        <td><TrashButton /></td>
-      </tr>
+      <tbody>{folderNames}</tbody>
     </FolderContainerStyle>
   )
 }
