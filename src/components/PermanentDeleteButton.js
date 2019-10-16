@@ -8,7 +8,10 @@ const PermanentDeleteButton = props => {
 
   return (
     <div>
-      <img src='../resources/trashicon.png' onClick={onClick} />
+      <img
+        src='./src/resources/x-delete-round-flat-icon-free-download.png'
+        onClick={onClick}
+      />
     </div>
   )
 }
