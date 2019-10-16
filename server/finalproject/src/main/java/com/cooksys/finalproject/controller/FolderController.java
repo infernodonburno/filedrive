@@ -18,7 +18,6 @@ import com.cooksys.finalproject.dto.TrashRequestDto;
 import com.cooksys.finalproject.service.FolderService;
 
 
-@CrossOrigin
 @RestController
 @RequestMapping("/folders")
 public class FolderController {
@@ -29,16 +28,19 @@ public class FolderController {
         this.folderService = folderService;
     }
     
+    @CrossOrigin
     @GetMapping
     public ResponseEntity<FoldersResponseDto> getFolders(){
     	return folderService.getFolders(1);
     }
     
+    @CrossOrigin
     @GetMapping("/{id}")
     public ResponseEntity<FolderResponseDto> downloadFolder(@PathVariable Integer id) {
         return folderService.downloadFolder(id);
     }
     
+    @CrossOrigin
     @PostMapping
     public ResponseEntity<FolderResponseDto> uploadFolder(@RequestBody FolderRequestDto folderRequest) {
         return folderService.uploadFolder(folderRequest);
@@ -48,10 +50,14 @@ public class FolderController {
 //    public ResponseEntity<FolderResponseDto> moveFolder(@PathVariable Integer folderID1, @PathVariable Integer folderID2) {
 //        return folderService.moveFolder(folderID1, folderID2);
 //    }
+    
+    @CrossOrigin
     @PatchMapping("/{id}/trash")
     public ResponseEntity<FolderResponseDto> trashFolder(@RequestBody TrashRequestDto trashRequestDto, @PathVariable Integer id) {
         return folderService.trashFolder(trashRequestDto, id);
     }
+    
+    @CrossOrigin
     @DeleteMapping("/{id}/trash")
     public ResponseEntity<FolderResponseDto> deleteFolder(@PathVariable Integer id) {
         return folderService.deleteFolder(id);

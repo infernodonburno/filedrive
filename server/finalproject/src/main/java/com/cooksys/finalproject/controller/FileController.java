@@ -18,7 +18,6 @@ import com.cooksys.finalproject.dto.TrashRequestDto;
 import com.cooksys.finalproject.service.FileService;
 import com.cooksys.finalproject.service.FolderService;
 
-@CrossOrigin
 @RestController
 @RequestMapping("/files")
 public class FileController {
@@ -30,31 +29,38 @@ public class FileController {
         this.fileService = fileService;
         this.folderService = folderService;
     }
+    
+    @CrossOrigin
     @GetMapping
     public ResponseEntity<FolderResponseDto> getFiles(){
     	return folderService.downloadFolder(1);
     }
     
+    @CrossOrigin
     @GetMapping("/{id}")
     public ResponseEntity<FileResponseDto> downloadFile(@PathVariable Integer id) {
         return fileService.downloadFile(id);
     }
 
+    @CrossOrigin
     @PostMapping("/{folderID}")
     public ResponseEntity<FileResponseDto> uploadFile(@RequestBody FileRequestDto fileRequest,@PathVariable Integer folderID ) {
         return fileService.uploadFile(fileRequest, folderID);
     }
     
+    @CrossOrigin
     @PatchMapping("/{fileID}/{folderID}/move")
     public ResponseEntity<FileResponseDto> moveFile(@PathVariable Integer fileID, @PathVariable Integer folderID) {
         return fileService.moveFile(fileID, folderID);
     }
     
+    @CrossOrigin
     @PatchMapping("/{id}/trash")
     public ResponseEntity<FileResponseDto> trashFile(@RequestBody TrashRequestDto trashRequestDto, @PathVariable Integer id) {
         return fileService.trashFile(trashRequestDto, id);
     }
     
+    @CrossOrigin
     @DeleteMapping("/{id}/trash")
     public ResponseEntity<FileResponseDto> deleteFile(@PathVariable Integer id) {
         return fileService.deleteFile(id);
