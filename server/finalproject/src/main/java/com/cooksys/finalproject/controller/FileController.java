@@ -31,9 +31,9 @@ public class FileController {
         return fileService.downloadFile(id);
     }
 
-    @PostMapping
-    public ResponseEntity<FileResponseDto> uploadFile(@RequestBody FileRequestDto fileRequest) {
-        return fileService.uploadFile(fileRequest);
+    @PostMapping("/{folderID}")
+    public ResponseEntity<FileResponseDto> uploadFile(@RequestBody FileRequestDto fileRequest,@PathVariable Integer folderID ) {
+        return fileService.uploadFile(fileRequest, folderID);
     }
     
     @PatchMapping("/{fileID}/{folderID}/move")

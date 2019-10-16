@@ -32,12 +32,13 @@ public class FileService {
      * If file is in database but trashed, will restore the file.
      * 
      * @param fileRequest
+     * @param folderID 
      * @return ResponseEntity<FileResponseDto>
      */
-	public ResponseEntity<FileResponseDto> uploadFile(FileRequestDto fileRequest) {
+	public ResponseEntity<FileResponseDto> uploadFile(FileRequestDto fileRequest, Integer folderID) {
 		FileEntity fileToCreate = fileMapper.dtoToEntity(fileRequest);
-        if(folderRepository.getById(fileRequest.getFolderID()) != null){
-        	fileToCreate.setFolder(folderRepository.getById(fileRequest.getFolderID()));
+        if(folderRepository.getById(folderID) != null){
+        	fileToCreate.setFolder(folderRepository.getById(folderID));
         } else {
         	fileToCreate.setFolder(folderRepository.getById(0));
         }
