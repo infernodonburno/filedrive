@@ -11,5 +11,6 @@ import com.cooksys.finalproject.entity.FolderEntity;
 public interface FolderRepository extends JpaRepository<FolderEntity, Integer> {
 
 	FolderEntity getById(Integer id);
+	void deleteById(Integer id);
 	
 }

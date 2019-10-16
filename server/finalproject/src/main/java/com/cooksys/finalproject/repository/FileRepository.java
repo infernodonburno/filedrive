@@ -13,6 +13,7 @@ import com.cooksys.finalproject.entity.FileEntity;
 public interface FileRepository extends JpaRepository<FileEntity, Integer> {
 
 	FileEntity getById(Integer id);
+	void deleteById(Integer id);
 	List<FileEntity> getByFolderId(Integer folderID);
 	
 }

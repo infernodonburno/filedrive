@@ -77,4 +77,14 @@ public class FileService {
 		}
 	}
 	
+	public ResponseEntity<FileResponseDto> deleteFile(Integer id) {
+		if (fileRepository.getById(id) != null && fileRepository.getById(id).getTrashed()) {
+			fileRepository.deleteById(id);
+			return new ResponseEntity<>(HttpStatus.OK); 
+		}
+		else {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	}
+	
 }

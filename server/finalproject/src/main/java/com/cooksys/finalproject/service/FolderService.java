@@ -90,5 +90,20 @@ public class FolderService {
 		}
 	}
 	
+	public ResponseEntity<FolderResponseDto> deleteFolder(Integer id) {
+		if (folderRepository.getById(id) != null && folderRepository.getById(id).getTrashed()) {
+			folderRepository.deleteById(id);
+			FolderEntity folderToDelete = folderRepository.getById(id);
+
+			for (FileEntity fileEntity : folderToDelete.getFiles()) {
+				fileRepository.deleteById(fileEntity.getId());
+			}
+			return new ResponseEntity<>(HttpStatus.OK); 
+		}
+		else {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	}
+	
 
 }
