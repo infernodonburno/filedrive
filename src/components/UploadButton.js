@@ -40,10 +40,10 @@ const UploadButton = props => {
 
   return (
     <UploadCenter>
-    <div className="upload-btn-wrapper">
-      <UploadButtonStyle onClick={onClick}>Upload</UploadButtonStyle>
-      <input type="file" name="myfile" />
-    </div>
+      <div className='upload-btn-wrapper'>
+        <UploadButtonStyle onClick={onClick}>Upload</UploadButtonStyle>
+        <input type='file' name='myfile' />
+      </div>
     </UploadCenter>
   )
 }

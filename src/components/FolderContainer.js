@@ -9,7 +9,12 @@ import ViewButton from './ViewButton'
 import { folders } from '../data'
 
 const FolderContainerStyle = styled.table`
+.a{
+  width:250px;
+  height:25px;
+}
   table {
+    min-width: 100%;
     font-family: arial, sans-serif;
     border-collapse: collapse;
     width: 100%;
@@ -30,7 +35,7 @@ const FolderContainerStyle = styled.table`
 const FolderContainer = props => {
   const folderNames = folders.map(folder => (
     <tr key={folder.id}>
-      <td>{folder.folderName}</td>
+      <td className='a'>{folder.folderName}</td>
       <td>
         <DownloadButton />
       </td>
