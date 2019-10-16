@@ -42,6 +42,7 @@ public class FileService {
         else if (folderRepository.getById(1) == null) {
         	FolderEntity folderToCreate = new FolderEntity();
         	folderToCreate.setFolderName("Root");
+        	folderToCreate.setFolderID(0);
         	folderRepository.saveAndFlush(folderToCreate);
         	fileToCreate.setFolder(folderToCreate);
         }
