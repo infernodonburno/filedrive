@@ -10,8 +10,7 @@ const FolderContainerStyle = styled.div`
   justify-content: center;
   flex-direction: row;
   align-items: center;
-  width: 100vw;
-  height: 50vh;
+  background-color: lightgray;
 `
 
 const FolderContainer = props => {

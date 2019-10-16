@@ -1,12 +1,12 @@
 import React from 'react'
-import styled from 'styled-components'
 import FolderContainer from '../components/FolderContainer'
 import UploadButton from '../components/UploadButton'
+import MainCard from '../components/MainCard'
 
 const Home = () => {
   return (
     <React.Fragment>
-      <FolderContainer />
+      <MainCard />
       <UploadButton />
     </React.Fragment>
   )
