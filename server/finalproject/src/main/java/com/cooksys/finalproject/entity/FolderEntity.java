@@ -28,7 +28,18 @@ public class FolderEntity {
     @OneToMany(mappedBy = "folder")
     private List<FileEntity> files;
     
-    public FolderEntity() {
+    @Column(nullable = false)
+    private Integer folderID;
+    
+    public Integer getFolderID() {
+		return folderID;
+	}
+
+	public void setFolderID(Integer folderID) {
+		this.folderID = folderID;
+	}
+
+	public FolderEntity() {
     }
 
     public Integer getId() {

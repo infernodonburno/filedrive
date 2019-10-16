@@ -40,8 +40,14 @@ public class FolderService {
 	        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		// If folder doesn't exist, create folder entity
-
-		else {
+		else if (folderRepository.getById(1) == null) {
+			// create a root folder
+        	FolderEntity rootFolderToCreate = new FolderEntity();
+        	rootFolderToCreate.setFolderName("Root");
+        	rootFolderToCreate.setFolderID(0);
+        	folderRepository.saveAndFlush(rootFolderToCreate);
+        	// create the folder requested
+        	folderRequest.setFolderID(1);
 			FolderEntity folderToCreate = folderMapper.dtoToEntity(folderRequest);
 			FolderEntity folder = folderRepository.saveAndFlush(folderToCreate);
 
@@ -51,6 +57,9 @@ public class FolderService {
 		        fileRepository.saveAndFlush(fileToCreate);
 			}
 			return new ResponseEntity<>(HttpStatus.CREATED);
+        }
+		else {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
 	
