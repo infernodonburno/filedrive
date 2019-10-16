@@ -14,8 +14,8 @@ const ViewButton = props => {
   }
 
   return (
-    <div>
-      <ViewButtonStyle onClick={onClick}>View</ViewButtonStyle>
+    <div to='/view' exact>
+      <ViewButtonStyle onClick={onClick}>View</ViewButtonStyle >
     </div>
   )
 }
