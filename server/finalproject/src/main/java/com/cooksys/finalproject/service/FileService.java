@@ -19,12 +19,10 @@ public class FileService {
     private FileRepository fileRepository;
     private FolderRepository folderRepository;
     private FileMapper fileMapper;
-    // Add File Implementation Class for entitymanager detach
     public FileService(FileRepository fileRepository, FileMapper fileMapper, FolderRepository folderRepository) {
         this.fileRepository = fileRepository;
         this.folderRepository = folderRepository;
         this.fileMapper = fileMapper;
-        //WE NEED TO ADD FILE IMPLEMENTATION CLASS HERE
     }
     
     /**
@@ -99,12 +97,13 @@ public class FileService {
 	public ResponseEntity<FileResponseDto> moveFile(Integer fileID, Integer folderID) {
 		if (fileRepository.getById(fileID) != null && folderRepository.getById(folderID) != null) {
 			FileEntity fileToMove = fileRepository.getById(fileID);
+			FolderEntity folderToAddTo = folderRepository.getById(folderID);
 			
-			// WE HAVE PROBLEM HERE
-//			fileRepositoryImplementation.detach(fileToMove);
-			
-			fileToMove.getFolder().setId(folderID);
+			deleteFile(fileID);
+			fileToMove.setFolder(folderToAddTo);
 			fileRepository.saveAndFlush(fileToMove);
+			folderToAddTo.getFiles().add(fileToMove);
+			folderRepository.saveAndFlush(folderToAddTo);
 			return new ResponseEntity<>(HttpStatus.OK); 
 		} else {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
