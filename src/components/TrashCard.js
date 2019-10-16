@@ -1,8 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import FolderContainer from '../components/FolderContainer'
-import FileContainer from '../components/FileContainer'
+import TrashContainer from '../components/TrashContainer'
 
 const StyledCard = styled.div`
   box-shadow: 5px 5px 5px #ccc;
@@ -16,15 +15,13 @@ const StyledCard = styled.div`
   margin: 0 auto;
 `
 
-const MainCard = props => {
+const TrashCard = props => {
   return (
     <StyledCard>
-      <FolderContainer />
-      <FolderContainer />
-      <FolderContainer />
-      <FileContainer />
+      <TrashContainer />
+      <TrashContainer />
     </StyledCard>
   )
 }
 
-export default MainCard
+export default TrashCard

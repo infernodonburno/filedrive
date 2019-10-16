@@ -5,21 +5,33 @@ import DownloadButton from './DownloadButton'
 import TrashButton from './TrashButton'
 import ViewButton from './ViewButton'
 
-const FolderContainerStyle = styled.div`
-  display: flex;
-  justify-content: center;
-  flex-direction: row;
-  align-items: center;
-  background-color: lightgray;
+const FolderContainerStyle = styled.table`
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
 `
 
 const FolderContainer = props => {
   return (
     <FolderContainerStyle>
-      List Folders
-      <DownloadButton />
-      <ViewButton />
-      <TrashButton />{' '}
+      <tr>
+        <td>FILENAMEHERE</td>
+        <td><DownloadButton /></td>
+        <td><ViewButton /></td>
+        <td><TrashButton /></td>
+      </tr>
     </FolderContainerStyle>
   )
 }

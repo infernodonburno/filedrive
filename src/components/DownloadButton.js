@@ -2,10 +2,12 @@ import React from 'react'
 import styled from 'styled-components'
 
 const DownloadButtonStyle = styled.button`
+  display: inline-block;
   background: gray;
   font-size: 20px;
   padding: 15px 15px;
   border-radius: 50%;
+  
 `
 
 const DownloadButton = props => {
