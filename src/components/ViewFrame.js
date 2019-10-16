@@ -19,7 +19,7 @@ const formStyle = {
 const ViewFrame = props => (
   <React.Fragment>
     <Container>
-      <iframe src='' width='1000' height='100' allowFullScreen webkitallowfullscreen style={formStyle} />
+      <iframe src='../src/resources/delete-icon-19.jpg' width='1000' height='100' allowFullScreen webkitallowfullscreen style={formStyle} />
     </Container>
   </React.Fragment>
 )
