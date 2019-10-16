@@ -105,5 +105,16 @@ public class FolderService {
 		}
 	}
 	
-
+//	TODO: Nested Folder Move
+//	public ResponseEntity<FolderResponseDto> moveFolder(Integer folderID1, Integer folderID2) {
+//		if (folderRepository.getById(folderID1) != null && folderRepository.getById(folderID2) != null) {
+//			FolderEntity folderToMove = folderRepository.getById(folderID1);
+//			folderToMove.setFolderID(folderID2);
+//			fileRepository.saveAndFlush(fileToMove);
+//			return new ResponseEntity<>(HttpStatus.OK); 
+//		} else {
+//			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+//		}
+//	}
+//	
 }

@@ -36,6 +36,11 @@ public class FolderController {
     public ResponseEntity<FolderResponseDto> uploadFolder(@RequestBody FolderRequestDto folderRequest) {
         return folderService.uploadFolder(folderRequest);
     }
+//    TODO: Nested Folder Move
+//    @PatchMapping("/{folderID1}/{folderID2}/move")
+//    public ResponseEntity<FolderResponseDto> moveFolder(@PathVariable Integer folderID1, @PathVariable Integer folderID2) {
+//        return folderService.moveFolder(folderID1, folderID2);
+//    }
     @PatchMapping("/{id}/trash")
     public ResponseEntity<FolderResponseDto> trashFolder(@RequestBody TrashRequestDto trashRequestDto, @PathVariable Integer id) {
         return folderService.trashFolder(trashRequestDto, id);

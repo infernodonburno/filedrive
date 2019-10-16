@@ -36,6 +36,11 @@ public class FileController {
         return fileService.uploadFile(fileRequest);
     }
     
+    @PatchMapping("/{fileID}/{folderID}/move")
+    public ResponseEntity<FileResponseDto> moveFile(@PathVariable Integer fileID, @PathVariable Integer folderID) {
+        return fileService.moveFile(fileID, folderID);
+    }
+    
     @PatchMapping("/{id}/trash")
     public ResponseEntity<FileResponseDto> trashFile(@RequestBody TrashRequestDto trashRequestDto, @PathVariable Integer id) {
         return fileService.trashFile(trashRequestDto, id);
