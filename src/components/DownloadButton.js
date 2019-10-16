@@ -17,7 +17,7 @@ const DownloadButton = props => {
 
   return (
     <div>
-      <DownloadButtonStyle onClick={onClick}>Download</DownloadButtonStyle>
+      <DownloadButtonStyle download onClick={onClick}>Download</DownloadButtonStyle>
     </div>
   )
 }
