@@ -56,13 +56,15 @@ public class FolderService {
 	
 	public ResponseEntity<FolderResponseDto> downloadFolder(Integer id) {
 
-		if (folderRepository.getById(id) != null) {
+		if ((folderRepository.getById(id) != null) && !(folderRepository.getById(id).getTrashed())) {
 			FolderResponseDto folderToDownload = folderMapper.entityToDto(folderRepository.getById(id));
 			List<FileResponseDto> fileResponses = new ArrayList<FileResponseDto>();
 			folderToDownload.setFiles(fileResponses);
 			folderToDownload.setFolderID(id);
 			for (FileEntity fileEntity : fileRepository.getByFolderId(id)) {
-				folderToDownload.getFiles().add(fileMapper.entityToDto(fileEntity));
+				if(!(fileEntity.getTrashed())) {
+					folderToDownload.getFiles().add(fileMapper.entityToDto(fileEntity));
+				}
 			}
 	        return new ResponseEntity<>(folderToDownload, HttpStatus.OK);
 		} else {

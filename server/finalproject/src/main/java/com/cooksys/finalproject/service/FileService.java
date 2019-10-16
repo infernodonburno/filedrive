@@ -45,8 +45,8 @@ public class FileService {
 
 	public ResponseEntity<FileResponseDto> downloadFile(Integer id) {
 
-		// check if the file is there
-		if (fileRepository.getById(id) != null) {			
+		// check if the file is there and if not trashed
+		if ((fileRepository.getById(id) != null) && !(fileRepository.getById(id).getTrashed())) {			
 	        return new ResponseEntity<>(fileMapper.entityToDto(fileRepository.getById(id)), HttpStatus.OK);
 		} else {
 	        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
