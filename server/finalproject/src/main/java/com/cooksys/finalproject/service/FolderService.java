@@ -35,7 +35,6 @@ public class FolderService {
         this.folderMapper = folderMapper;
     }
 	public ResponseEntity<FolderResponseDto> uploadFolder(FolderRequestDto folderRequest) {
-		System.out.print("HELLLLLLLLOOOOOOOOOO");
 		// If folder does exist, return bad status
 
 		if (folderRepository.getById(folderRequest.getFolderID()) != null) {
@@ -70,12 +69,10 @@ public class FolderService {
     			}
     			return new ResponseEntity<>(HttpStatus.CREATED);
         	} else {
-        		System.out.print("I'm here");
     			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         	}
         }
 		else {
-    		System.out.print("I'm here2");
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
