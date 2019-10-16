@@ -8,6 +8,10 @@ import ViewButton from './ViewButton'
 import { rootFiles as files } from '../data'
 
 const FileContainerStyle = styled.table`
+  .a{
+    width:250px;
+    height:25px;
+  }
   table {
     font-family: arial, sans-serif;
     border-collapse: collapse;
@@ -29,7 +33,7 @@ const FileContainerStyle = styled.table`
 const FileContainer = props => {
   const fileNames = files.map(file => (
     <tr key={file.id}>
-      <td>{file.fileName}</td>
+      <td className='a'>{file.fileName}</td>
       <td>
         <DownloadButton />
       </td>
