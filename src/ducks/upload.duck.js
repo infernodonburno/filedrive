@@ -1,4 +1,4 @@
-import { fetchUploadFile, fetchUploadFolder } from '../services/api'
+import { postFile, postFolder } from '../services/api'
 
 export const UPLOAD_FILE_DONE = 'UPLOAD_FILE_DONE'
 export const UPLOAD_FOLDER_DONE = 'UPLOAD_FOLDER_DONE'
@@ -8,10 +8,10 @@ export const UPLOAD_FILE_FAILURE = 'UPLOAD_FILE_FAILURE'
 export const UPLOAD_FOLDER_FAILURE = 'UPLOAD_FOLDER_FAILURE'
 
 const initialState = {
-  files: [],
-  folders: [],
-  errorUploadingFiles: false,
-  errorUploadingFolders: false
+  file: {},
+  folder: {},
+  errorUploadingFile: false,
+  errorUploadingFolder: false
 }
 
 export default function reducer (state = initialState, action) {
@@ -19,24 +19,26 @@ export default function reducer (state = initialState, action) {
     case UPLOAD_FILE_DONE:
       return {
         ...state,
-        errorUploadingFiles: false,
-        files: action.payload.files
+        errorUploadingFile: false,
+        file: action.payload.file
       }
     case UPLOAD_FOLDER_DONE:
       return {
         ...state,
-        errorUploadingFolders: false,
-        folders: action.payload.folders
+        errorUploadingFolder: false,
+        folder: action.payload.folder
       }
     case UPLOAD_FILE_FAILURE:
       return {
         ...state,
-        files: initialState.files
+        errorUploadingFile: true,
+        file: initialState.file
       }
     case UPLOAD_FOLDER_FAILURE:
       return {
         ...state,
-        folders: initialState.folders
+        errorUploadingFolder,
+        folder: initialState.folder
       }
 
     default:
@@ -44,17 +46,18 @@ export default function reducer (state = initialState, action) {
   }
 }
 
-export const uploadFileDone = (files) => ({
+export const uploadFileDone = file => ({
   type: UPLOAD_FILE_DONE,
   payload: {
-    files
+    file
   }
 })
 
-export const uploadFolderDone = (folders) => ({
+// TODO: Returns a success from server, no object
+export const uploadFolderDone = folder => ({
   type: UPLOAD_FOLDER_DONE,
   payload: {
-    folders
+    folder
   }
 })
 
@@ -74,22 +77,21 @@ const uploadFolderFailure = () => ({
   type: UPLOAD_FOLDER_FAILURE
 })
 
-export const downloadFile = () =>
-  (dispatch) => {
-    dispatch(uploadFileBegin())
-    fetchUploadFile()
-      .then(({ files }) => {
-        return dispatch(uploadFileDone(files))
-      })
-      .catch(err => dispatch(uploadFileFailure(err)))
-  }
+export const uploadFile = file => dispatch => {
+  dispatch(uploadFileBegin())
+  postFile(file)
+    .then(createdFile => {
+      return dispatch(uploadFileDone(createdFile))
+    })
+    .catch(err => dispatch(uploadFileFailure(err)))
+}
 
-export const downloadFolder = () =>
-  (dispatch) => {
-    dispatch(uploadFolderBegin())
-    fetchUploadFolder()
-      .then(({ folders }) => {
-        return dispatch(uploadFolderDone(folders))
-      })
-      .catch(err => dispatch(uploadFolderFailure(err)))
-  }
+// TODO: Update returned response
+export const uploadFolder = folder => dispatch => {
+  dispatch(uploadFolderBegin())
+  postFolder(folder)
+    .then(response => {
+      return dispatch(uploadFolderDone(response))
+    })
+    .catch(err => dispatch(uploadFolderFailure(err)))
+}
