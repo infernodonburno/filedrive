@@ -57,7 +57,7 @@ const loadFilesDone = files => ({
 })
 
 const loadFilesFailed = () => ({
-  typel: LOAD_FILES_FAILURE
+  type: LOAD_FILES_FAILURE
 })
 
 const loadFoldersBegin = () => ({
@@ -72,15 +72,16 @@ const loadFoldersDone = folders => ({
 })
 
 const loadFoldersFailed = () => ({
-  typel: LOAD_FOLDERS_FAILURE
+  type: LOAD_FOLDERS_FAILURE
 })
 
 export const loadFiles = () => dispatch => {
   dispatch(loadFilesBegin())
   console.log('you are here')
   fetchFiles()
-    .then(({ files }) => {
-      console.log(files)
+    .then(response => {
+      console.log(response)
+      let { files } = response
       return dispatch(loadFilesDone(files))
     })
     .catch(err => dispatch(loadFilesFailed(err)))
