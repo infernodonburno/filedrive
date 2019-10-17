@@ -4,10 +4,6 @@ import styled from 'styled-components'
 import DownloadButton from './DownloadButton'
 import TrashButton from './TrashButton'
 
-// TODO: Remove data and test imports
-import { rootFiles as files } from '../data'
-import { fetchFilesTest } from '../test'
-
 const FileContainerStyle = styled.table`
   .a {
     width: 250px;
@@ -32,10 +28,7 @@ const FileContainerStyle = styled.table`
 `
 
 const FileContainer = props => {
-  const displayFiles = () => {
-    const response = fetchFilesTest()
-  }
-  const fileNames = files.map(file => (
+  const fileNames = props.files.map(file => (
     <tr key={file.id}>
       <td className='a'>{file.fileName}</td>
       <td>
