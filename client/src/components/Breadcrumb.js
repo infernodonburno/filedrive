@@ -39,7 +39,6 @@ const SidebarExample = () => (
       }}>
         <ul style={{ listStyleType: 'none', padding: 0 }}>
           <li><Link to="/">Home</Link></li>
-          <li><Link to="/view">View</Link></li>
           <li><Link to="/trash">Trash</Link></li>
         </ul>
 
