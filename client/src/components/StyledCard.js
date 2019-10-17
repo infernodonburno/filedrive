@@ -14,16 +14,6 @@ const StyledCard = styled.div`
   align-items: center;
   justify-content: center;
   margin: 0 auto;
-
 `
 
-const MainCard = props => {
-  return (
-    <StyledCard>
-      <FolderContainer />
-      <FileContainer />
-    </StyledCard>
-  )
-}
-
-export default MainCard
+export default StyledCard

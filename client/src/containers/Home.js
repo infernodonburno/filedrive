@@ -7,7 +7,7 @@ import { loadFiles } from '../ducks/config.duck'
 import FileContainer from '../components/FileContainer'
 import FolderContainer from '../components/FolderContainer'
 import UploadButton from '../components/UploadButton'
-import MainCard from '../components/MainCard'
+import StyledCard from '../components/StyledCard'
 
 class Home extends React.Component {
   componentDidMount () {
@@ -18,7 +18,17 @@ class Home extends React.Component {
     const files = this.props.files.map(file => (
       <FileContainer key={file.id} fileName={file.fileName} />
     ))
-    return <div>{files}</div>
+    return (
+      <React.Fragment>
+        //{' '}
+        <StyledCard>
+          {files}
+          //{' '}
+        </StyledCard>
+        // <UploadButton />
+        //{' '}
+      </React.Fragment>
+    )
   }
 }
 Home.propTypes = {
@@ -38,17 +48,3 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(Home)
-
-// const Home = props => {
-//   return (
-//     <React.Fragment>
-//       <MainCard>
-//         <FolderContainer />
-//         <FileContainer />
-//       </MainCard>
-//       <UploadButton />
-//     </React.Fragment>
-//   )
-// }
-
-// export default Home

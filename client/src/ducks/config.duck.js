@@ -77,11 +77,8 @@ const loadFoldersFailed = () => ({
 
 export const loadFiles = () => dispatch => {
   dispatch(loadFilesBegin())
-  console.log('you are here')
   fetchFiles()
-    .then(response => {
-      console.log(response)
-      let { files } = response
+    .then(({ files }) => {
       return dispatch(loadFilesDone(files))
     })
     .catch(err => dispatch(loadFilesFailed(err)))
