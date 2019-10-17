@@ -22,12 +22,6 @@ const NavBar = props => {
       </div>
 
       <div>
-        <NavItem to='/folder'>
-            Folder
-        </NavItem>
-      </div>
-
-      <div>
         <NavItem to='/trash' exact>
               Trash
         </NavItem>

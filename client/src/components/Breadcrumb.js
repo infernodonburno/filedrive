@@ -16,10 +16,6 @@ const routes = [
     sidebar: () => <div>home!</div>,
     main: () => <h2>Home</h2>
   },
-  { path: '/folder',
-    sidebar: () => <div>FolderContent!</div>,
-    main: () => <h2>Folder</h2>
-  },
   { path: '/view',
     sidebar: () => <div>View!</div>,
     main: () => <h2>View</h2>
@@ -43,7 +39,6 @@ const SidebarExample = () => (
       }}>
         <ul style={{ listStyleType: 'none', padding: 0 }}>
           <li><Link to="/">Home</Link></li>
-          <li><Link to="/folder">Folder</Link></li>
           <li><Link to="/view">View</Link></li>
           <li><Link to="/trash">Trash</Link></li>
         </ul>

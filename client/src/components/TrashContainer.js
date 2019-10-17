@@ -2,7 +2,6 @@ import React from 'react'
 import styled from 'styled-components'
 
 import RestoreButton from './RestoreButton'
-import ViewButton from './ViewButton'
 import PermanentDeleteButton from './PermanentDeleteButton'
 
 const FolderContainerStyle = styled.table`
@@ -29,7 +28,6 @@ const TrashContainer = props => {
       <tr>
         <td>FILENAMEHERE</td>
         <td><RestoreButton /></td>
-        <td><ViewButton /></td>
         <td><PermanentDeleteButton /></td>
       </tr>
     </FolderContainerStyle>

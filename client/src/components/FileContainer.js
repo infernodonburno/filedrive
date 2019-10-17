@@ -3,7 +3,6 @@ import styled from 'styled-components'
 
 import DownloadButton from './DownloadButton'
 import TrashButton from './TrashButton'
-import ViewButton from './ViewButton'
 
 // TODO: Remove data and test imports
 import { rootFiles as files } from '../data'
@@ -41,9 +40,6 @@ const FileContainer = props => {
       <td className='a'>{file.fileName}</td>
       <td>
         <DownloadButton />
-      </td>
-      <td>
-        <ViewButton />
       </td>
       <td>
         <TrashButton />

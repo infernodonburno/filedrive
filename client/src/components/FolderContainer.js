@@ -3,7 +3,6 @@ import styled from 'styled-components'
 
 import DownloadButton from './DownloadButton'
 import TrashButton from './TrashButton'
-import ViewButton from './ViewButton'
 
 // TODO: Remove folders in data refs
 import { folders } from '../data'
@@ -38,9 +37,6 @@ const FolderContainer = props => {
       <td className='a'>{folder.folderName}</td>
       <td>
         <DownloadButton />
-      </td>
-      <td>
-        <ViewButton />
       </td>
       <td>
         <TrashButton />
