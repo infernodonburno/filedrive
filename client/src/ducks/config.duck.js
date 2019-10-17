@@ -57,7 +57,7 @@ const loadFilesDone = files => ({
 })
 
 const loadFilesFailed = () => ({
-  typel: LOAD_FILES_FAILURE
+  type: LOAD_FILES_FAILURE
 })
 
 const loadFoldersBegin = () => ({
@@ -72,7 +72,7 @@ const loadFoldersDone = folders => ({
 })
 
 const loadFoldersFailed = () => ({
-  typel: LOAD_FOLDERS_FAILURE
+  type: LOAD_FOLDERS_FAILURE
 })
 
 export const loadFiles = () => dispatch => {

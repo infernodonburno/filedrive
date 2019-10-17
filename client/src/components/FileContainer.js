@@ -4,10 +4,6 @@ import styled from 'styled-components'
 import DownloadButton from './DownloadButton'
 import TrashButton from './TrashButton'
 
-// TODO: Remove data and test imports
-import { rootFiles as files } from '../data'
-import { fetchFilesTest } from '../test'
-
 const FileContainerStyle = styled.table`
   .a {
     width: 250px;
@@ -32,27 +28,20 @@ const FileContainerStyle = styled.table`
 `
 
 const FileContainer = props => {
-  const displayFiles = () => {
-    const response = fetchFilesTest()
-  }
-  const fileNames = files.map(file => (
-    <tr key={file.id}>
-      <td className='a'>{file.fileName}</td>
-      <td>
-        <DownloadButton />
-      </td>
-      <td>
-        <TrashButton />
-      </td>
-    </tr>
-  ))
   return (
-    <React.Fragment>
-      <FileContainerStyle>
-        <tbody>{fileNames}</tbody>
-      </FileContainerStyle>
-      <button onClick={displayFiles}>DisplayFiles</button>
-    </React.Fragment>
+    <FileContainerStyle>
+      <tbody>
+        <tr>
+          <td className='a'>{props.fileName}</td>
+          <td>
+            <DownloadButton />
+          </td>
+          <td>
+            <TrashButton />
+          </td>
+        </tr>
+      </tbody>
+    </FileContainerStyle>
   )
 }
 
