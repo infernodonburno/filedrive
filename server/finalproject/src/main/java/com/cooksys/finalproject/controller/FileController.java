@@ -17,6 +17,8 @@ import com.cooksys.finalproject.dto.FolderResponseDto;
 import com.cooksys.finalproject.dto.TrashRequestDto;
 import com.cooksys.finalproject.service.FileService;
 import com.cooksys.finalproject.service.FolderService;
+import com.cooksys.finalproject.errors.FileDoesNotExist;
+
 
 @RestController
 @RequestMapping("/files")
@@ -32,13 +34,13 @@ public class FileController {
     
     @CrossOrigin
     @GetMapping
-    public ResponseEntity<FolderResponseDto> getFiles(){
+    public ResponseEntity<FolderResponseDto> getFiles() throws FileDoesNotExist{
     	return folderService.downloadFolder(1);
     }
     
     @CrossOrigin
     @GetMapping("/{id}")
-    public ResponseEntity<FileResponseDto> downloadFile(@PathVariable Integer id) {
+    public ResponseEntity<FileResponseDto> downloadFile(@PathVariable Integer id) throws FileDoesNotExist {
         return fileService.downloadFile(id);
     }
 
