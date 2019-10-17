@@ -15,17 +15,15 @@ class Home extends React.Component {
   }
 
   render () {
-    const files = this.props.files.map(
-      file => <FileContainer key={file.id} files={file.fileName} />
-      // console.log(file)
-    )
-    console.log(this.props.files)
-
+    const files = this.props.files.map(file => (
+      <FileContainer key={file.id} fileName={file.fileName} />
+    ))
     return <div>{files}</div>
   }
 }
 Home.propTypes = {
-  loadFiles: PropTypes.func.isRequired
+  loadFiles: PropTypes.func.isRequired,
+  files: PropTypes.array.isRequired
 }
 
 const mapStateToProps = state => ({

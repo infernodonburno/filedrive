@@ -28,24 +28,20 @@ const FileContainerStyle = styled.table`
 `
 
 const FileContainer = props => {
-  const fileNames = props.files.map(file => (
-    <tr key={file.id}>
-      <td className='a'>{file.fileName}</td>
-      <td>
-        <DownloadButton />
-      </td>
-      <td>
-        <TrashButton />
-      </td>
-    </tr>
-  ))
   return (
-    <React.Fragment>
-      <FileContainerStyle>
-        <tbody>{fileNames}</tbody>
-      </FileContainerStyle>
-      <button onClick={displayFiles}>DisplayFiles</button>
-    </React.Fragment>
+    <FileContainerStyle>
+      <tbody>
+        <tr>
+          <td className='a'>{props.fileName}</td>
+          <td>
+            <DownloadButton />
+          </td>
+          <td>
+            <TrashButton />
+          </td>
+        </tr>
+      </tbody>
+    </FileContainerStyle>
   )
 }
 
