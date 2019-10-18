@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
@@ -12,7 +13,8 @@ const FileContainerStyle = styled.table`
   table {
     font-family: arial, sans-serif;
     border-collapse: collapse;
-    width: 100vw;
+    width: 100%;
+    height: 100%;
   }
 
   td,
@@ -43,6 +45,9 @@ const FileContainer = props => {
       </tbody>
     </FileContainerStyle>
   )
+}
+FileContainer.propTypes = {
+  fileName: PropTypes.string.isRequired
 }
 
 export default FileContainer

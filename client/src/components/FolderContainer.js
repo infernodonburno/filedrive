@@ -1,22 +1,21 @@
+import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
 import DownloadButton from './DownloadButton'
 import TrashButton from './TrashButton'
 
-// TODO: Remove folders in data refs
-import { folders } from '../data'
-
 const FolderContainerStyle = styled.table`
-.a{
-  width:250px;
-  height:25px;
-}
+  .a {
+    width: 250px;
+    height: 25px;
+  }
   table {
     min-width: 100%;
     font-family: arial, sans-serif;
     border-collapse: collapse;
     width: 100%;
+    height: 100%;
   }
 
   td,
@@ -32,22 +31,24 @@ const FolderContainerStyle = styled.table`
 `
 
 const FolderContainer = props => {
-  const folderNames = folders.map(folder => (
-    <tr key={folder.id}>
-      <td className='a'>{folder.folderName}</td>
-      <td>
-        <DownloadButton />
-      </td>
-      <td>
-        <TrashButton />
-      </td>
-    </tr>
-  ))
   return (
     <FolderContainerStyle>
-      <tbody>{folderNames}</tbody>
+      <tbody>
+        <tr>
+          <td className='a'>{props.folderName}</td>
+          <td>
+            <DownloadButton />
+          </td>
+          <td>
+            <TrashButton />
+          </td>
+        </tr>
+      </tbody>
     </FolderContainerStyle>
   )
+}
+FolderContainer.propTypes = {
+  folderName: PropTypes.string.isRequired
 }
 
 export default FolderContainer

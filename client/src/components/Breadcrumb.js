@@ -1,9 +1,5 @@
 import React from 'react'
-import {
-  BrowserRouter as Router,
-  Route,
-  Link
-} from 'react-router-dom'
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 
 // Each logical "route" has two components, one for
 // the sidebar and one for the main area. We want to
@@ -11,16 +7,14 @@ import {
 // path matches the current URL.
 
 const routes = [
-  { path: '/',
+  {
+    path: '/',
     exact: true,
-    sidebar: () => <div>home!</div>,
-    main: () => <h2>Home</h2>
+    sidebar: () => <div>home!</div>
+    // main: () => <h2>text</h2>
   },
-  { path: '/view',
-    sidebar: () => <div>View!</div>,
-    main: () => <h2>View</h2>
-  },
-  { path: '/trash',
+  {
+    path: '/trash',
     sidebar: () => <div>Nice trash!</div>,
     main: () => <h2>Trash</h2>
   }
@@ -29,17 +23,23 @@ const routes = [
 const SidebarExample = () => (
   <Router>
     <div style={{ display: 'flex' }}>
-      <div style={{
-        padding: '10px',
-        width: '10%',
-        height: '150px',
-        background: 'lightgray',
-        margin: 'auto 0',
-        float: 'left'
-      }}>
+      <div
+        style={{
+          padding: '10px',
+          width: '10%',
+          height: '150px',
+          background: 'lightgray',
+          margin: 'auto 0',
+          float: 'left'
+        }}
+      >
         <ul style={{ listStyleType: 'none', padding: 0 }}>
-          <li><Link to="/">Home</Link></li>
-          <li><Link to="/trash">Trash</Link></li>
+          <li>
+            <Link to='/'>Home</Link>
+          </li>
+          <li>
+            <Link to='/trash'>Trash</Link>
+          </li>
         </ul>
 
         {routes.map((route, index) => (
