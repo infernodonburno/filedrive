@@ -37,7 +37,7 @@ export default function reducer (state = initialState, action) {
     case UPLOAD_FOLDER_FAILURE:
       return {
         ...state,
-        errorUploadingFolder,
+        errorUploadingFolder: true,
         folder: initialState.folder
       }
 
@@ -46,6 +46,7 @@ export default function reducer (state = initialState, action) {
   }
 }
 
+// TODO: Returns a success from server, no object
 export const uploadFileDone = file => ({
   type: UPLOAD_FILE_DONE,
   payload: {
@@ -80,8 +81,9 @@ const uploadFolderFailure = () => ({
 export const uploadFile = file => dispatch => {
   dispatch(uploadFileBegin())
   postFile(file)
-    .then(createdFile => {
-      return dispatch(uploadFileDone(createdFile))
+    .then(response => {
+      console.log(response)
+      return response
     })
     .catch(err => dispatch(uploadFileFailure(err)))
 }

@@ -1,31 +1,39 @@
 import request from '../utils/request'
 
-// const headers = new Headers()
 const SERVER_ROOT = 'http://localhost:8080'
-// const requestOptions = {
-//   method: 'GET',
-//   headers: headers,
-//   mode: 'no-cors',
-//   cache: 'default'
-// }
 
 // Fetch all files from root folder
 export function fetchFiles () {
   return fetchFromServer('folders/1')
 }
 
-export function fetchFolders () {}
+// Fetch all folders from root
+export function fetchFolders () {
+  return fetchFromServer('folders')
+}
 
 export function fetchDownloadFile () {}
 
 export function fetchDownloadFolder () {}
 
-export function fetchFromServer (endpoint) {
+export function fetchFromServer (endpoint, options) {
   let url = [SERVER_ROOT, endpoint].join('/')
-  console.log(url)
   return request(url)
 }
 
-export function postFile () {}
+export function postFile (file, folderID) {
+  return postToServer(`files/${folderID}`, file)
+}
 
 export function postFolder () {}
+
+export function postToServer (endpoint, file) {
+  let url = [SERVER_ROOT, endpoint].join('/')
+  console.log(url)
+  const options = {
+    method: 'POST',
+    body: JSON.stringify(file)
+  }
+  console.log(options.body)
+  return request(url, options)
+}
