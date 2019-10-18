@@ -93,6 +93,7 @@ export const uploadFolder = folder => dispatch => {
   dispatch(uploadFolderBegin())
   postFolder(folder)
     .then(response => {
+      console.log(response)
       return dispatch(uploadFolderDone(response))
     })
     .catch(err => dispatch(uploadFolderFailure(err)))

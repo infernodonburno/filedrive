@@ -25,9 +25,11 @@ export function postFile (file, folderID) {
   return postToServer(`files/${folderID}`, file)
 }
 
-export function postFolder () {}
+export function postFolder (folderReq) {
+  return postToServer(`folders`, folderReq)
+}
 
-export function postToServer (endpoint, file) {
+export function postToServer (endpoint, req) {
   let url = [SERVER_ROOT, endpoint].join('/')
   console.log(url)
   const options = {
@@ -35,7 +37,7 @@ export function postToServer (endpoint, file) {
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify(file)
+    body: JSON.stringify(req)
   }
   console.log(`OPTIONS: ${options.body}`)
   return request(url, options)
