@@ -1,4 +1,5 @@
 import React from 'react'
+import { Field, reduxForm } from 'redux-form'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
@@ -39,6 +40,8 @@ const UploadButtonStyle = styled.button`
 
 class UploadButton extends React.Component {
   render () {
+    
+
     const onChange = event => {
       // let file = inputElement.file
       let file = rootFile2Req
