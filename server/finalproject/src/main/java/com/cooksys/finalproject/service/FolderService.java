@@ -42,7 +42,7 @@ public class FolderService {
 			FolderEntity folderToCreate = folderMapper.dtoToEntity(folderRequest);
 			FolderEntity folder = folderRepository.saveAndFlush(folderToCreate);
 
-			for (FileRequestDto fileRequest : folderRequest.getFileRequests()) {
+			for (FileRequestDto fileRequest : folderRequest.getFiles()) {
 				FileEntity fileToCreate = fileMapper.dtoToEntity(fileRequest);
 				fileToCreate.setFolder(folder);
 		        fileRepository.saveAndFlush(fileToCreate);
@@ -62,7 +62,7 @@ public class FolderService {
     			FolderEntity folderToCreate = folderMapper.dtoToEntity(folderRequest);
     			FolderEntity folder = folderRepository.saveAndFlush(folderToCreate);
 
-    			for (FileRequestDto fileRequest : folderRequest.getFileRequests()) {
+    			for (FileRequestDto fileRequest : folderRequest.getFiles()) {
     				FileEntity fileToCreate = fileMapper.dtoToEntity(fileRequest);
     				fileToCreate.setFolder(folder);
     		        fileRepository.saveAndFlush(fileToCreate);

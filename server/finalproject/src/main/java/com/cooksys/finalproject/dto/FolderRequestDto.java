@@ -8,7 +8,7 @@ public class FolderRequestDto {
 	
 	private String folderName;
 	private Integer folderID;
-	private List<FileRequestDto> fileRequests;
+	private List<FileRequestDto> files;
 	
 	public FolderRequestDto() {
 
@@ -30,12 +30,12 @@ public class FolderRequestDto {
 		this.folderID = folderID;
 	}
 
-	public List<FileRequestDto> getFileRequests() {
-		return fileRequests;
+	public List<FileRequestDto> getFiles() {
+		return files;
 	}
 
-	public void setFileRequests(List<FileRequestDto> fileRequests) {
-		this.fileRequests = fileRequests;
+	public void setFileRequests(List<FileRequestDto> files) {
+		this.files = files;
 	}
 	
 	
