@@ -1,7 +1,12 @@
 // REQUESTS
 export const rootFile1Req = {
   fileName: 'fileName1',
-  data: 'byteArray'
+  data: [28, 56, 32, 64]
+}
+
+export const rootFile2Req = {
+  fileName: 'red.txt',
+  data: [12, 56, 32, 64]
 }
 
 const folder1File1Req = {

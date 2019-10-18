@@ -32,8 +32,11 @@ export function postToServer (endpoint, file) {
   console.log(url)
   const options = {
     method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
     body: JSON.stringify(file)
   }
-  console.log(options.body)
+  console.log(`OPTIONS: ${options.body}`)
   return request(url, options)
 }

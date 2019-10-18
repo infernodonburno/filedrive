@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import styled from 'styled-components'
 
 import { uploadFile } from '../ducks/upload.duck'
+import { rootFile2Req } from '../data'
 
 const UploadCenter = styled.div`
   display: flex;
@@ -40,11 +41,8 @@ class UploadButton extends React.Component {
   render () {
     const onChange = event => {
       // let file = inputElement.file
-      let file = {
-        fileName: 'red.txt',
-        data: [12, 56, 32, 64]
-      }
-      uploadFile(file)
+      let file = rootFile2Req
+      this.props.uploadFile(file)
     }
     const onClick = event => {
       console.log('it worked')
@@ -73,8 +71,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  uploadFile: file => dispatch(uploadFile()),
-  uploadFolder: folder => dispatch(uploadFolder())
+  uploadFile: file => dispatch(uploadFile(file)),
+  uploadFolder: folder => dispatch(uploadFolder(folder))
 })
 
 export default connect(

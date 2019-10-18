@@ -80,7 +80,7 @@ const uploadFolderFailure = () => ({
 
 export const uploadFile = file => dispatch => {
   dispatch(uploadFileBegin())
-  postFile(file)
+  postFile(file, 1)
     .then(response => {
       console.log(response)
       return response
