@@ -8,6 +8,7 @@ import FileContainer from '../components/FileContainer'
 import FolderContainer from '../components/FolderContainer'
 import UploadButton from '../components/UploadButton'
 import StyledCard from '../components/StyledCard'
+import FileUpload from '../components/FileUpload'
 
 class Home extends React.Component {
   componentDidMount () {

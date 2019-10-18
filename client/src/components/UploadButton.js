@@ -40,13 +40,38 @@ const UploadButtonStyle = styled.button`
 
 class UploadButton extends React.Component {
   render () {
-    
-
     const onChange = event => {
-      // let file = inputElement.file
-      let file = rootFile2Req
-      this.props.uploadFile(file)
+            let upload = document.getElementById('upload')
+      console.log(upload.value)
+      let fileList = upload.files
+      let myFile = fileList.item(0)
+      var reader = new FileReader()
+      let fileByteArray = [];
+reader.readAsArrayBuffer(myFile);
+reader.onloadend = function (evt) {
+    if (evt.target.readyState == FileReader.DONE) {
+       var arrayBuffer = evt.target.result,
+           array = new Uint8Array(arrayBuffer);
+       for (var i = 0; i < array.length; i++) {
+           fileByteArray.push(array[i]);
+        }
     }
+}
+let file = {fileName: myFile.name, data: fileByteArray}
+this.props.uploadFile(file)
+// var file = event.target.files[0]
+// reader.onload = function (e) {
+        
+      //   e.target.result)
+      }
+      // let upload = document.getElementById('upload')
+      // console.log(upload.value)
+      // let fileList = upload.files
+      // let file = fileList.item(0)
+      // console.log(fileList[0].name)
+      // console.log(file)
+      // this.props.uploadFile(file)
+    
     const onClick = event => {
       console.log('it worked')
     }
@@ -55,7 +80,12 @@ class UploadButton extends React.Component {
       <UploadCenter>
         <div className='upload-btn-wrapper'>
           <UploadButtonStyle onClick={onClick}>Upload</UploadButtonStyle>
-          <input type='file' name='myfile' onChange={onChange} />
+          <input
+            type='file'
+            name='uploadfile'
+            id='upload'
+            onChange={onChange}
+          />
           {/* <input type='folder' name='myfolder' /> */}
         </div>
       </UploadCenter>
