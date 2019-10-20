@@ -27,7 +27,9 @@ public class FolderService {
     private FolderRepository folderRepository;
     private FileMapper fileMapper;
     private FolderMapper folderMapper;
-    
+    private static final Integer ROOT_FOLDER_ID = 1;
+    private static final Integer ROOT_PARENT_ID = 0;
+
     public FolderService(FileRepository fileRepository, FileMapper fileMapper, FolderRepository folderRepository, FolderMapper folderMapper) {
         this.fileRepository = fileRepository;
         this.folderRepository = folderRepository;
@@ -35,38 +37,17 @@ public class FolderService {
         this.folderMapper = folderMapper;
     }
 	public ResponseEntity<FolderResponseDto> uploadFolder(FolderRequestDto folderRequest) {
-		// If folder does exist, return bad status
-
+		
 		if (folderRepository.getById(folderRequest.getFolderID()) != null) {
-        	// create the folder requested
-			FolderEntity folderToCreate = folderMapper.dtoToEntity(folderRequest);
-			FolderEntity folder = folderRepository.saveAndFlush(folderToCreate);
-
-			for (FileRequestDto fileRequest : folderRequest.getFiles()) {
-				FileEntity fileToCreate = fileMapper.dtoToEntity(fileRequest);
-				fileToCreate.setFolder(folder);
-		        fileRepository.saveAndFlush(fileToCreate);
-			} 
+    		createFolderInDB(folderRequest);
 			return new ResponseEntity<>(HttpStatus.CREATED);			
 		}
-		// If folder doesn't exist, create folder entity
-		else if (folderRepository.getById(1) == null) {
-			// create a root folder
-        	FolderEntity rootFolderToCreate = new FolderEntity();
-        	rootFolderToCreate.setFolderName("Root");
-        	rootFolderToCreate.setFolderID(0);
-        	folderRepository.saveAndFlush(rootFolderToCreate);
-        	
-        	if(folderRequest.getFolderID() == 1) {
-            	// create the folder requested if mapped to root
-    			FolderEntity folderToCreate = folderMapper.dtoToEntity(folderRequest);
-    			FolderEntity folder = folderRepository.saveAndFlush(folderToCreate);
-
-    			for (FileRequestDto fileRequest : folderRequest.getFiles()) {
-    				FileEntity fileToCreate = fileMapper.dtoToEntity(fileRequest);
-    				fileToCreate.setFolder(folder);
-    		        fileRepository.saveAndFlush(fileToCreate);
-    			}
+		// If root doesn't exist, create root folder
+		else if (folderRepository.getById(ROOT_FOLDER_ID) == null) {
+			createRootFolderInDB();
+        	if(folderRequest.getFolderID() == ROOT_FOLDER_ID) {
+            	// create the folder requested if child of root
+        		createFolderInDB(folderRequest);
     			return new ResponseEntity<>(HttpStatus.CREATED);
         	} else {
     			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -75,6 +56,30 @@ public class FolderService {
 		else {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
+	}
+	
+	private void createFolderInDB(FolderRequestDto folderRequest) {
+    	// create the folder requested if mapped to root
+		FolderEntity folderToCreate = folderMapper.dtoToEntity(folderRequest);
+		FolderEntity folder = folderRepository.saveAndFlush(folderToCreate);
+
+		for (FileRequestDto fileRequest : folderRequest.getFiles()) {
+			FileEntity fileToCreate = fileMapper.dtoToEntity(fileRequest);
+			fileToCreate.setFolder(folder);
+	        fileRepository.saveAndFlush(fileToCreate);
+		}
+		// May need re-factoring -JC 
+		for (FolderRequestDto folderRequestInThisFolder : folderRequest.getFolders()) {
+			createFolderInDB(folderRequestInThisFolder);
+		}
+	}
+	
+	private void createRootFolderInDB() {
+		// create a root folder
+    	FolderEntity rootFolderToCreate = new FolderEntity();
+    	rootFolderToCreate.setFolderName("Root");
+    	rootFolderToCreate.setFolderID(ROOT_PARENT_ID);
+    	folderRepository.saveAndFlush(rootFolderToCreate);
 	}
 	
 	public ResponseEntity<FolderResponseDto> downloadFolder(Integer id) {
@@ -141,7 +146,10 @@ public class FolderService {
 			for (FolderEntity folderEntity : folderRepository.getAllFoldersByfolderID(id)) {
 				deleteFolder(folderEntity.getId());
 			}
-			folderRepository.deleteById(id);
+			if(id != ROOT_FOLDER_ID) {
+				// home cannot be deleted
+				folderRepository.deleteById(id);
+			}
 			return new ResponseEntity<>(HttpStatus.OK); 
 		}
 		else {

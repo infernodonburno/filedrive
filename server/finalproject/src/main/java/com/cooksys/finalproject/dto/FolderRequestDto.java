@@ -7,10 +7,26 @@ public class FolderRequestDto {
 	private String folderName;
 	private Integer folderID;
 	private List<FileRequestDto> files;
+	private List<FolderRequestDto> folders;
 	
 	public FolderRequestDto() {
 
 	}
+
+	public List<FolderRequestDto> getFolders() {
+		return folders;
+	}
+
+
+	public void setFolders(List<FolderRequestDto> folders) {
+		this.folders = folders;
+	}
+
+
+	public void setFiles(List<FileRequestDto> files) {
+		this.files = files;
+	}
+
 
 	public String getFolderName() {
 		return folderName;
@@ -31,13 +47,4 @@ public class FolderRequestDto {
 	public List<FileRequestDto> getFiles() {
 		return files;
 	}
-
-	public void setFileRequests(List<FileRequestDto> files) {
-		this.files = files;
-	}
-	
-	
-	
-	
-	
 }
