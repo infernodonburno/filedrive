@@ -46,7 +46,7 @@ public class FolderService {
 				FileEntity fileToCreate = fileMapper.dtoToEntity(fileRequest);
 				fileToCreate.setFolder(folder);
 		        fileRepository.saveAndFlush(fileToCreate);
-			}
+			} 
 			return new ResponseEntity<>(HttpStatus.CREATED);			
 		}
 		// If folder doesn't exist, create folder entity
@@ -82,18 +82,33 @@ public class FolderService {
 		if ((folderRepository.getById(id) != null) && !(folderRepository.getById(id).getTrashed())) {
 			FolderResponseDto folderToDownload = folderMapper.entityToDto(folderRepository.getById(id));
 			List<FileResponseDto> fileResponses = new ArrayList<FileResponseDto>();
+			List<FolderResponseDto> folderResponses = new ArrayList<FolderResponseDto>();
 			folderToDownload.setFiles(fileResponses);
+			folderToDownload.setFolders(folderResponses);
 			folderToDownload.setFolderID(id);
-			for (FileEntity fileEntity : fileRepository.getByFolderId(id)) {
-				if(!(fileEntity.getTrashed())) {
-					folderToDownload.getFiles().add(fileMapper.entityToDto(fileEntity));
-				}
-			}
+			folderToDownload = addToDownloadFolder(folderToDownload, id);
 	        return new ResponseEntity<>(folderToDownload, HttpStatus.OK);
 		} else {
 	        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
+	
+	public FolderResponseDto addToDownloadFolder(FolderResponseDto folderToDownload, Integer id) {
+		for (FileEntity fileEntity : fileRepository.getByFolderId(id)) {
+			if(!(fileEntity.getTrashed())) {
+				folderToDownload.getFiles().add(fileMapper.entityToDto(fileEntity));
+			}
+		}
+		// May need re-factoring -JC 
+		for (FolderEntity folderEntity : folderRepository.getAllFoldersByfolderID(id)) {
+			if(!(folderEntity.getTrashed())) {
+				folderToDownload.getFolders().add(folderMapper.entityToDto(folderEntity));
+				folderToDownload = addToDownloadFolder(folderToDownload, folderEntity.getId());
+			}
+		}
+		return folderToDownload;
+	}
+	
 	
 	public ResponseEntity<FolderResponseDto> trashFolder(TrashRequestDto trashRequestDto, Integer id) {
 		if (folderRepository.getById(id) != null) {	
@@ -104,6 +119,9 @@ public class FolderService {
 			for (FileEntity fileEntity : folderToTrash.getFiles()) {
 				fileEntity.setTrashed(isTrashed);
 				fileRepository.saveAndFlush(fileEntity);
+			}
+			for (FolderEntity folderEntity : folderRepository.getAllFoldersByfolderID(id)) {
+				trashFolder(trashRequestDto, folderEntity.getId());
 			}
 			folderToTrash.setTrashed(isTrashed);
 			folderRepository.saveAndFlush(folderToTrash);
@@ -120,6 +138,9 @@ public class FolderService {
 			for (FileEntity fileEntity : folderToDelete.getFiles()) {
 				fileRepository.deleteById(fileEntity.getId());
 			}
+			for (FolderEntity folderEntity : folderRepository.getAllFoldersByfolderID(id)) {
+				deleteFolder(folderEntity.getId());
+			}
 			folderRepository.deleteById(id);
 			return new ResponseEntity<>(HttpStatus.OK); 
 		}
@@ -127,6 +148,7 @@ public class FolderService {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
+	
 	public ResponseEntity<FoldersResponseDto> getFolders(Integer folderID) {
 		FoldersResponseDto responseToSendBack = new FoldersResponseDto();
 		responseToSendBack.setFolders(new ArrayList<>());
@@ -140,17 +162,16 @@ public class FolderService {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
+
+	public ResponseEntity<FolderResponseDto> moveFolder(Integer folderID1, Integer folderID2) {
+		if (folderRepository.getById(folderID1) != null && folderRepository.getById(folderID2) != null) {
+			FolderEntity folderToMove = folderRepository.getById(folderID1);
+			folderToMove.setFolderID(folderID2);
+			folderRepository.saveAndFlush(folderToMove);
+			return new ResponseEntity<>(HttpStatus.OK); 
+		} else {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	}
 	
-//	TODO: Nested Folder Move
-//	public ResponseEntity<FolderResponseDto> moveFolder(Integer folderID1, Integer folderID2) {
-//		if (folderRepository.getById(folderID1) != null && folderRepository.getById(folderID2) != null) {
-//			FolderEntity folderToMove = folderRepository.getById(folderID1);
-//			folderToMove.setFolderID(folderID2);
-//			fileRepository.saveAndFlush(fileToMove);
-//			return new ResponseEntity<>(HttpStatus.OK); 
-//		} else {
-//			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-//		}
-//	}
-//	
 }

@@ -7,7 +7,21 @@ public class FolderResponseDto {
 	private String folderName;
 	private Integer folderID;
 	private List<FileResponseDto> files;
+	private List<FolderResponseDto> folders;
 	private Integer id;
+
+
+	public FolderResponseDto() {
+		
+	}
+	
+	public List<FolderResponseDto> getFolders() {
+		return folders;
+	}
+
+	public void setFolders(List<FolderResponseDto> folders) {
+		this.folders = folders;
+	}
 
 	public String getFolderName() {
 		return folderName;
@@ -41,7 +55,4 @@ public class FolderResponseDto {
 		this.id = id;
 	}
 
-	public FolderResponseDto() {
-		
-	}
 }

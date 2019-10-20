@@ -3,9 +3,7 @@ package com.cooksys.finalproject.dto;
 import java.util.List;
 
 public class FolderRequestDto {
-	// folder name
-	// array of file objects containing filename, data, folder_id
-	
+
 	private String folderName;
 	private Integer folderID;
 	private List<FileRequestDto> files;
