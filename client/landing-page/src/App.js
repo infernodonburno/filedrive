@@ -1,18 +1,28 @@
 import React from 'react';
-import logo from './logo.svg';
+import { Route, Router } from 'react-router-dom'
 import './App.css';
-import { Container } from '@material-ui/core'
+
 import SimpleCard from './components/login_page/LoginForm'
 import HeaderAppBar from './components/GlobalHeader'
+import { makeStyles } from '@material-ui/core/styles';
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import Button from '@material-ui/core/Button';
+import Paper from '@material-ui/core/Paper'
+import Icon from '@material-ui/core/Icon'
 
-function App() {
+import Login from './containers/Login'
+import SignUp from './containers/Sign-up'
+
+function App () {
   return (
-    <div className="App">
-      <header className="App-header">
-        <HeaderAppBar />
-        <SimpleCard />
-      </header>
+    <div>
+      <Route path='/' exact component={Login} />
+      <Route path='/login' exact component={Login} />
+      <Route path='/signup' exact component={SignUp} />
     </div>
+    
   );
 }
 

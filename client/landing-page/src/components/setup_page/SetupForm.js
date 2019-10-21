@@ -38,17 +38,29 @@ export default function SimpleCard() {
   return (
     <Paper className={paperClasses.root}>
     <Card className={classes.card}>
-        File Drive
+        Sign Up
       <CardContent>
           <div>
               <img src='./logo.png' height='100vh' />
           </div>
         <form>
             <div>
-                <input type='text' placeholder='username' />
+                Username: <input type='text'  />
             </div>
             <div>
-                <input type='text' placeholder='password' />
+                Password: <input type='text'  />
+            </div>
+            <div>
+                Re-Password: <input type='text'  />
+            </div>
+            <div>
+                First Name: <input type='text'  />
+            </div>
+            <div>
+                Last Name: <input type='text'  />
+            </div>
+            <div>
+                Email: <input type='text' />
             </div>
             <div>
             <Button 
@@ -57,22 +69,11 @@ export default function SimpleCard() {
             color="secondary"
             className={classes.submit}
           >
-            Login
+            Create Account
           </Button>
             </div>
         </form>
       </CardContent>
-      <CardActions>
-      <Button  
-            style={{display:'flex', alignItems: 'right'}}
-            type="submit"
-            variant="text"
-            color="primary"
-            className={classes.submit}
-          >
-            Sign Up
-          </Button>
-      </CardActions>
     </Card>
     </Paper>
   );
