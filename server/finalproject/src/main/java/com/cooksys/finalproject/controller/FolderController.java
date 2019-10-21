@@ -60,7 +60,7 @@ public class FolderController {
     }
     
     @CrossOrigin
-    @DeleteMapping("/{id}/trash")
+    @DeleteMapping("/{id}/delete")
     public ResponseEntity<FolderResponseDto> deleteFolder(@PathVariable Integer id) {
         return folderService.deleteFolder(id);
     }

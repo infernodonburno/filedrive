@@ -39,7 +39,7 @@ public class FolderService {
 	public ResponseEntity<FolderResponseDto> uploadFolder(FolderRequestDto folderRequest) {
 		
 		if (folderRepository.getById(folderRequest.getFolderID()) != null) {
-    		createFolderInDB(folderRequest);
+    		createFolderInDB(folderRequest, folderRequest.getFolderID());
 			return new ResponseEntity<>(HttpStatus.CREATED);			
 		}
 		// If root doesn't exist, create root folder
@@ -47,7 +47,7 @@ public class FolderService {
 			createRootFolderInDB();
         	if(folderRequest.getFolderID() == ROOT_FOLDER_ID) {
             	// create the folder requested if child of root
-        		createFolderInDB(folderRequest);
+        		createFolderInDB(folderRequest, ROOT_FOLDER_ID);
     			return new ResponseEntity<>(HttpStatus.CREATED);
         	} else {
     			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -58,12 +58,11 @@ public class FolderService {
 		}
 	}
 	
-	private void createFolderInDB(FolderRequestDto folderRequest) {
-    	// create the folder requested if mapped to root
+	private void createFolderInDB(FolderRequestDto folderRequest, Integer parentID) {
 		FolderEntity folderToCreate = folderMapper.dtoToEntity(folderRequest);
+		folderToCreate.setFolderID(parentID);
 		FolderEntity folder = folderRepository.saveAndFlush(folderToCreate);
 		
-		System.out.print("GOT HERE");
 		for (FileRequestDto fileRequest : folderRequest.getFiles()) {
 			FileEntity fileToCreate = fileMapper.dtoToEntity(fileRequest);
 			fileToCreate.setFolder(folder);
@@ -71,7 +70,7 @@ public class FolderService {
 		}
 		// May need re-factoring -JC 
 		for (FolderRequestDto folderRequestInThisFolder : folderRequest.getFolders()) {
-			createFolderInDB(folderRequestInThisFolder);
+			createFolderInDB(folderRequestInThisFolder, folder.getId());
 		}
 	}
 	
