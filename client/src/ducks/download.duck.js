@@ -1,5 +1,7 @@
 import { fetchDownloadFile, fetchDownloadFolder } from '../services/api'
 
+import { fileDownload } from 'js-file-download'
+
 export const DOWNLOAD_FILE_FAILURE = 'DOWNLOAD_FILE_FAILURE'
 export const DOWNLOAD_FILE_DONE = 'DOWNLOAD_FILE_DONE'
 export const DOWNLOAD_FOLDER_FAILURE = 'DOWNLOAD_FOLDER_FAILURE'
@@ -90,7 +92,14 @@ export const thunkDownloadFile = id => dispatch => {
   console.log('you are here now')
   return fetchDownloadFile(id)
     .then(file => {
-      console.log(file)
+      console.log('This is the file: ', file)
+      // console.log(file.data)
+      var fileDownload = require('js-file-download')
+
+      // convert file data back to real data
+      var decodedData = window.atob(file.data) // decode the string
+
+      fileDownload(decodedData, file.fileName)
       return dispatch(downloadFileDone(file))
     })
     .catch(err => dispatch(downloadFileFailure(err)))

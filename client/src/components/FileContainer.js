@@ -42,6 +42,10 @@ class FileContainer extends React.Component {
     console.log(this.props.id)
     // console.log(this.props)
     this.props.thunkDownloadFile(this.props.id)
+    // fileDownload(
+    //   this.props.thunkDownloadFile(this.props.id).data,
+    //   this.props.thunkDownloadFile(this.props.id).fileName
+    // )
     // this.props.downloadFile(this.props.id)
     // fileDownload(this.props.file.data, this.props.fileName)
   }
