@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 
-import { uploadFile, uploadFolder } from '../ducks/upload.duck'
+import { uploadFile, uploadFolder, setFileState } from '../ducks/upload.duck'
 import { rootFile2Req } from '../data'
 
 const UploadCenter = styled.div`
@@ -40,40 +40,89 @@ const UploadButtonStyle = styled.button`
 
 class UploadButton extends React.Component {
   render () {
-    //     const onChange = event => {
-    //       // For single file
-    //             let upload = document.getElementById('uploadfile')
-    //       console.log(upload.value)
-    //       let fileList = upload.files
-    //       let myFile = fileList.item(0)
-    //       var reader = new FileReader()
-    //       let fileByteArray = [];
-    // reader.readAsArrayBuffer(myFile);
-    // reader.onloadend = function (evt) {
-    //     if (evt.target.readyState == FileReader.DONE) {
-    //        var arrayBuffer = evt.target.result,
-    //            array = new Uint8Array(arrayBuffer);
-    //        for (var i = 0; i < array.length; i++) {
-    //            fileByteArray.push(array[i]);
-    //         }
-    //     }
-    // }
-    // let file = {fileName: myFile.name, data: fileByteArray}
-    // this.props.uploadFile(file)
-    //       }
-
-    // const thunkedUploadFolder = getFileRequests() => uploadFolder(folder)
-    // const getFileRequests = fileList => {
-
+    // const thunkedUploadFolder = folderReq => {
+    //   return
+    //   this.props.uploadFolder(folderReq)
     // }
 
-    const onChange = event => {
-      // For single file
+    const getFileRequest = file => {
+      let reader = new FileReader()
+      let fileByteArray = []
+      reader.readAsArrayBuffer(file)
+      reader.onloadend = event => {
+        if (event.target.readyState == FileReader.DONE) {
+          console.log('you are here')
+          let array = new Uint8Array(event.target.result)
+          for (let i = 0; i < array.length; i++) {
+            fileByteArray.push(array[i])
+          }
+          console.log(fileByteArray)
+        }
+      }
+      return { fileName: file.name, data: fileByteArray }
+    }
+
+    const getFileRequests = fileList => {
+      let fileRequests = []
+      for (let file of fileList) {
+        fileRequests.push(getFileRequest(file))
+      }
+      return fileRequests
+    }
+
+    const getFolderName = folderPath => {
+      let folderName = ''
+      for (let char of folderPath) {
+        if (char === '/') {
+          break
+        }
+        folderName += char
+      }
+      return folderName
+    }
+
+    const onChangeFile = event => {
+      let fileList = document.getElementById('uploadfile').files
+      console.log(fileList.item(0))
+      let file = fileList.item(0)
+      let reader = new FileReader()
+      let fileByteArray = []
+      reader.readAsArrayBuffer(file)
+      reader.onloadend = event => {
+        if (event.target.readyState == FileReader.DONE) {
+          console.log('you are here')
+          let array = new Uint8Array(event.target.result)
+          for (let i = 0; i < array.length; i++) {
+            fileByteArray.push(array[i])
+          }
+          console.log(fileByteArray)
+          let fileRequest = { fileName: file.name, data: fileByteArray }
+          console.log(fileRequest)
+          this.props.uploadFile(fileRequest)
+        }
+      }
+      // this.props.setFileState(fileList.item(0))
+    }
+
+    // const onChangeFolder = event => {
+    // let fileList = document.getElementById('uploadfolder').files
+    // console.log(fileList.item(0).webkitRelativePath)
+    // let folderName = getFolderName(fileList.item(0).webkitRelativePath)
+    // console.log(folderName)
+
+    // let fileRequests = getFileRequests(fileList)
+    // let folderReq = { folderName: folderName, folderID: 1, fileRequests }
+    // this.props.uploadFolder(folderReq)
+    // thunkedUploadFolder(folderReq)
+    // }
+
+    const onChangeFolder = event => {
+      const { uploadFolder } = this.props
       console.log(`before upload`)
       let upload = document.getElementById('uploadfolder')
       console.log('test')
       console.log(upload.files)
-      console.log(upload.name)
+      console.log(upload.value)
 
       let fileList = upload.files
       let myFile = fileList.item(0)
@@ -88,33 +137,43 @@ class UploadButton extends React.Component {
       }
 
       console.log(folderName)
-      let fileRequests = []
-      for (let x of fileList)
-      {
-        var reader = new FileReader()
-        // let file = {}
-      let fileByteArray = [];
-    reader.readAsArrayBuffer(x);
-    reader.onprogress = function (evt) {
-        var arrayBuffer = evt.target.result,
-            array = new Uint8Array(arrayBuffer);
-        for (var i = 0; i < array.length; i++) {
-            fileByteArray.push(array[i]);
-            
+
+      var fileReader = new FileReader()
+      // let file = {}
+      event.persist()
+      fileReader.readAsArrayBuffer(myFile)
+      fileReader.onloadend = function (evt) {
+        let fileRequests = []
+        for (let x of fileList) {
+          var reader = new FileReader()
+          let fileByteArray = []
+          reader.readAsArrayBuffer(x)
+
+          console.log('you are here')
+          if (evt.target.readyState == FileReader.DONE) {
+            // console.log('you are here')
+
+            var arrayBuffer = evt.target.result
+
+            var array = new Uint8Array(arrayBuffer)
+            for (var i = 0; i < array.length; i++) {
+              fileByteArray.push(array[i])
+            }
+
+            console.log(fileByteArray)
+            // file= {fileName: x.name, data: fileByteArray}
+            fileRequests.push({ fileName: x.name, data: fileByteArray })
+          }
+
+          // console.log(fileByteArray)
         }
-        
-    
-    console.log(fileByteArray)
-  // file= {fileName: x.name, data: fileByteArray}
-    }
-    fileRequests.push({fileName: x.name, data: fileByteArray})
-    // console.log(fileByteArray)
-  }
-      let folderReq = {folderName: folderName, folderID: 1, fileRequests}
-      this.props.uploadFolder(folderReq)
+        let folderReq = { folderName: folderName, folderID: 1, fileRequests }
+        uploadFolder(folderReq)
+      }
     }
 
     const onClick = event => {
+      this.props.uploadFile(this.props.file)
       console.log('it worked')
     }
 
@@ -122,13 +181,13 @@ class UploadButton extends React.Component {
       <UploadCenter>
         <div className='upload-btn-wrapper'>
           <UploadButtonStyle onClick={onClick}>Upload</UploadButtonStyle>
-          <input type='file' id='uploadfile' onChange={onChange} />
+          <input type='file' id='uploadfile' onChange={onChangeFile} />
           <input
             directory=''
             webkitdirectory=''
             type='file'
             id='uploadfolder'
-            onChange={onChange}
+            onChange={onChangeFolder}
           />
         </div>
       </UploadCenter>
@@ -147,8 +206,9 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
+  // setFileState: file => dispatch(setFileState(file)),
   uploadFile: file => dispatch(uploadFile(file)),
-  uploadFolder: folder  => dispatch(uploadFolder(folder))
+  uploadFolder: folder => dispatch(uploadFolder(folder))
 })
 
 export default connect(
