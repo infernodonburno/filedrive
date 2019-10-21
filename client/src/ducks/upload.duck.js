@@ -4,6 +4,7 @@ export const UPLOAD_FILE_DONE = 'UPLOAD_FILE_DONE'
 export const UPLOAD_FOLDER_DONE = 'UPLOAD_FOLDER_DONE'
 export const UPLOAD_FILE_BEGIN = 'UPLOAD_FILE_BEGIN'
 export const UPLOAD_FOLDER_BEGIN = 'UPLOAD_FOLDER_BEGIN'
+export const SET_FILE_STATE = 'SET_FILE_STATE'
 export const UPLOAD_FILE_FAILURE = 'UPLOAD_FILE_FAILURE'
 export const UPLOAD_FOLDER_FAILURE = 'UPLOAD_FOLDER_FAILURE'
 
@@ -16,6 +17,12 @@ const initialState = {
 
 export default function reducer (state = initialState, action) {
   switch (action.type) {
+    // case SET_FILE_STATE:
+    //   return {
+    //     ...state,
+    //     errorUploadingFile: false,
+    //     file: action.payload.file
+    //   }
     case UPLOAD_FILE_DONE:
       return {
         ...state,
@@ -78,10 +85,32 @@ const uploadFolderFailure = () => ({
   type: UPLOAD_FOLDER_FAILURE
 })
 
+// Helper function
+// const getFileRequest = file => {
+//   let reader = new FileReader()
+//   let fileByteArray = []
+//   reader.readAsArrayBuffer(file)
+//   reader.onloadend = event => {
+//     if (event.target.readyState == FileReader.DONE) {
+//       let array = new Uint8Array(event.target.result)
+//       for (let i = 0; i < array.length; i++) {
+//         fileByteArray.push(array[i])
+//       }
+//       console.log(fileByteArray)
+//     }
+//   }
+//   return { fileName: file.name, data: fileByteArray }
+// }
+
 export const uploadFile = file => dispatch => {
+  console.log('loading')
   dispatch(uploadFileBegin())
+  // let file = getFileRequest(fileListItem)
+  console.log('posting')
   postFile(file, 1)
     .then(response => {
+      // then, that file is used in postFile
+      console.log('returned response')
       console.log(response)
       return response
     })

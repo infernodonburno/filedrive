@@ -12,7 +12,9 @@ export function fetchFolders () {
   return fetchFromServer('folders')
 }
 
-export function fetchDownloadFile () {}
+export function fetchDownloadFile (id) {
+  return fetchFromServer(`files/${id}`)
+}
 
 export function fetchDownloadFolder () {}
 

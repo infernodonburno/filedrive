@@ -8,8 +8,8 @@ export const DOWNLOAD_FILE_BEGIN = 'DOWNLOAD_FILE_BEGIN'
 export const DOWNLOAD_FOLDER_BEGIN = 'DOWNLOAD_FOLDER_BEGIN'
 
 const initialState = {
-  files: [],
-  folders: [],
+  file: {},
+  folder: {},
   errorDownloadingFile: false,
   errorDownloadingFolder: false
 }
@@ -20,40 +20,40 @@ export default function reducer (state = initialState, action) {
       return {
         ...state,
         errorDownloadingFile: false,
-        files: action.payload.files
+        file: action.payload.file
       }
     case DOWNLOAD_FOLDER_DONE:
       return {
         ...state,
         errorDownloadingFolder: false,
-        folders: action.payload.folders
+        folder: action.payload.folder
       }
     case DOWNLOAD_FOLDER_FAILURE:
       return {
         ...state,
-        folders: initialState.folders
+        folder: initialState.folder
       }
     case DOWNLOAD_FILE_FAILURE:
       return {
         ...state,
-        files: initialState.files
+        file: initialState.file
       }
     default:
       return state
   }
 }
 
-export const downloadFileDone = (files) => ({
+export const downloadFileDone = file => ({
   type: DOWNLOAD_FILE_DONE,
   payload: {
-    files
+    file
   }
 })
 
-export const downloadFolderDone = (folders) => ({
+export const downloadFolderDone = folder => ({
   type: DOWNLOAD_FOLDER_DONE,
   payload: {
-    folders
+    folder
   }
 })
 
@@ -73,22 +73,33 @@ const downloadFolderFailure = () => ({
   type: DOWNLOAD_FOLDER_FAILURE
 })
 
-export const downloadFile = () =>
-  (dispatch) => {
-    dispatch(downloadFileBegin())
-    fetchDownloadFile()
-      .then(({ files }) => {
-        return dispatch(downloadFileDone(files))
+const downloadFile = id => dispatch => {
+  dispatch(downloadFileBegin())
+  fetchDownloadFile(id)
+    .then(file => {
+      console.log(file)
+      return dispatch(downloadFileDone(file))
+    })
+    .catch(err => dispatch(downloadFileFailure(err)))
+}
+
+export const thunkDownloadFile = id => dispatch => {
+  dispatch(downloadFileBegin())
+  return function (dispatch) {
+    return fetchDownloadFile(id)
+      .then(file => {
+        console.log(file)
+        return dispatch(downloadFileDone(file))
       })
       .catch(err => dispatch(downloadFileFailure(err)))
   }
+}
 
-export const downloadFolder = () =>
-  (dispatch) => {
-    dispatch(downloadFolderBegin())
-    fetchDownloadFolder()
-      .then(({ folders }) => {
-        return dispatch(downloadFolderDone(folders))
-      })
-      .catch(err => dispatch(downloadFolderFailure(err)))
-  }
+export const downloadFolder = () => dispatch => {
+  dispatch(downloadFolderBegin())
+  fetchDownloadFolder()
+    .then(({ folder }) => {
+      return dispatch(downloadFolderDone(folder))
+    })
+    .catch(err => dispatch(downloadFolderFailure(err)))
+}

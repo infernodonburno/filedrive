@@ -38,21 +38,23 @@ class FileContainer extends React.Component {
     super(props)
   }
 
+  onClick (event) {
+    console.log(this.props.id)
+    // console.log(this.props)
+    // thunkDownloadFile(this.props.id)
+
+    // fileDownload(this.props.file.data, this.props.fileName)
+  }
+
   render () {
-    const onClick = event => {
-      console.log(this.props.id)
-      console.log('You clicked me')
-      this.props.thunkDownloadFile(this.props.id)
-      console.log(this.props.file.data)
-      // fileDownload(this.props.file.data, this.props.fileName)
-    }
+    console.log(this.props.file.data)
     return (
       <FileContainerStyle>
         <tbody>
           <tr>
             <td className='a'>{this.props.fileName}</td>
             <td>
-              <Button text='Download' onClick={onClick} />
+              <Button text='Download' onClick={this.onClick} />
             </td>
             <td>
               <TrashButton />
@@ -65,12 +67,14 @@ class FileContainer extends React.Component {
 }
 
 FileContainer.propTypes = {
-  id: PropTypes.number.isRequired,
-  fileName: PropTypes.string.isRequired
+  // id: PropTypes.number.isRequired,
+  fileName: PropTypes.string.isRequired,
+  thunkDownloadFile: PropTypes.func.isRequired
 }
 
 const mapStateToProps = state => ({
   file: state.download.file
+  // id: state.download.file.id
 })
 
 const mapDispatchToProps = dispatch => ({

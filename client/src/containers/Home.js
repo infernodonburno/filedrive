@@ -17,11 +17,16 @@ class Home extends React.Component {
 
   render () {
     const files = this.props.files.map(file => (
-      <FileContainer key={file.id} fileName={file.fileName} />
+      <FileContainer key={file.id} id={file.id} fileName={file.fileName} />
     ))
     const folders = this.props.folders.map(folder => (
-      <FolderContainer key={folder.id} folderName={folder.folderName} />
+      <FolderContainer
+        key={folder.id}
+        folderID={folder.id}
+        folderName={folder.folderName}
+      />
     ))
+
     return (
       <React.Fragment>
         <StyledCard>
