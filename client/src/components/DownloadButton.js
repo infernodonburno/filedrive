@@ -1,14 +1,9 @@
 // import React from 'react'
-// import styled from 'styled-components'
+// import PropTypes from 'prop-types'
+// import { connect } from 'react-redux'
 
-// const DownloadButtonStyle = styled.button`
-//   display: inline-block;
-//   background: gray;
-//   font-size: 20px;
-//   padding: 15px 15px;
-//   border-radius: 50%;
-
-// `
+// import Button from './Button'
+// import { downloadFile, downloadFolder } from '../ducks/download.duck'
 
 // const DownloadButton = props => {
 //   const onClick = event => {
@@ -17,7 +12,7 @@
 
 //   return (
 //     <div>
-//       <DownloadButtonStyle download onClick={onClick}>Download</DownloadButtonStyle>
+//       <Button text='Download' onClick={onClick} />
 //     </div>
 //   )
 // }

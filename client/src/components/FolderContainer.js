@@ -52,6 +52,7 @@ const FolderContainer = props => {
   )
 }
 FolderContainer.propTypes = {
+  keyProp: PropTypes.number.isRequired,
   folderName: PropTypes.string.isRequired
 }
 

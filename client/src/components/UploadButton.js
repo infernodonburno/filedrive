@@ -1,11 +1,9 @@
 import React from 'react'
-import { Field, reduxForm } from 'redux-form'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 
-import { uploadFile, uploadFolder, setFileState } from '../ducks/upload.duck'
-import { rootFile2Req } from '../data'
+import { uploadFile, uploadFolder } from '../ducks/upload.duck'
 
 const UploadCenter = styled.div`
   display: flex;
@@ -40,11 +38,6 @@ const UploadButtonStyle = styled.button`
 
 class UploadButton extends React.Component {
   render () {
-    // const thunkedUploadFolder = folderReq => {
-    //   return
-    //   this.props.uploadFolder(folderReq)
-    // }
-
     const getFileRequest = file => {
       let reader = new FileReader()
       let fileByteArray = []
@@ -101,7 +94,6 @@ class UploadButton extends React.Component {
           this.props.uploadFile(fileRequest)
         }
       }
-      // this.props.setFileState(fileList.item(0))
     }
 
     // const onChangeFolder = event => {
@@ -139,7 +131,6 @@ class UploadButton extends React.Component {
       console.log(folderName)
 
       var fileReader = new FileReader()
-      // let file = {}
       event.persist()
       fileReader.readAsArrayBuffer(myFile)
       fileReader.onloadend = function (evt) {
@@ -151,21 +142,14 @@ class UploadButton extends React.Component {
 
           console.log('you are here')
           if (evt.target.readyState == FileReader.DONE) {
-            // console.log('you are here')
-
             var arrayBuffer = evt.target.result
 
             var array = new Uint8Array(arrayBuffer)
             for (var i = 0; i < array.length; i++) {
               fileByteArray.push(array[i])
             }
-
-            console.log(fileByteArray)
-            // file= {fileName: x.name, data: fileByteArray}
             fileRequests.push({ fileName: x.name, data: fileByteArray })
           }
-
-          // console.log(fileByteArray)
         }
         let folderReq = { folderName: folderName, folderID: 1, fileRequests }
         uploadFolder(folderReq)
@@ -206,7 +190,6 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  // setFileState: file => dispatch(setFileState(file)),
   uploadFile: file => dispatch(uploadFile(file)),
   uploadFolder: folder => dispatch(uploadFolder(folder))
 })
