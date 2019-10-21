@@ -62,7 +62,8 @@ public class FolderService {
     	// create the folder requested if mapped to root
 		FolderEntity folderToCreate = folderMapper.dtoToEntity(folderRequest);
 		FolderEntity folder = folderRepository.saveAndFlush(folderToCreate);
-
+		
+		System.out.print("GOT HERE");
 		for (FileRequestDto fileRequest : folderRequest.getFiles()) {
 			FileEntity fileToCreate = fileMapper.dtoToEntity(fileRequest);
 			fileToCreate.setFolder(folder);
