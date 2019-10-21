@@ -6,7 +6,7 @@ import { fileDownload } from 'js-file-download'
 
 import Button from './Button'
 import TrashButton from './TrashButton'
-import { thunkDownloadFile } from '../ducks/download.duck'
+import { thunkDownloadFile, downloadFile } from '../ducks/download.duck'
 
 const FileContainerStyle = styled.table`
   .a {
@@ -38,15 +38,22 @@ class FileContainer extends React.Component {
     super(props)
   }
 
-  onClick (event) {
+  onClick = event => {
     console.log(this.props.id)
     // console.log(this.props)
-    // thunkDownloadFile(this.props.id)
-
+    this.props.thunkDownloadFile(this.props.id)
+    // this.props.downloadFile(this.props.id)
     // fileDownload(this.props.file.data, this.props.fileName)
   }
 
   render () {
+    // const onClick = event => {
+    //   console.log(this.props.id)
+    //   // console.log(this.props)
+    //   thunkDownloadFile(this.props.id)
+
+    //   // fileDownload(this.props.file.data, this.props.fileName)
+    // }
     console.log(this.props.file.data)
     return (
       <FileContainerStyle>
@@ -67,18 +74,18 @@ class FileContainer extends React.Component {
 }
 
 FileContainer.propTypes = {
-  // id: PropTypes.number.isRequired,
   fileName: PropTypes.string.isRequired,
   thunkDownloadFile: PropTypes.func.isRequired
+  // downloadFile: PropTypes.func.isRequired
 }
 
 const mapStateToProps = state => ({
   file: state.download.file
-  // id: state.download.file.id
 })
 
 const mapDispatchToProps = dispatch => ({
   thunkDownloadFile: id => dispatch(thunkDownloadFile(id))
+  // downloadFile: id => dispatch(downloadFile(id))
 })
 
 export default connect(

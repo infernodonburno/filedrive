@@ -73,7 +73,8 @@ const downloadFolderFailure = () => ({
   type: DOWNLOAD_FOLDER_FAILURE
 })
 
-const downloadFile = id => dispatch => {
+export const downloadFile = id => dispatch => {
+  console.log('hey')
   dispatch(downloadFileBegin())
   fetchDownloadFile(id)
     .then(file => {
@@ -84,15 +85,15 @@ const downloadFile = id => dispatch => {
 }
 
 export const thunkDownloadFile = id => dispatch => {
+  console.log('hey')
   dispatch(downloadFileBegin())
-  return function (dispatch) {
-    return fetchDownloadFile(id)
-      .then(file => {
-        console.log(file)
-        return dispatch(downloadFileDone(file))
-      })
-      .catch(err => dispatch(downloadFileFailure(err)))
-  }
+  console.log('you are here now')
+  return fetchDownloadFile(id)
+    .then(file => {
+      console.log(file)
+      return dispatch(downloadFileDone(file))
+    })
+    .catch(err => dispatch(downloadFileFailure(err)))
 }
 
 export const downloadFolder = () => dispatch => {
