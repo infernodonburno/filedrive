@@ -35,79 +35,102 @@ public class FileService {
      * @return ResponseEntity<FileResponseDto>
      */
 	public ResponseEntity<FileResponseDto> uploadFile(FileRequestDto fileRequest, Integer folderID) {
-		FileEntity fileToCreate = fileMapper.dtoToEntity(fileRequest);
-        if(folderRepository.getById(folderID) != null){
-        	fileToCreate.setFolder(folderRepository.getById(folderID));
-        }
-        else if (folderRepository.getById(1) == null) {
-        	FolderEntity folderToCreate = new FolderEntity();
-        	folderToCreate.setFolderName("Root");
-        	folderToCreate.setFolderID(0);
-        	folderRepository.saveAndFlush(folderToCreate);
-        	fileToCreate.setFolder(folderToCreate);
-        }
-        else {
-        	return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        return new ResponseEntity<>(fileMapper.entityToDto(fileRepository.saveAndFlush(fileToCreate)), HttpStatus.CREATED);
+		try {
+			FileEntity fileToCreate = fileMapper.dtoToEntity(fileRequest);
+	        if(folderRepository.getById(folderID) != null){
+	        	fileToCreate.setFolder(folderRepository.getById(folderID));
+	        }
+	        else if (folderRepository.getById(1) == null) {
+	        	FolderEntity folderToCreate = new FolderEntity();
+	        	folderToCreate.setFolderName("Root");
+	        	folderToCreate.setFolderID(0);
+	        	folderRepository.saveAndFlush(folderToCreate);
+	        	fileToCreate.setFolder(folderToCreate);
+	        }
+	        else {
+	        	return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+	        }
+	        return new ResponseEntity<>(fileMapper.entityToDto(fileRepository.saveAndFlush(fileToCreate)), HttpStatus.CREATED);
+		} catch (Exception e) {
+	        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 
 	public ResponseEntity<FileResponseDto> downloadFile(Integer id) {
-
-		// check if the file is there and if not trashed
-		if ((fileRepository.getById(id) != null) && !(fileRepository.getById(id).getTrashed())) {			
-	        return new ResponseEntity<>(fileMapper.entityToDto(fileRepository.getById(id)), HttpStatus.OK);
-		} else {
-	        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		try {
+			// check if the file is there and if not trashed
+			if ((fileRepository.getById(id) != null) && !(fileRepository.getById(id).getTrashed())) {			
+		        return new ResponseEntity<>(fileMapper.entityToDto(fileRepository.getById(id)), HttpStatus.OK);
+			} else {
+		        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			}			
+		} catch (Exception e) {
+	        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
 	public ResponseEntity<FileResponseDto> trashFile(TrashRequestDto trashRequestDto, Integer id) {
-		if (fileRepository.getById(id) != null) {	
-			FileEntity fileToTrash = fileRepository.getById(id);
-			fileToTrash.setTrashed(trashRequestDto.getTrashed());
-			fileRepository.saveAndFlush(fileToTrash);
-			return new ResponseEntity<>(HttpStatus.OK);
-		}
-		else {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		try {
+			if (fileRepository.getById(id) != null) {	
+				FileEntity fileToTrash = fileRepository.getById(id);
+				fileToTrash.setTrashed(trashRequestDto.getTrashed());
+				fileRepository.saveAndFlush(fileToTrash);
+				return new ResponseEntity<>(HttpStatus.OK);
+			}
+			else {
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			}
+		} catch (Exception e) {
+	        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 	
 	public ResponseEntity<FileResponseDto> restoreFile(Integer id) {
-		if (fileRepository.getById(id) != null) {	
-			FileEntity fileToRestore = fileRepository.getById(id);
-			fileToRestore.setTrashed(false);
-			fileRepository.saveAndFlush(fileToRestore);
-			return new ResponseEntity<>(HttpStatus.OK);
-		}
-		else {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		try {
+			if (fileRepository.getById(id) != null) {	
+				FileEntity fileToRestore = fileRepository.getById(id);
+				fileToRestore.setTrashed(false);
+				fileRepository.saveAndFlush(fileToRestore);
+				return new ResponseEntity<>(HttpStatus.OK);
+			}
+			else {
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			}			
+		} catch (Exception e) {
+	        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 	
 	public ResponseEntity<FileResponseDto> deleteFile(Integer id) {
-		if (fileRepository.getById(id) != null && fileRepository.getById(id).getTrashed()) {
-			fileRepository.deleteById(id);
-			return new ResponseEntity<>(HttpStatus.OK); 
-		} else {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		try {
+			if (fileRepository.getById(id) != null && fileRepository.getById(id).getTrashed()) {
+				fileRepository.deleteById(id);
+				return new ResponseEntity<>(HttpStatus.OK); 
+			} else {
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			}		
+		} catch (Exception e) {
+	        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
 	public ResponseEntity<FileResponseDto> moveFile(Integer fileID, Integer folderID) {
-		if (fileRepository.getById(fileID) != null && folderRepository.getById(folderID) != null) {
-			FileEntity fileToMove = fileRepository.getById(fileID);
-			FolderEntity folderToAddTo = folderRepository.getById(folderID);
-			
-			deleteFile(fileID);
-			fileToMove.setFolder(folderToAddTo);
-			fileRepository.saveAndFlush(fileToMove);
-			folderToAddTo.getFiles().add(fileToMove);
-			folderRepository.saveAndFlush(folderToAddTo);
-			return new ResponseEntity<>(HttpStatus.OK); 
-		} else {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		try {
+			if (fileRepository.getById(fileID) != null && folderRepository.getById(folderID) != null) {
+				FileEntity fileToMove = fileRepository.getById(fileID);
+				FolderEntity folderToAddTo = folderRepository.getById(folderID);
+				
+				deleteFile(fileID);
+				fileToMove.setFolder(folderToAddTo);
+				fileRepository.saveAndFlush(fileToMove);
+				folderToAddTo.getFiles().add(fileToMove);
+				folderRepository.saveAndFlush(folderToAddTo);
+				return new ResponseEntity<>(HttpStatus.OK); 
+			} else {
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			}
+		} catch (Exception e) {
+	        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 }
