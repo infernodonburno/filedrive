@@ -1,35 +1,46 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import RestoreButton from './RestoreButton'
+import Button from './Button'
 import PermanentDeleteButton from './PermanentDeleteButton'
 
 const FolderContainerStyle = styled.table`
-table {
-  font-family: arial, sans-serif;
-  border-collapse: collapse;
-  width: 100%;
-}
+  table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
 
-td, th {
-  border: 1px solid #dddddd;
-  text-align: left;
-  padding: 8px;
-}
+  td,
+  th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+  }
 
-tr:nth-child(even) {
-  background-color: #dddddd;
-}
+  tr:nth-child(even) {
+    background-color: #dddddd;
+  }
 `
 
 const TrashContainer = props => {
+  const onClick = event => {
+    // SOME EVENT
+    console.log('You clicked me')
+  }
   return (
     <FolderContainerStyle>
-      <tr>
-        <td>FILENAMEHERE</td>
-        <td><RestoreButton /></td>
-        <td><PermanentDeleteButton /></td>
-      </tr>
+      <tbody>
+        <tr>
+          <td>FILENAMEHERE</td>
+          <td>
+            <Button text='Restore' onClick={onClick} />
+          </td>
+          <td>
+            <PermanentDeleteButton />
+          </td>
+        </tr>
+      </tbody>
     </FolderContainerStyle>
   )
 }

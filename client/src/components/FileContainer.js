@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
-import DownloadButton from './DownloadButton'
+import Button from './Button'
 import TrashButton from './TrashButton'
 
 const FileContainerStyle = styled.table`
@@ -30,13 +30,17 @@ const FileContainerStyle = styled.table`
 `
 
 const FileContainer = props => {
+  const onClick = event => {
+    // SOME EVENT
+    console.log('You clicked me')
+  }
   return (
     <FileContainerStyle>
       <tbody>
         <tr>
           <td className='a'>{props.fileName}</td>
           <td>
-            <DownloadButton />
+            <Button text='Download' onClick={onClick} />
           </td>
           <td>
             <TrashButton />

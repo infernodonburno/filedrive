@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
-import DownloadButton from './DownloadButton'
+import Button from './Button'
 import TrashButton from './TrashButton'
 
 const FolderContainerStyle = styled.table`
@@ -31,13 +31,17 @@ const FolderContainerStyle = styled.table`
 `
 
 const FolderContainer = props => {
+  const onClick = event => {
+    // SOME EVENT
+    console.log('You clicked me')
+  }
   return (
     <FolderContainerStyle>
       <tbody>
         <tr>
           <td className='a'>{props.folderName}</td>
           <td>
-            <DownloadButton />
+            <Button text='Download' onClick={onClick} />
           </td>
           <td>
             <TrashButton />
