@@ -6,7 +6,7 @@ import { fileDownload } from 'js-file-download'
 
 import Button from './Button'
 import TrashButton from './TrashButton'
-import { downloadFile } from '../ducks/download.duck'
+import { thunkDownloadFile } from '../ducks/download.duck'
 
 const FileContainerStyle = styled.table`
   .a {
@@ -42,7 +42,9 @@ class FileContainer extends React.Component {
     const onClick = event => {
       console.log(this.props.id)
       console.log('You clicked me')
-      this.props.downloadFile(this.props.id)
+      this.props.thunkDownloadFile(this.props.id)
+      console.log(this.props.file.data)
+      // fileDownload(this.props.file.data, this.props.fileName)
     }
     return (
       <FileContainerStyle>
@@ -68,12 +70,11 @@ FileContainer.propTypes = {
 }
 
 const mapStateToProps = state => ({
-  files: state.config.files,
-  folders: state.config.folders
+  file: state.download.file
 })
 
 const mapDispatchToProps = dispatch => ({
-  downloadFile: id => dispatch(downloadFile(id))
+  thunkDownloadFile: id => dispatch(thunkDownloadFile(id))
 })
 
 export default connect(
