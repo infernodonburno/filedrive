@@ -39,7 +39,7 @@ export default function SimpleCard () {
         File Drive
         <CardContent>
           <div>
-            <img src='./logo.png' height='100vh' alt='filedrivelogo' />
+            <img src='./logo.png' height='75vh' alt='filedrivelogo' />
           </div>
           <form>
             <div>

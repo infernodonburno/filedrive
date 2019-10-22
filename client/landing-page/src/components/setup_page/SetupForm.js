@@ -38,7 +38,7 @@ export default function SimpleCard () {
         Sign Up
         <CardContent>
           <div>
-            <img src='./logo.png' height='100vh' alt='filedrivelogo' />
+            <img src='./logo.png' height='25vh' alt='filedrivelogo' />
           </div>
           <form style={{display: 'flex', flexDirection: 'column'}}>
               Username: <input type='text'  />
