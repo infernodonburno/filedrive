@@ -3,12 +3,12 @@ import ReactDOM from 'react-dom';
 import OktaSignIn from '@okta/okta-signin-widget';
 import '@okta/okta-signin-widget/dist/css/okta-sign-in.min.css';
 
-
 export default class OktaSignInWidget extends Component {
   componentDidMount() {
     const el = ReactDOM.findDOMNode(this);
     this.widget = new OktaSignIn({
       baseUrl: 'https://dev-205073.okta.com',
+      logo: '/logo.png',
       authParams: {
         pkce: true
     },
@@ -25,6 +25,7 @@ export default class OktaSignInWidget extends Component {
             // handle postsubmit callback
            onSuccess(response);
         }
+
       },
       features: {
         // Used to enable registration feature on the widget.

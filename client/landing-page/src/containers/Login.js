@@ -66,7 +66,7 @@ export default withAuth(
           <div className='App'>
             <header className='App-header'>
               <HeaderAppBar />
-              <h1>authenticated!!!!!!!!!!!</h1>
+    
               {/* <SimpleCard /> */}
               
               <OktaSignInWidget
@@ -81,7 +81,7 @@ export default withAuth(
           <div className='App'>
             <header className='App-header'>
               <HeaderAppBar />
-              <h1>Not Authenticated!!!</h1>
+
               {/* <SimpleCard /> */}
               <OktaSignInWidget
                 onSuccess={this.onSuccess}
