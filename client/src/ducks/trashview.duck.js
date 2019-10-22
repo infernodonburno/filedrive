@@ -75,7 +75,7 @@ const loadFoldersFailed = () => ({
   type: LOAD_FOLDERS_FAILURE
 })
 
-export const loadTrashFiles = () => dispatch => {
+export const loadTrashedFiles = () => dispatch => {
   dispatch(loadFilesBegin())
   fetchTrashFiles()
     .then(({ files }) => {
@@ -84,7 +84,7 @@ export const loadTrashFiles = () => dispatch => {
     .catch(err => dispatch(loadFilesFailed(err)))
 }
 
-export const loadTrashFolders = () => dispatch => {
+export const loadTrashedFolders = () => dispatch => {
   dispatch(loadFoldersBegin())
   fetchTrashFolders()
     .then(({ folders }) => {

@@ -24,11 +24,8 @@ export default function reducer (state = initialState, action) {
   switch (action.type) {
     case TOGGLE_TRASH_FILE:
       return {
-        ...state,
         errorTogglingTrash: false,
-        file: {
-          trashed: !trashed
-        }
+        file: action.payload.file
       }
     case TOGGLE_TRASH_FILE_FAILURE:
       return {
@@ -94,7 +91,8 @@ const emptyTrashFailure = () => ({
 })
 
 export const setToggleTrashFile = file => dispatch => {
-  dispatch(toggleTrashFile)
+  dispatch(toggleTrashFile(file))
+  console.log(file)
   patchTrashFile(file)
     .then(response => {
       console.log(response)

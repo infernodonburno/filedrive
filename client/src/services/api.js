@@ -61,7 +61,7 @@ export function postToServer (endpoint, req) {
 
 export function patchTrashFile (file) {
   let endpoint = `files/${file.id}/trash`
-  return patchToServer(endpoint, file.trashed)
+  return patchToServer(endpoint, { trashed: file.trashed })
 }
 
 export function patchTrashFolder (folder) {}

@@ -1,29 +1,62 @@
+import PropTypes from 'prop-types'
 import React from 'react'
+import { connect } from 'react-redux'
 
+import ContainerStyle from './ContainerStyle'
 import Button from './Button'
 import PermanentDeleteButton from './PermanentDeleteButton'
-import ContainerStyle from './ContainerStyle'
+import { setToggleTrashFile } from '../ducks/trash.duck'
 
-const TrashContainer = props => {
-  const onClick = event => {
-    // SOME EVENT
-    console.log('You clicked me')
+class TrashContainer extends React.Component {
+  constructor (props) {
+    super(props)
   }
-  return (
-    <ContainerStyle>
-      <tbody>
-        <tr>
-          <td>FILENAMEHERE</td>
-          <td>
-            <Button text='Restore' onClick={onClick} />
-          </td>
-          <td>
-            <PermanentDeleteButton />
-          </td>
-        </tr>
-      </tbody>
-    </ContainerStyle>
-  )
+  onClickRestore = event => {
+    console.log(`${this.props.name} restored`)
+    if (this.props.isFile === 'true') {
+      this.props.file.trashed = !this.props.file.trashed
+      this.props.setToggleTrashFile(this.props.file)
+    }
+  }
+
+  onClickDelete = event => {
+    console.log('deleted')
+  }
+
+  render () {
+    return (
+      <ContainerStyle>
+        <tbody>
+          <tr>
+            <td className='a'>{this.props.name}</td>
+            <td>
+              <Button text='Restore' onClick={this.onClickRestore} />
+            </td>
+            <td>
+              <PermanentDeleteButton />
+            </td>
+          </tr>
+        </tbody>
+      </ContainerStyle>
+    )
+  }
 }
 
-export default TrashContainer
+TrashContainer.propTypes = {
+  name: PropTypes.string.isRequired
+  // setToggleTrashFile: PropTypes.func.isRequired
+}
+
+const mapStateToProps = state => ({
+  restoredFile: state.trash.file
+})
+
+const mapDispatchToProps = dispatch => ({
+  setToggleTrashFile: file => dispatch(setToggleTrashFile(file))
+  // downloadFile: id => dispatch(downloadFile(id))
+})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(TrashContainer)
