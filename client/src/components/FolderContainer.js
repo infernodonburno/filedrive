@@ -3,35 +3,11 @@ import React from 'react'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 
+import ContainerStyle from './ContainerStyle'
 import Button from './Button'
 import TrashButton from './TrashButton'
 
 import { thunkDownloadFolder } from '../ducks/download.duck'
-
-const FolderContainerStyle = styled.table`
-  .a {
-    width: 250px;
-    height: 25px;
-  }
-  table {
-    min-width: 100%;
-    font-family: arial, sans-serif;
-    border-collapse: collapse;
-    width: 100%;
-    height: 100%;
-  }
-
-  td,
-  th {
-    border: 1px solid #dddddd;
-    text-align: left;
-    padding: 8px;
-  }
-
-  tr:nth-child(even) {
-    background-color: #dddddd;
-  }
-`
 
 // const FolderContainer = props => {
 class FolderContainer extends React.Component {
@@ -46,7 +22,7 @@ class FolderContainer extends React.Component {
   render () {
     // console.log(this.props.folder.data)
     return (
-      <FolderContainerStyle>
+      <ContainerStyle>
         <tbody>
           <tr>
             <td className='a'>{this.props.folderName}</td>
@@ -58,7 +34,7 @@ class FolderContainer extends React.Component {
             </td>
           </tr>
         </tbody>
-      </FolderContainerStyle>
+      </ContainerStyle>
     )
   }
 }

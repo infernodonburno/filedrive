@@ -1,8 +1,4 @@
-import React from 'react'
 import styled from 'styled-components'
-
-import FolderContainer from '../components/FolderContainer'
-import FileContainer from '../components/FileContainer'
 
 const StyledCard = styled.div`
   box-shadow: 5px 5px 5px #ccc;
