@@ -49,14 +49,14 @@ export default function SimpleCard () {
               <input type='text' placeholder='password' style={{textAlign: 'center'}} />
             </div>
             <div>
-              <Button
+              {/* <Button
                 type='submit'
                 variant='contained'
                 color='secondary'
                 className={classes.submit}
               >
                 Login
-              </Button>
+              </Button> */}
             </div>
           </form>
         </CardContent>

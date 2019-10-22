@@ -1,6 +1,7 @@
 import '../App.css'
 import SimpleCard from '../components/login_page/LoginForm'
 import HeaderAppBar from '../components/GlobalHeader'
+import Button from '@material-ui/core/Button'
 
 import React, { Component } from 'react'
 import { withAuth } from '@okta/okta-react'
@@ -35,17 +36,20 @@ export default withAuth(
     async logout () {
       // Redirect to '/' after logout
       this.props.auth.logout('/')
+      localStorage.clear()
     }
 
     render () {
       if (this.state.authenticated === null) return null
-      if (this.state.authenticated) {
+      if (this.state.authenticated) {        
         return (
           <div className='App'>
             <header className='App-header'>
               <HeaderAppBar />
               <h1>authenticated!!!!!!!!!!!</h1>
               <SimpleCard />
+              
+              <button onClick={this.logout}>LogOut</button>
             </header>
           </div>
         )
@@ -56,13 +60,12 @@ export default withAuth(
               <HeaderAppBar />
               <h1>Not Authenticated!!!</h1>
               <SimpleCard />
+              <button onClick={this.login}>Login</button>
             </header>
           </div>
         )
       }
-      // this.state.authenticated ?
-      //   <button onClick={this.logout}>Logout</button> :
-      //   <button onClick={this.login}>Login</button>;
+     
     }
   }
 )
