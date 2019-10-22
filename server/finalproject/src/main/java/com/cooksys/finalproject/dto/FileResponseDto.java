@@ -6,9 +6,19 @@ public class FileResponseDto {
     private byte[] data;
     private Integer folderID;
     private Integer id;
+    private boolean trashed;
     
-    public FileResponseDto() {
+	public FileResponseDto() {
+		
     }
+	
+    public boolean isTrashed() {
+		return trashed;
+	}
+
+	public void setTrashed(boolean trashed) {
+		this.trashed = trashed;
+	}
 
 	public String getFileName() {
 		return fileName;

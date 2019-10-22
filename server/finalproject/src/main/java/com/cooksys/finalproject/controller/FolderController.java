@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cooksys.finalproject.dto.FolderRequestDto;
 import com.cooksys.finalproject.dto.FolderResponseDto;
 import com.cooksys.finalproject.dto.FoldersResponseDto;
+import com.cooksys.finalproject.dto.TrashFoldersResponseDto;
 import com.cooksys.finalproject.dto.TrashRequestDto;
 import com.cooksys.finalproject.service.FolderService;
 
@@ -32,6 +33,12 @@ public class FolderController {
     @GetMapping
     public ResponseEntity<FoldersResponseDto> getFolders() {
     	return folderService.getFolders(1);
+    }
+    
+    @CrossOrigin
+    @GetMapping("/trash")
+    public ResponseEntity<TrashFoldersResponseDto> getTrashFolders(){
+    	return folderService.getTrashFolders();
     }
     
     @CrossOrigin

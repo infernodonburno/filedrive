@@ -12,6 +12,7 @@ import com.cooksys.finalproject.dto.FileResponseDto;
 import com.cooksys.finalproject.dto.FolderRequestDto;
 import com.cooksys.finalproject.dto.FolderResponseDto;
 import com.cooksys.finalproject.dto.FoldersResponseDto;
+import com.cooksys.finalproject.dto.TrashFoldersResponseDto;
 import com.cooksys.finalproject.dto.TrashRequestDto;
 import com.cooksys.finalproject.entity.FileEntity;
 import com.cooksys.finalproject.entity.FolderEntity;
@@ -19,22 +20,25 @@ import com.cooksys.finalproject.mapper.FileMapper;
 import com.cooksys.finalproject.mapper.FolderMapper;
 import com.cooksys.finalproject.repository.FileRepository;
 import com.cooksys.finalproject.repository.FolderRepository;
+import com.cooksys.finalproject.repository.TrashFolderRepository;
 
 @Service
 public class FolderService {
 
     private FileRepository fileRepository;
     private FolderRepository folderRepository;
+    private TrashFolderRepository trashFolderRepository;
     private FileMapper fileMapper;
     private FolderMapper folderMapper;
     private static final Integer ROOT_FOLDER_ID = 1;
     private static final Integer ROOT_PARENT_ID = 0;
 
-    public FolderService(FileRepository fileRepository, FileMapper fileMapper, FolderRepository folderRepository, FolderMapper folderMapper) {
+    public FolderService(FileRepository fileRepository, TrashFolderRepository trashFolderRepository, FileMapper fileMapper, FolderRepository folderRepository, FolderMapper folderMapper) {
         this.fileRepository = fileRepository;
         this.folderRepository = folderRepository;
         this.fileMapper = fileMapper;
         this.folderMapper = folderMapper;
+        this.trashFolderRepository =  trashFolderRepository;
     }
 	public ResponseEntity<FolderResponseDto> uploadFolder(FolderRequestDto folderRequest) {
 		try {
@@ -201,6 +205,21 @@ public class FolderService {
 			}
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	public ResponseEntity<TrashFoldersResponseDto> getTrashFolders() {
+		try {
+			TrashFoldersResponseDto response = new TrashFoldersResponseDto();
+			List<FolderEntity> trashFolders = trashFolderRepository.getAllByTrashed(Boolean.TRUE);
+			List<FolderResponseDto> folders = new ArrayList<FolderResponseDto>();
+			for(FolderEntity folderEntity: trashFolders) {
+				folders.add(folderMapper.entityToDto(folderEntity));
+			}
+			response.setFolders(folders);
+			return new ResponseEntity<TrashFoldersResponseDto>(response, HttpStatus.OK); 	
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
 }

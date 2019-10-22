@@ -1,28 +1,35 @@
 package com.cooksys.finalproject.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.cooksys.finalproject.dto.FileRequestDto;
 import com.cooksys.finalproject.dto.FileResponseDto;
+import com.cooksys.finalproject.dto.TrashFilesResponseDto;
 import com.cooksys.finalproject.dto.TrashRequestDto;
 import com.cooksys.finalproject.entity.FileEntity;
 import com.cooksys.finalproject.entity.FolderEntity;
 import com.cooksys.finalproject.mapper.FileMapper;
 import com.cooksys.finalproject.repository.FileRepository;
 import com.cooksys.finalproject.repository.FolderRepository;
+import com.cooksys.finalproject.repository.TrashFileRepository;
 
 @Service
 public class FileService {
 
     private FileRepository fileRepository;
     private FolderRepository folderRepository;
+    private TrashFileRepository trashFileRepository;
     private FileMapper fileMapper;
-    public FileService(FileRepository fileRepository, FileMapper fileMapper, FolderRepository folderRepository) {
+    public FileService(FileRepository fileRepository, TrashFileRepository trashFileRepository, FileMapper fileMapper, FolderRepository folderRepository) {
         this.fileRepository = fileRepository;
         this.folderRepository = folderRepository;
         this.fileMapper = fileMapper;
+        this.trashFileRepository = trashFileRepository;
     }
     
     /**
@@ -131,6 +138,21 @@ public class FileService {
 			}
 		} catch (Exception e) {
 	        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	public ResponseEntity<TrashFilesResponseDto> getTrashFiles() {
+		try {
+			TrashFilesResponseDto response = new TrashFilesResponseDto();
+			List<FileEntity> trashFiles = trashFileRepository.getAllByTrashed(Boolean.TRUE);
+			List<FileResponseDto> files = new ArrayList<FileResponseDto>();
+			for(FileEntity fileEntity: trashFiles) {
+				files.add(fileMapper.entityToDto(fileEntity));
+			}
+			response.setFiles(files);
+			return new ResponseEntity<TrashFilesResponseDto>(response, HttpStatus.OK); 	
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
 }

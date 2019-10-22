@@ -9,12 +9,20 @@ public class FolderResponseDto {
 	private List<FileResponseDto> files;
 	private List<FolderResponseDto> folders;
 	private Integer id;
-
+	private boolean trashed;
 
 	public FolderResponseDto() {
 		
 	}
 	
+	public boolean isTrashed() {
+		return trashed;
+	}
+
+	public void setTrashed(boolean trashed) {
+		this.trashed = trashed;
+	}
+
 	public List<FolderResponseDto> getFolders() {
 		return folders;
 	}
@@ -54,5 +62,4 @@ public class FolderResponseDto {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-
 }
