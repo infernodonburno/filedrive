@@ -35,8 +35,8 @@ class Trash extends React.Component {
     return (
       <React.Fragment>
         <StyledCard>
-          {trashedFiles}
           {trashedFolders}
+          {trashedFiles}
         </StyledCard>
       </React.Fragment>
     )

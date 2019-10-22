@@ -14,7 +14,7 @@ class TrashContainer extends React.Component {
   onClickRestore = event => {
     console.log(`${this.props.name} restored`)
     if (this.props.isFile === 'true') {
-      this.props.file.trashed = !this.props.file.trashed
+      this.props.file.trashed = false
       this.props.setToggleTrashFile(this.props.file)
     }
   }
