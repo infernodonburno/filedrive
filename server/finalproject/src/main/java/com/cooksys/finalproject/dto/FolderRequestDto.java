@@ -8,9 +8,18 @@ public class FolderRequestDto {
 	private Integer folderID;
 	private List<FileRequestDto> files;
 	private List<FolderRequestDto> folders;
-	
+    private String userName;
+
 	public FolderRequestDto() {
 
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 
 	public List<FolderRequestDto> getFolders() {

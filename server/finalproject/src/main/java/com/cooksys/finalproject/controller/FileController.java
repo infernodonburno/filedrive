@@ -1,6 +1,9 @@
 package com.cooksys.finalproject.controller;
 
+import java.security.Principal;
+
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,6 +33,12 @@ public class FileController {
     public FileController(FileService fileService, FolderService folderService) {
         this.fileService = fileService;
         this.folderService = folderService;
+    }
+    
+    @PreAuthorize("#oauth2.hasScope('profile')")
+    @GetMapping("/protected/")
+    public String helloWorldProtected(Principal principal) {
+        return "Hello VIP " + principal.getName();
     }
     
     @CrossOrigin

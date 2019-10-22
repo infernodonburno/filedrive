@@ -41,14 +41,14 @@ public class FolderService {
         this.trashFolderRepository =  trashFolderRepository;
     }
 	public ResponseEntity<FolderResponseDto> uploadFolder(FolderRequestDto folderRequest) {
-		try {
+//		try {
 			if (folderRepository.getById(folderRequest.getFolderID()) != null) {
 	    		createFolderInDB(folderRequest, folderRequest.getFolderID());
 				return new ResponseEntity<>(HttpStatus.CREATED);			
 			}
 			// If root doesn't exist, create root folder
 			else if (folderRepository.getById(ROOT_FOLDER_ID) == null) {
-				createRootFolderInDB();
+				createRootFolderInDB(folderRequest.getUserName());
 	        	if(folderRequest.getFolderID() == ROOT_FOLDER_ID) {
 	            	// create the folder requested if child of root
 	        		createFolderInDB(folderRequest, ROOT_FOLDER_ID);
@@ -60,12 +60,12 @@ public class FolderService {
 			else {
 				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			}
-		} catch (Exception e) {
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+//		} catch (Exception e) {
+//			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//		}
 	}
 	
-	private void createFolderInDB(FolderRequestDto folderRequest, Integer parentID) throws Exception {
+	private void createFolderInDB(FolderRequestDto folderRequest, Integer parentID){
 		FolderEntity folderToCreate = folderMapper.dtoToEntity(folderRequest);
 		folderToCreate.setFolderID(parentID);
 		FolderEntity folder = folderRepository.saveAndFlush(folderToCreate);
@@ -76,16 +76,20 @@ public class FolderService {
 	        fileRepository.saveAndFlush(fileToCreate);
 		}
 		// May need re-factoring -JC 
+		System.out.print("HERERERER   1");
 		for (FolderRequestDto folderRequestInThisFolder : folderRequest.getFolders()) {
+			System.out.print("HERERERER   2");
 			createFolderInDB(folderRequestInThisFolder, folder.getId());
 		}
+		System.out.print("HERERERER   3");
 	}
 	
-	private void createRootFolderInDB() throws Exception{
+	private void createRootFolderInDB(String username){
 		// create a root folder
     	FolderEntity rootFolderToCreate = new FolderEntity();
     	rootFolderToCreate.setFolderName("Root");
     	rootFolderToCreate.setFolderID(ROOT_PARENT_ID);
+    	rootFolderToCreate.setUserName(username);
     	folderRepository.saveAndFlush(rootFolderToCreate);
 	}
 	

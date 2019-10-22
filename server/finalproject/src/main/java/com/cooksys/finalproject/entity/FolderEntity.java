@@ -54,7 +54,15 @@ public class FolderEntity {
 		return folderName;
 	}
 
-    public void setId(Integer id) {
+    public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public void setId(Integer id) {
         this.id = id;
     }
 	public void setTrashed(boolean trashed) {

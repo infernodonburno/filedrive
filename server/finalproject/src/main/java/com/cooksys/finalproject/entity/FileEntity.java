@@ -36,7 +36,15 @@ public class FileEntity {
     public FileEntity() {
     }
 
-    public byte[] getData() {
+    public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public byte[] getData() {
 		return data;
 	}
 
