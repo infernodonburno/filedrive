@@ -142,17 +142,19 @@ class UploadButton extends React.Component {
 
           console.log('you are here')
           if (evt.target.readyState == FileReader.DONE) {
-            var arrayBuffer = evt.target.result
-
-            var array = new Uint8Array(arrayBuffer)
-            for (var i = 0; i < array.length; i++) {
-              fileByteArray.push(array[i])
+            reader.onload = function (e) {
+              var arrayBuffer = e.target.result
+              console.log(e.target)
+              var array = new Uint8Array(arrayBuffer)
+              for (var i = 0; i < array.length; i++) {
+                fileByteArray.push(array[i])
+              }
+              fileRequests.push({ fileName: x.name, data: fileByteArray })
             }
-            fileRequests.push({ fileName: x.name, data: fileByteArray })
           }
         }
         let folderReq = { folderName: folderName, folderID: 1, fileRequests }
-        uploadFolder(folderReq)
+        // uploadFolder(folderReq)
       }
     }
 
