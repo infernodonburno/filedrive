@@ -40,25 +40,13 @@ export default function SimpleCard () {
           <div>
             <img src='./logo.png' height='100vh' alt='filedrivelogo' />
           </div>
-          <form>
-            <div>
-              Username: <input type='text' />
-            </div>
-            <div>
+          <form style={{display: 'flex', flexDirection: 'column'}}>
+              Username: <input type='text'  />
               Password: <input type='text' />
-            </div>
-            <div>
               Re-Password: <input type='text' />
-            </div>
-            <div>
               First Name: <input type='text' />
-            </div>
-            <div>
               Last Name: <input type='text' />
-            </div>
-            <div>
               Email: <input type='text' />
-            </div>
             <div>
               <Button
                 type='submit'

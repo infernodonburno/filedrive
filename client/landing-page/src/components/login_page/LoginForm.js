@@ -43,10 +43,10 @@ export default function SimpleCard () {
           </div>
           <form>
             <div>
-              <input type='text' placeholder='username' />
+              <input type='text' placeholder='username' style={{textAlign: 'center'}} />
             </div>
             <div>
-              <input type='text' placeholder='password' />
+              <input type='text' placeholder='password' style={{textAlign: 'center'}} />
             </div>
             <div>
               <Button
@@ -63,7 +63,7 @@ export default function SimpleCard () {
         <CardActions>
           <Button
             href='/signup'
-            style={{ display: 'flex', alignItems: 'right' }}
+            style={{ display: 'flex', textAlign: 'right' }}
             type='submit'
             variant='text'
             color='primary'
