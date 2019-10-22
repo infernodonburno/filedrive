@@ -1,27 +1,8 @@
 import React from 'react'
-import styled from 'styled-components'
 
 import Button from './Button'
 import PermanentDeleteButton from './PermanentDeleteButton'
-
-const FolderContainerStyle = styled.table`
-  table {
-    font-family: arial, sans-serif;
-    border-collapse: collapse;
-    width: 100%;
-  }
-
-  td,
-  th {
-    border: 1px solid #dddddd;
-    text-align: left;
-    padding: 8px;
-  }
-
-  tr:nth-child(even) {
-    background-color: #dddddd;
-  }
-`
+import ContainerStyle from './ContainerStyle'
 
 const TrashContainer = props => {
   const onClick = event => {
@@ -29,7 +10,7 @@ const TrashContainer = props => {
     console.log('You clicked me')
   }
   return (
-    <FolderContainerStyle>
+    <ContainerStyle>
       <tbody>
         <tr>
           <td>FILENAMEHERE</td>
@@ -41,7 +22,7 @@ const TrashContainer = props => {
           </td>
         </tr>
       </tbody>
-    </FolderContainerStyle>
+    </ContainerStyle>
   )
 }
 

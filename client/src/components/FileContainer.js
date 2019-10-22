@@ -1,36 +1,11 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import { connect } from 'react-redux'
-import styled from 'styled-components'
-import { fileDownload } from 'js-file-download'
 
+import ContainerStyle from './ContainerStyle'
 import Button from './Button'
 import TrashButton from './TrashButton'
 import { thunkDownloadFile, downloadFile } from '../ducks/download.duck'
-
-const FileContainerStyle = styled.table`
-  .a {
-    width: 250px;
-    height: 25px;
-  }
-  table {
-    font-family: arial, sans-serif;
-    border-collapse: collapse;
-    width: 100%;
-    height: 100%;
-  }
-
-  td,
-  th {
-    border: 1px solid #dddddd;
-    text-align: left;
-    padding: 8px;
-  }
-
-  tr:nth-child(even) {
-    background-color: #dddddd;
-  }
-`
 
 // const FileContainer = props => {
 class FileContainer extends React.Component {
@@ -60,7 +35,7 @@ class FileContainer extends React.Component {
     // }
     console.log(this.props.file.data)
     return (
-      <FileContainerStyle>
+      <ContainerStyle>
         <tbody>
           <tr>
             <td className='a'>{this.props.fileName}</td>
@@ -72,7 +47,7 @@ class FileContainer extends React.Component {
             </td>
           </tr>
         </tbody>
-      </FileContainerStyle>
+      </ContainerStyle>
     )
   }
 }

@@ -1,14 +1,14 @@
 import React from 'react'
 
 import TrashContainer from '../components/TrashContainer'
-import TrashCard from '../components/TrashCard'
+import StyledCard from '../components/StyledCard'
 
 const Trash = () => {
   return (
     <React.Fragment>
-      <TrashCard>
+      <StyledCard>
         <TrashContainer />
-      </TrashCard>
+      </StyledCard>
     </React.Fragment>
   )
 }
