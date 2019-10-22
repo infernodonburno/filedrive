@@ -154,7 +154,7 @@ export const thunkDownloadFolder = folderID => dispatch => {
           // fileDownload(decodedData, f.fileName)
         }
         // console.log('This is folderArr: ', folderArr)
-        const fol = zip.folder('soda')
+        const fol = zip.folder(`${folder.folderName}`)
         folderArr.forEach(file => fol.file(file.fileName, file.data))
         zip
           .generateAsync({ type: 'blob' })
