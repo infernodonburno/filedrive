@@ -4,7 +4,6 @@ import './App.css'
 import { Security, ImplicitCallback } from '@okta/okta-react'
 
 import Login from './containers/Login'
-import SignUp from './containers/Sign-up'
 
 const config = {
   issuer: 'https://dev-205073.okta.com/oauth2/default',
@@ -19,7 +18,6 @@ function App () {
       <Security {...config}>
         <Route path='/' exact component={Login} />
         <Route path='/login' exact component={Login} />
-        <Route path='/signup' exact component={SignUp} />
         <Route path='/implicit/callback' component={ImplicitCallback} />
       </Security>
     </div>

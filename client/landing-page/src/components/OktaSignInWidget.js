@@ -11,8 +11,27 @@ export default class OktaSignInWidget extends Component {
       baseUrl: 'https://dev-205073.okta.com',
       authParams: {
         pkce: true
-
+    },
+    registration: {
+        parseSchema: function(schema, onSuccess, onFailure) {
+           // handle parseSchema callback
+           onSuccess(schema);
+        },
+        preSubmit: function (postData, onSuccess, onFailure) {
+           // handle preSubmit callback
+           onSuccess(postData);
+        },
+        postSubmit: function (response, onSuccess, onFailure) {
+            // handle postsubmit callback
+           onSuccess(response);
+        }
+      },
+      features: {
+        // Used to enable registration feature on the widget.
+        // https://github.com/okta/okta-signin-widget#feature-flags
+         registration: true // REQUIRED
       }
+    
     });
     this.widget.renderEl({el}, this.props.onSuccess, this.props.onError);
   }
