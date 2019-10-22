@@ -12,12 +12,24 @@ export function fetchFolders () {
   return fetchFromServer('folders')
 }
 
+// Download single file
 export function fetchDownloadFile (id) {
   return fetchFromServer(`files/${id}`)
 }
 
+// Download folder
 export function fetchDownloadFolder (folderID) {
   return fetchFromServer(`folders/${folderID}`)
+}
+
+// Fetch all files marked as trash
+export function fetchTrashFiles () {
+  return fetchFromServer('files/trash')
+}
+
+// Fetch all folders marked as trash
+export function fetchTrashFolders () {
+  return fetchFromServer('folders/trash')
 }
 
 export function fetchFromServer (endpoint, options) {
@@ -38,6 +50,27 @@ export function postToServer (endpoint, req) {
   console.log(url)
   const options = {
     method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(req)
+  }
+  console.log(`OPTIONS: ${options.body}`)
+  return request(url, options)
+}
+
+export function patchTrashFile (file) {
+  let endpoint = `files/${file.id}/trash`
+  return patchToServer(endpoint, file.trashed)
+}
+
+export function patchTrashFolder (folder) {}
+
+export function patchToServer (endpoint, req) {
+  let url = [SERVER_ROOT, endpoint].join('/')
+  console.log(url)
+  const options = {
+    method: 'PATCH',
     headers: {
       'Content-Type': 'application/json'
     },

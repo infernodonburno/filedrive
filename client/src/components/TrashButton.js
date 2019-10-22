@@ -1,14 +1,15 @@
 import React from 'react'
-import styled from 'styled-components'
+
+import { toggleTrashFile } from '../ducks/trash.duck'
 
 const TrashButton = props => {
-  const onClick = event => {
-    console.log('Trashed')
-  }
-
   return (
     <div>
-      <input type='image' src='./src/resources/trashicon.png' onClick={onClick} />
+      <input
+        type='image'
+        src='./src/resources/trashicon.png'
+        onClick={props.onClick}
+      />
     </div>
   )
 }
