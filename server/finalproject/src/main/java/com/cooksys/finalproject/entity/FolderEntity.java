@@ -29,6 +29,9 @@ public class FolderEntity {
     @Column(nullable = false)
     private Integer folderID;
     
+    @Column(nullable = false)
+    private String userName;
+    
     public Integer getFolderID() {
 		return folderID;
 	}
