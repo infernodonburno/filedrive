@@ -135,24 +135,41 @@ class UploadButton extends React.Component {
       fileReader.readAsArrayBuffer(myFile)
       fileReader.onloadend = function (evt) {
         let fileRequests = []
+        let fileByteArray = []
         for (let x of fileList) {
-          var reader = new FileReader()
-          let fileByteArray = []
-          reader.readAsArrayBuffer(x)
+          console.log('LENGTH: ', fileList.length)
+          // x.arrayBuffer().then(buffer => {})
+          var bufferPromise = x.arrayBuffer()
 
-          console.log('you are here')
-          if (evt.target.readyState == FileReader.DONE) {
-            var arrayBuffer = evt.target.result
-
-            var array = new Uint8Array(arrayBuffer)
-            for (var i = 0; i < array.length; i++) {
-              fileByteArray.push(array[i])
+          bufferPromise.then(buffer => {
+            let array = new Uint8Array(buffer)
+            console.log('ARRAY: ', array)
+            for (let g of array) {
+              fileByteArray.push(g)
             }
+            // console.log('FILEBYTEARRAY: ', fileByteArray)
+            // console.log('YESSSS', array)
             fileRequests.push({ fileName: x.name, data: fileByteArray })
-          }
+            console.log('REQUESTS INSIDE: ', fileRequests)
+            fileByteArray = []
+            if (fileRequests.length === fileList.length) {
+              let folderReq = {
+                folderName: folderName,
+                folderID: 1,
+                fileRequests
+              }
+              uploadFolder(folderReq)
+            }
+          })
+
+          // var array = new Uint8Array(bufferPromise)
+          // console.log('ARRAY', array)
+          // for (var i = 0; i < array.length; i++) {
+          //   fileByteArray.push(array[i])
+          // }
+          // console.log(fileByteArray)
+          // fileRequests.push({ fileName: x.name, data: fileByteArray })
         }
-        let folderReq = { folderName: folderName, folderID: 1, fileRequests }
-        uploadFolder(folderReq)
       }
     }
 

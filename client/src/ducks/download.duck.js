@@ -108,7 +108,6 @@ export const thunkDownloadFile = id => dispatch => {
     .catch(err => dispatch(downloadFileFailure(err)))
 }
 
-// Remember to export it!
 export const thunkDownloadFolder = folderID => dispatch => {
   console.log('Downloading Folder...')
   dispatch(downloadFolderBegin())
@@ -130,32 +129,18 @@ export const thunkDownloadFolder = folderID => dispatch => {
         let folderArr = []
 
         for (let f of folder.files) {
-          // console.log('this is the data: ', f.data)
-          var decodedData = window.atob(f.data) // decode the string
-          // console.log(decodedData)
-          f.data = decodedData
           folderArr.push(f)
-          // console.log(f)
-          // var fileDownload = require('js-file-download')
-          // convert file data back to real data
-          // console.log(f.data)
-
-          // var decodedData = window.atob(f.data) // decode the string
-
-          // console.log('This should be a string: ', decodedData)
-
-          // Creates a folder and puts a file in it
-          // zip.file(`${folder.folderName}/${f.fileName}`)
-          // console.log(zip)
-
-          // Need to download a zip folder with files in it
-
-          // This downloads each separate file
-          // fileDownload(decodedData, f.fileName)
         }
-        // console.log('This is folderArr: ', folderArr)
+        console.log('This is folderArr: ', folderArr)
+        for (let j = 0; j < folderArr.length; ++j) {
+          let decodedData = window.atob(folderArr[j].data) // decode the string
+          folderArr[j].data = decodedData
+        }
+
         const fol = zip.folder(`${folder.folderName}`)
-        folderArr.forEach(file => fol.file(file.fileName, file.data))
+        folderArr.forEach(file =>
+          fol.file(file.fileName, file.data, { binary: true })
+        )
         zip
           .generateAsync({ type: 'blob' })
           .then(content => saveAs(content, `${folder.folderName}.zip`))
