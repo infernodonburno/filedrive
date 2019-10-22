@@ -8,6 +8,15 @@ public class FolderResponseDto {
 	private Integer folderID;
 	private List<FileResponseDto> files;
 	private Integer id;
+    private boolean trashed;
+
+	public boolean isTrashed() {
+		return trashed;
+	}
+
+	public void setTrashed(boolean trashed) {
+		this.trashed = trashed;
+	}
 
 	public String getFolderName() {
 		return folderName;

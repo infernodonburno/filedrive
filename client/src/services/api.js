@@ -12,15 +12,27 @@ export function fetchFolders () {
   return fetchFromServer('folders')
 }
 
+// Download single file
 export function fetchDownloadFile (id) {
   return fetchFromServer(`files/${id}`)
 }
 
-export function fetchDownloadFolder (folderID) {
-  return fetchFromServer(`folders/${folderID}`)
+// Download folder
+export function fetchDownloadFolder (id) {
+  return fetchFromServer(`folders/${id}`)
 }
 
-export function fetchFromServer (endpoint, options) {
+// Fetch all files marked as trash
+export function fetchTrashFiles () {
+  return fetchFromServer('files/trash')
+}
+
+// Fetch all folders marked as trash
+export function fetchTrashFolders () {
+  return fetchFromServer('folders/trash')
+}
+
+function fetchFromServer (endpoint, options) {
   let url = [SERVER_ROOT, endpoint].join('/')
   return request(url)
 }
@@ -33,7 +45,7 @@ export function postFolder (folderReq) {
   return postToServer(`folders`, folderReq)
 }
 
-export function postToServer (endpoint, req) {
+function postToServer (endpoint, req) {
   let url = [SERVER_ROOT, endpoint].join('/')
   console.log(url)
   const options = {
@@ -44,5 +56,50 @@ export function postToServer (endpoint, req) {
     body: JSON.stringify(req)
   }
   console.log(`OPTIONS: ${options.body}`)
+  return request(url, options)
+}
+
+export function patchTrashFile (file) {
+  let endpoint = `files/${file.id}/trash`
+  return patchToServer(endpoint, { trashed: file.trashed })
+}
+
+export function patchTrashFolder (folder) {
+  console.log('folder: ', folder)
+  let endpoint = `folders/${folder.id}/trash`
+  return patchToServer(endpoint, { trashed: folder.trashed })
+}
+
+function patchToServer (endpoint, req) {
+  let url = [SERVER_ROOT, endpoint].join('/')
+  console.log(url)
+  const options = {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(req)
+  }
+  console.log(`OPTIONS: ${options.body}`)
+  return request(url, options)
+}
+
+export function deleteFileFromServer (id) {
+  return deleteFromServer(`files/${id}/trash`)
+}
+
+export function deleteFolderFromServer (id) {
+  return deleteFromServer(`folders/${id}/trash`)
+}
+
+function deleteFromServer (endpoint) {
+  let url = [SERVER_ROOT, endpoint].join('/')
+  console.log(url)
+  const options = {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }
   return request(url, options)
 }

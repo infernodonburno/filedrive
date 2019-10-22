@@ -17,12 +17,18 @@ class Home extends React.Component {
 
   render () {
     const files = this.props.files.map(file => (
-      <FileContainer key={file.id} id={file.id} fileName={file.fileName} />
+      <FileContainer
+        file={file}
+        key={file.id}
+        id={file.id}
+        fileName={file.fileName}
+      />
     ))
     const folders = this.props.folders.map(folder => (
       <FolderContainer
+        folder={folder}
         key={folder.id}
-        folderID={folder.id}
+        id={folder.id}
         folderName={folder.folderName}
       />
     ))

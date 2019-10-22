@@ -1,24 +1,30 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import { connect } from 'react-redux'
-import styled from 'styled-components'
 
 import ContainerStyle from './ContainerStyle'
 import Button from './Button'
 import TrashButton from './TrashButton'
-
 import { thunkDownloadFolder } from '../ducks/download.duck'
+import { setToggleTrashFolder } from '../ducks/trash.duck'
 
-// const FolderContainer = props => {
 class FolderContainer extends React.Component {
   constructor (props) {
     super(props)
   }
 
-  onClick = event => {
-    console.log('This is folderID: ', this.props.folderID)
-    this.props.thunkDownloadFolder(this.props.folderID)
+  onClickDownload = event => {
+    console.log('This is folderID: ', this.props.id)
+    this.props.thunkDownloadFolder(this.props.id)
   }
+
+  onClickTrash = event => {
+    console.log(`${this.props.folderName} trashed`)
+    this.props.folder.trashed = true
+    console.log(this.props.folder)
+    this.props.setToggleTrashFolder(this.props.folder)
+  }
+
   render () {
     // console.log(this.props.folder.data)
     return (
@@ -27,10 +33,10 @@ class FolderContainer extends React.Component {
           <tr>
             <td className='a'>{this.props.folderName}</td>
             <td>
-              <Button text='Download' onClick={this.onClick} />
+              <Button text='Download' onClick={this.onClickDownload} />
             </td>
             <td>
-              <TrashButton />
+              <TrashButton onClick={this.onClickTrash} />
             </td>
           </tr>
         </tbody>
@@ -40,17 +46,20 @@ class FolderContainer extends React.Component {
 }
 
 FolderContainer.propTypes = {
-  folderID: PropTypes.number.isRequired,
+  id: PropTypes.number.isRequired,
   folderName: PropTypes.string.isRequired,
-  thunkDownloadFolder: PropTypes.func.isRequired
+  thunkDownloadFolder: PropTypes.func.isRequired,
+  setToggleTrashFolder: PropTypes.func.isRequired
 }
 
 const mapsStateToProps = state => ({
-  folder: state.download.folder
+  downloadedFolder: state.download.folder,
+  trashedFolder: state.trash.folder
 })
 
 const mapDispatchToProps = dispatch => ({
-  thunkDownloadFolder: folderID => dispatch(thunkDownloadFolder(folderID))
+  thunkDownloadFolder: id => dispatch(thunkDownloadFolder(id)),
+  setToggleTrashFolder: folder => dispatch(setToggleTrashFolder(folder))
 })
 
 export default connect(
