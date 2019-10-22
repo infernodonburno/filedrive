@@ -30,6 +30,8 @@ public class FileEntity {
     @JoinColumn
     private FolderEntity folder;
    
+    @Column(nullable = false)
+    private String userName;
     
     public FileEntity() {
     }
