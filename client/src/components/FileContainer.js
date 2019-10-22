@@ -19,7 +19,7 @@ class FileContainer extends React.Component {
 
   onClickTrash = event => {
     console.log(`${this.props.fileName} trashed`)
-    this.props.file.trashed = !this.props.file.trashed
+    this.props.file.trashed = true
     this.props.setToggleTrashFile(this.props.file)
   }
 

@@ -26,8 +26,9 @@ class Home extends React.Component {
     ))
     const folders = this.props.folders.map(folder => (
       <FolderContainer
+        folder={folder}
         key={folder.id}
-        folderID={folder.id}
+        id={folder.id}
         folderName={folder.folderName}
       />
     ))

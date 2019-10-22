@@ -3,13 +3,19 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 import { loadTrashedFiles, loadTrashedFolders } from '../ducks/trashview.duck'
+// import { emptyAllTrash } from '../ducks/trash.duck'
 import TrashContainer from '../components/TrashContainer'
 import StyledCard from '../components/StyledCard'
+// import Button from '../components/Button'
 
 class Trash extends React.Component {
   componentDidMount () {
     this.props.loadTrashedFiles(), this.props.loadTrashedFolders()
   }
+
+  // onClick = event => {
+  //   console.log('trash emptied')
+  // }
 
   render () {
     const trashedFiles = this.props.files.map(file => (
@@ -35,9 +41,10 @@ class Trash extends React.Component {
     return (
       <React.Fragment>
         <StyledCard>
-          {trashedFiles}
           {trashedFolders}
+          {trashedFiles}
         </StyledCard>
+        {/* <Button text='Empty Trash' onClick={this.onClick} /> */}
       </React.Fragment>
     )
   }
@@ -56,6 +63,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   loadTrashedFiles: () => dispatch(loadTrashedFiles()),
   loadTrashedFolders: () => dispatch(loadTrashedFolders())
+  // emptyAllTrash: () => dispatch(emptyAllTrash())
 })
 
 export default connect(

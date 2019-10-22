@@ -18,8 +18,8 @@ export function fetchDownloadFile (id) {
 }
 
 // Download folder
-export function fetchDownloadFolder (folderID) {
-  return fetchFromServer(`folders/${folderID}`)
+export function fetchDownloadFolder (id) {
+  return fetchFromServer(`folders/${id}`)
 }
 
 // Fetch all files marked as trash
@@ -32,7 +32,7 @@ export function fetchTrashFolders () {
   return fetchFromServer('folders/trash')
 }
 
-export function fetchFromServer (endpoint, options) {
+function fetchFromServer (endpoint, options) {
   let url = [SERVER_ROOT, endpoint].join('/')
   return request(url)
 }
@@ -45,7 +45,7 @@ export function postFolder (folderReq) {
   return postToServer(`folders`, folderReq)
 }
 
-export function postToServer (endpoint, req) {
+function postToServer (endpoint, req) {
   let url = [SERVER_ROOT, endpoint].join('/')
   console.log(url)
   const options = {
@@ -64,9 +64,13 @@ export function patchTrashFile (file) {
   return patchToServer(endpoint, { trashed: file.trashed })
 }
 
-export function patchTrashFolder (folder) {}
+export function patchTrashFolder (folder) {
+  console.log('folder: ', folder)
+  let endpoint = `folders/${folder.id}/trash`
+  return patchToServer(endpoint, { trashed: folder.trashed })
+}
 
-export function patchToServer (endpoint, req) {
+function patchToServer (endpoint, req) {
   let url = [SERVER_ROOT, endpoint].join('/')
   console.log(url)
   const options = {
@@ -77,5 +81,25 @@ export function patchToServer (endpoint, req) {
     body: JSON.stringify(req)
   }
   console.log(`OPTIONS: ${options.body}`)
+  return request(url, options)
+}
+
+export function deleteFileFromServer (id) {
+  return deleteFromServer(`files/${id}/trash`)
+}
+
+export function deleteFolderFromServer (id) {
+  return deleteFromServer(`folders/${id}/trash`)
+}
+
+function deleteFromServer (endpoint) {
+  let url = [SERVER_ROOT, endpoint].join('/')
+  console.log(url)
+  const options = {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }
   return request(url, options)
 }
