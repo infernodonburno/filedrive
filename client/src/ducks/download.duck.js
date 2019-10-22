@@ -105,6 +105,39 @@ export const thunkDownloadFile = id => dispatch => {
     .catch(err => dispatch(downloadFileFailure(err)))
 }
 
+// Remember to export it!
+export const thunkDownloadFolder = folderID => dispatch => {
+  console.log('Downloading Folder...')
+  dispatch(downloadFolderBegin())
+  console.log('Folder should still be downloading.........')
+  return (
+    fetchDownloadFolder(folderID)
+      // This should be an object of objects or an array of objects?
+      .then(folder => {
+        console.log('This is the folder: ', folder)
+        // console.log(file.data)
+
+        // Need to loop over every file in the folder and do the same thing for each
+        console.log('Before loop')
+        console.log(folder.files)
+        for (let f of folder.files) {
+          // console.log(f)
+          var fileDownload = require('js-file-download')
+          // convert file data back to real data
+          console.log(f.data)
+          var decodedData = window.atob(f.data) // decode the string
+          console.log('This should be a string: ', decodedData)
+          fileDownload(decodedData, f.fileName)
+        }
+
+        console.log('After loop')
+
+        return dispatch(downloadFolderDone(folder))
+      })
+      .catch(err => dispatch(downloadFolderFailure(err)))
+  )
+}
+
 export const downloadFolder = () => dispatch => {
   dispatch(downloadFolderBegin())
   fetchDownloadFolder()

@@ -16,7 +16,9 @@ export function fetchDownloadFile (id) {
   return fetchFromServer(`files/${id}`)
 }
 
-export function fetchDownloadFolder () {}
+export function fetchDownloadFolder (folderID) {
+  return fetchFromServer(`folders/${folderID}`)
+}
 
 export function fetchFromServer (endpoint, options) {
   let url = [SERVER_ROOT, endpoint].join('/')
