@@ -186,7 +186,9 @@ public class FolderService {
 			List<FolderEntity> foldersToSendBack = folderRepository.getAllFoldersByfolderID(folderID);
 			if(foldersToSendBack != null) {
 				for(FolderEntity folderEntity: foldersToSendBack) {
-					responseToSendBack.getFolders().add(folderMapper.entityToDto(folderEntity));
+					if(!(folderEntity.getTrashed())) {
+						responseToSendBack.getFolders().add(folderMapper.entityToDto(folderEntity));
+					}
 				}
 				return new ResponseEntity<FoldersResponseDto>(responseToSendBack, HttpStatus.OK);
 			} else {

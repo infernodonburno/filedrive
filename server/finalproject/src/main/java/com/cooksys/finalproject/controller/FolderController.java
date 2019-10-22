@@ -30,8 +30,8 @@ public class FolderController {
     }
     
     @CrossOrigin
-    @GetMapping
-    public ResponseEntity<FoldersResponseDto> getFolders() {
+    @GetMapping("/{folderID}")
+    public ResponseEntity<FoldersResponseDto> getFolders(@PathVariable Integer folderID) {
     	return folderService.getFolders(1);
     }
     

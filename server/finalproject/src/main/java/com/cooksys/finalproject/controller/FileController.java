@@ -42,8 +42,8 @@ public class FileController {
     }
     
     @CrossOrigin
-    @GetMapping
-    public ResponseEntity<FolderResponseDto> getFiles(){
+    @GetMapping("/{folderID}")
+    public ResponseEntity<FolderResponseDto> getFiles(@PathVariable Integer folderID){
     	return folderService.downloadFolder(1);
     }
     
