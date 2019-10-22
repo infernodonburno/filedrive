@@ -2,6 +2,9 @@ import { fetchDownloadFile, fetchDownloadFolder } from '../services/api'
 
 import { fileDownload } from 'js-file-download'
 
+import { saveAs } from 'file-saver'
+import { decode } from 'punycode'
+
 export const DOWNLOAD_FILE_FAILURE = 'DOWNLOAD_FILE_FAILURE'
 export const DOWNLOAD_FILE_DONE = 'DOWNLOAD_FILE_DONE'
 export const DOWNLOAD_FOLDER_FAILURE = 'DOWNLOAD_FOLDER_FAILURE'
@@ -120,15 +123,42 @@ export const thunkDownloadFolder = folderID => dispatch => {
         // Need to loop over every file in the folder and do the same thing for each
         console.log('Before loop')
         console.log(folder.files)
+
+        var JSZip = require('jszip')
+        var zip = new JSZip()
+
+        let folderArr = []
+
         for (let f of folder.files) {
-          // console.log(f)
-          var fileDownload = require('js-file-download')
-          // convert file data back to real data
-          console.log(f.data)
+          // console.log('this is the data: ', f.data)
           var decodedData = window.atob(f.data) // decode the string
-          console.log('This should be a string: ', decodedData)
-          fileDownload(decodedData, f.fileName)
+          // console.log(decodedData)
+          f.data = decodedData
+          folderArr.push(f)
+          // console.log(f)
+          // var fileDownload = require('js-file-download')
+          // convert file data back to real data
+          // console.log(f.data)
+
+          // var decodedData = window.atob(f.data) // decode the string
+
+          // console.log('This should be a string: ', decodedData)
+
+          // Creates a folder and puts a file in it
+          // zip.file(`${folder.folderName}/${f.fileName}`)
+          // console.log(zip)
+
+          // Need to download a zip folder with files in it
+
+          // This downloads each separate file
+          // fileDownload(decodedData, f.fileName)
         }
+        // console.log('This is folderArr: ', folderArr)
+        const fol = zip.folder(`${folder.folderName}`)
+        folderArr.forEach(file => fol.file(file.fileName, file.data))
+        zip
+          .generateAsync({ type: 'blob' })
+          .then(content => saveAs(content, `${folder.folderName}.zip`))
 
         console.log('After loop')
 
