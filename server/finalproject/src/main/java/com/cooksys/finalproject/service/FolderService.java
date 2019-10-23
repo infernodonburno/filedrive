@@ -51,10 +51,10 @@ public class FolderService {
      * CREATE Ops
      */
 	public ResponseEntity<FolderResponseDto> uploadFolder(String userName, Integer folderID, FolderRequestDto folderRequest) {
-		try {
+//		try {
 			if ((folderRepository.getById(folderID) != null)
 					&& ((folderID == ROOT_FOLDER_ID) || 
-					((folderRepository.getById(folderID).getUserName() == userName)))) {
+					((folderRepository.getById(folderID).getUserName().equals(userName))))) {
 	    		createFolderInDB(userName, folderRequest, folderID);
 				return new ResponseEntity<>(HttpStatus.CREATED);			
 			}
@@ -72,18 +72,20 @@ public class FolderService {
 			else {
 				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			}
-		} catch (Exception e) {
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+//		} catch (Exception e) {
+//			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//		}
 	}
 	
 	private void createFolderInDB(String userName, FolderRequestDto folderRequest, Integer parentID){
 		FolderEntity folderToCreate = folderMapper.dtoToEntity(folderRequest);
+		folderToCreate.setUserName(userName);
 		folderToCreate.setFolderID(parentID);
 		FolderEntity folder = folderRepository.saveAndFlush(folderToCreate);
 		
 		for (FileRequestDto fileRequest : folderRequest.getFiles()) {
 			FileEntity fileToCreate = fileMapper.dtoToEntity(fileRequest);
+			fileToCreate.setUserName(userName);
 			fileToCreate.setFolder(folder);
 		    fileRepository.saveAndFlush(fileToCreate);		
 		}
@@ -110,10 +112,10 @@ public class FolderService {
 			FolderEntity folderEntity = folderRepository.getById(folderID);
 
 			if ((folderEntity != null) && !(folderEntity.getTrashed()) &&
-			((folderID == ROOT_FOLDER_ID) || (folderEntity.getUserName() == userName))) {
+			((folderID == ROOT_FOLDER_ID) || (folderEntity.getUserName().equals(userName)))) {
 				List<FolderInfoResponseDto> folders = new ArrayList<FolderInfoResponseDto>();
 				for(FolderEntity folderEntity2: folderRepository.getAllFoldersByfolderID(folderID)) {
-					if(!(folderEntity2.getTrashed()) && (folderEntity2.getUserName() == userName)) {
+					if(!(folderEntity2.getTrashed()) && (folderEntity2.getUserName().equals(userName))) {
 						folders.add(folderMapper.entityToFolderInfoDto(folderEntity2));
 					}
 				}
@@ -139,12 +141,12 @@ public class FolderService {
 			List<FileEntity> trashFiles = trashFileRepository.getAllByTrashed(Boolean.TRUE);
 
 			for(FileEntity fileEntity: trashFiles) {
-				if(fileEntity.getUserName() == userName) {
+				if(fileEntity.getUserName().equals(userName)) {
 					files2.add(fileMapper.entityToFileInfoDto(fileEntity));
 				}
 			}
 			for(FolderEntity folderEntity: trashFolders) {
-				if(folderEntity.getUserName() == userName) {
+				if(folderEntity.getUserName().equals(userName)) {
 					folders2.add(folderMapper.entityToFolderInfoDto(folderEntity));
 				}
 			}
@@ -162,7 +164,7 @@ public class FolderService {
 		try {
 			FolderEntity folderEntity = folderRepository.getById(id);
 			if ((folderEntity != null) && !(folderEntity.getTrashed()) &&
-					(folderEntity.getUserName() == userName)) {
+					((id == ROOT_FOLDER_ID) || folderEntity.getUserName().equals(userName))) {
 				FolderResponseDto folderToDownload = folderMapper.entityToDto(folderRepository.getById(id));
 				List<FileResponseDto> fileResponses = new ArrayList<FileResponseDto>();
 				List<FolderResponseDto> folderResponses = new ArrayList<FolderResponseDto>();
@@ -181,12 +183,12 @@ public class FolderService {
 	
 	private FolderResponseDto addToDownloadFolder(String userName, FolderResponseDto folderToDownload, Integer id) throws Exception{
 		for (FileEntity fileEntity : fileRepository.getByFolderId(id)) {
-			if(!(fileEntity.getTrashed()) && (fileEntity.getUserName() == userName)) {
+			if(!(fileEntity.getTrashed()) && (fileEntity.getUserName().equals(userName))) {
 				folderToDownload.getFiles().add(fileMapper.entityToDto(fileEntity));
 			}
 		}
 		for (FolderEntity folderEntity : folderRepository.getAllFoldersByfolderID(id)) {
-			if(!(folderEntity.getTrashed()) && (folderEntity.getUserName() == userName)) {
+			if(!(folderEntity.getTrashed()) && (folderEntity.getUserName().equals(userName))) {
 				folderToDownload.getFolders().add(folderMapper.entityToDto(folderEntity));
 				folderToDownload = addToDownloadFolder(userName, folderToDownload, folderEntity.getId());
 			}
@@ -201,12 +203,12 @@ public class FolderService {
 	public ResponseEntity<FolderResponseDto> trashFolder(String userName, TrashRequestDto trashRequestDto, Integer id) {
 		try {
 			FolderEntity folderToTrash = folderRepository.getById(id);
-			if ((folderToTrash != null) && (folderToTrash.getUserName() == userName)) {	
+			if ((folderToTrash != null) && (folderToTrash.getUserName().equals(userName))) {	
 				// Get all the files with that folder_id
 				boolean isTrashed = trashRequestDto.getTrashed();
 				
 				for (FileEntity fileEntity : folderToTrash.getFiles()) {
-					if(fileEntity.getUserName() == userName) {
+					if(fileEntity.getUserName().equals(userName)) {
 						fileEntity.setTrashed(isTrashed);
 						fileRepository.saveAndFlush(fileEntity);					
 					}
@@ -230,8 +232,8 @@ public class FolderService {
 			FolderEntity folderToMove = folderRepository.getById(folderID1);
 			FolderEntity folderToMoveTo = folderRepository.getById(folderID2);
 			if (folderToMove != null && folderToMoveTo != null
-					&& ((folderToMove.getUserName() == userName) && 
-							(folderID2 == ROOT_FOLDER_ID || (folderToMoveTo.getUserName() == userName)))) {
+					&& ((folderToMove.getUserName().equals(userName)) && 
+							(folderID2 == ROOT_FOLDER_ID || (folderToMoveTo.getUserName().equals(userName))))) {
 				folderToMove.setFolderID(folderID2);
 				folderRepository.saveAndFlush(folderToMove);
 				return new ResponseEntity<>(HttpStatus.OK); 
@@ -250,10 +252,10 @@ public class FolderService {
 		try {
 			FolderEntity folderToDelete = folderRepository.getById(id);
 			if ((folderToDelete != null) && (folderToDelete.getTrashed())
-					&& (folderToDelete.getUserName() == userName)) {
+					&& (folderToDelete.getUserName().equals(userName))) {
 
 				for (FileEntity fileEntity : folderToDelete.getFiles()) {
-					if(fileEntity.getUserName() == userName) {
+					if(fileEntity.getUserName().equals(userName)) {
 						fileRepository.deleteById(fileEntity.getId());
 					}
 				}

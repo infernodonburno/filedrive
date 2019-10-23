@@ -32,7 +32,7 @@ public class FolderController {
      * GET End-points
      */
     @CrossOrigin
-    @GetMapping("/{userName}/{folderID}")
+    @GetMapping("/{userName}/{folderID}/all")
     public ResponseEntity<FoldersInfoResponseDto> getFolders(@PathVariable String userName, @PathVariable Integer folderID) {
     	return folderService.getFolders(userName, 1);
     }

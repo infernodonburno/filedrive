@@ -41,7 +41,7 @@ public class FileController {
      * GET End-points
      */
     @CrossOrigin
-    @GetMapping("/{userName}/{folderID}")
+    @GetMapping("/{userName}/{folderID}/all")
     public ResponseEntity<FilesInfoResponseDto> getFiles(@PathVariable String userName, @PathVariable Integer folderID){
     	return fileService.getFiles(userName, folderID);
     }
