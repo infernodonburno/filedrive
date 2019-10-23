@@ -80,7 +80,7 @@ public class FileController {
      * DELETE End-points
      */
     @CrossOrigin
-    @DeleteMapping("/{userName}/{id}/trash")
+    @DeleteMapping("/{userName}/{id}/delete")
     public ResponseEntity<FileResponseDto> deleteFile(@PathVariable String userName, @PathVariable Integer id) {
         return fileService.deleteFile(userName, id);
     }

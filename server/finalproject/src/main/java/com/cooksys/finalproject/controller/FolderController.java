@@ -34,7 +34,13 @@ public class FolderController {
     @CrossOrigin
     @GetMapping("/{userName}/{folderID}/all")
     public ResponseEntity<FoldersInfoResponseDto> getFolders(@PathVariable String userName, @PathVariable Integer folderID) {
-    	return folderService.getFolders(userName, 1);
+    	return folderService.getFolders(userName, folderID);
+    }
+    
+    @CrossOrigin
+    @GetMapping("/{userName}/all/nested")
+    public ResponseEntity<FoldersInfoResponseDto> getAllFolders(@PathVariable String userName) {
+    	return folderService.getAllFolders(userName);
     }
         
     @CrossOrigin
