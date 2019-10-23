@@ -1,0 +1,180 @@
+package com.cooksys.finalproject.service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+
+import com.cooksys.finalproject.dto.FileInfoResponseDto;
+import com.cooksys.finalproject.dto.FileRequestDto;
+import com.cooksys.finalproject.dto.FileResponseDto;
+import com.cooksys.finalproject.dto.FilesInfoResponseDto;
+import com.cooksys.finalproject.dto.TrashRequestDto;
+import com.cooksys.finalproject.entity.FileEntity;
+import com.cooksys.finalproject.entity.FolderEntity;
+import com.cooksys.finalproject.mapper.FileMapper;
+import com.cooksys.finalproject.repository.FileRepository;
+import com.cooksys.finalproject.repository.FolderRepository;
+
+@Service
+public class FileService {
+
+    private FileRepository fileRepository;
+    private FolderRepository folderRepository;
+    private FileMapper fileMapper;
+    private static final Integer ROOT_FOLDER_ID = 1;
+    private static final Integer ROOT_PARENT_ID = 0;
+    
+    public FileService(FileRepository fileRepository, FileMapper fileMapper, FolderRepository folderRepository) {
+        this.fileRepository = fileRepository;
+        this.folderRepository = folderRepository;
+        this.fileMapper = fileMapper;
+    }
+    
+    /*
+     * CREATE Ops
+     */
+	public ResponseEntity<FileResponseDto> uploadFile(String userName, FileRequestDto fileRequest, Integer folderID) {
+		try {
+			FileEntity fileToCreate = fileMapper.dtoToEntity(fileRequest);
+			fileToCreate.setUserName(userName);
+	        if((folderRepository.getById(folderID) != null)
+	        		&& ((folderID == ROOT_FOLDER_ID) || 
+	        				(folderRepository.getById(folderID).getUserName().equals(userName)))){
+	        	fileToCreate.setFolder(folderRepository.getById(folderID));
+	        }
+	        else if (folderRepository.getById(ROOT_FOLDER_ID) == null) {
+	        	FolderEntity folderToCreate = new FolderEntity();
+	        	folderToCreate.setFolderName("Root");
+	        	folderToCreate.setFolderID(ROOT_PARENT_ID);
+	        	folderToCreate.setUserName("Root");
+	        	folderRepository.saveAndFlush(folderToCreate);
+	        	fileToCreate.setFolder(folderToCreate);
+	        }
+	        else {
+	        	return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+	        }
+	        return new ResponseEntity<>(fileMapper.entityToDto(fileRepository.saveAndFlush(fileToCreate)), HttpStatus.CREATED);
+		} catch (Exception e) {
+	        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	/*
+	 * READ Ops
+	 */
+
+	public ResponseEntity<FilesInfoResponseDto> getFiles(String userName, Integer folderID) {
+		try {
+			FolderEntity folderEntity = folderRepository.getById(folderID);
+			if ((folderEntity != null) && !(folderEntity.getTrashed()) &&
+					((folderID == ROOT_FOLDER_ID) || (folderEntity.getUserName().equals(userName)))) {
+				FilesInfoResponseDto filesToView = new FilesInfoResponseDto();
+				List<FileInfoResponseDto> files = new ArrayList<FileInfoResponseDto>();
+				for(FileEntity fileEntity: fileRepository.getByFolderId(folderID)) {
+					if(fileEntity.getUserName().equals(userName)) {
+						files.add(fileMapper.entityToFileInfoDto(fileEntity));
+					}
+				}
+				filesToView.setFiles(files);
+		        return new ResponseEntity<FilesInfoResponseDto>(filesToView, HttpStatus.OK);
+			} else {
+		        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			}
+		} catch (Exception e) {
+	        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	public ResponseEntity<FileResponseDto> downloadFile(String userName, Integer id) {
+		try {
+			// check if the file is there and if not trashed
+			FileEntity fileToDownload = fileRepository.getById(id);
+			if ((fileToDownload != null) && !(fileToDownload.getTrashed())
+					&& (fileToDownload.getUserName().equals(userName))) {			
+		        return new ResponseEntity<>(fileMapper.entityToDto(fileToDownload), HttpStatus.OK);
+			} else {
+		        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			}			
+		} catch (Exception e) {
+	        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	/*
+	 * UPDATE Ops
+	 */
+	public ResponseEntity<FileResponseDto> trashFile(String userName, TrashRequestDto trashRequestDto, Integer id) {
+		try {
+			FileEntity fileToTrash = fileRepository.getById(id);
+			if ((fileToTrash != null) && (fileToTrash.getUserName().equals(userName))) {	
+				fileToTrash.setTrashed(trashRequestDto.getTrashed());
+				fileRepository.saveAndFlush(fileToTrash);
+				return new ResponseEntity<>(HttpStatus.RESET_CONTENT);
+			}
+			else {
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			}
+		} catch (Exception e) {
+	        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	public ResponseEntity<FileResponseDto> restoreFile(Integer id) {
+		try {
+			if (fileRepository.getById(id) != null) {	
+				FileEntity fileToRestore = fileRepository.getById(id);
+				fileToRestore.setTrashed(false);
+				fileRepository.saveAndFlush(fileToRestore);
+				return new ResponseEntity<>(HttpStatus.RESET_CONTENT);
+			}
+			else {
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			}			
+		} catch (Exception e) {
+	        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	public ResponseEntity<FileResponseDto> moveFile(String userName, Integer fileID, Integer folderID) {
+		try {
+			FileEntity fileToMove = fileRepository.getById(fileID);
+			FolderEntity folderToAddTo = folderRepository.getById(folderID);
+			if ((fileToMove != null) && (folderToAddTo != null)
+					&& (fileToMove.getUserName().equals(userName))
+					&& ((folderToAddTo.getUserName().equals(userName)) || (folderID == ROOT_FOLDER_ID))) {
+				
+				deleteFile(userName, fileID);
+				fileToMove.setFolder(folderToAddTo);
+				fileRepository.saveAndFlush(fileToMove);
+				folderToAddTo.getFiles().add(fileToMove);
+				folderRepository.saveAndFlush(folderToAddTo);
+				return new ResponseEntity<>(HttpStatus.RESET_CONTENT); 
+			} else {
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			}
+		} catch (Exception e) {
+	        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	/*
+	 * DELETE Ops
+	 */
+	public ResponseEntity<FileResponseDto> deleteFile(String userName, Integer id) {
+		try {
+			FileEntity fileToDeletePermanently = fileRepository.getById(id);
+			if (fileToDeletePermanently != null && fileToDeletePermanently.getTrashed()
+					&& (fileToDeletePermanently.getUserName().equals(userName))) {
+				fileRepository.deleteById(id);
+				return new ResponseEntity<>(HttpStatus.RESET_CONTENT); 
+			} else {
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			}		
+		} catch (Exception e) {
+	        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+}
