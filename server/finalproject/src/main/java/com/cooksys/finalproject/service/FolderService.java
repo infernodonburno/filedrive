@@ -111,7 +111,7 @@ public class FolderService {
 			}
 			folderToTrash.setTrashed(isTrashed);
 			folderRepository.saveAndFlush(folderToTrash);
-			return new ResponseEntity<>(HttpStatus.OK);
+			return new ResponseEntity<>(HttpStatus.RESET_CONTENT);
 		} else {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
@@ -125,7 +125,7 @@ public class FolderService {
 				fileRepository.deleteById(fileEntity.getId());
 			}
 			folderRepository.deleteById(id);
-			return new ResponseEntity<>(HttpStatus.OK); 
+			return new ResponseEntity<>(HttpStatus.RESET_CONTENT); 
 		}
 		else {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
