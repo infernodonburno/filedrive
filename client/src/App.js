@@ -15,7 +15,7 @@ const App = props => (
     <Route path='/' component={Header} />
     <Route exact path='/' component={Home} />
     <Route exact path='/trash' component={Trash} />
-    <Route path='/folders/:id' exact component={Folder} />
+    <Route path='/folders/:id' component={Folder} />
   </div>
 )
 

@@ -24,12 +24,6 @@ class FileContainer extends React.Component {
     this.props.setToggleTrashFile(this.props.file)
   }
 
-  onClickMove = event => {
-    // moveFile(props.file, props.fileID, props.folderID)
-    // console.log(props)
-    console.log('you clicked me')
-  }
-
   render () {
     console.log(this.props)
     return (
@@ -40,7 +34,6 @@ class FileContainer extends React.Component {
               <MoveFileModal
                 folders={this.props.folders}
                 file={this.props.file}
-                onClickMove={this.onClickMove}
               />
             </td>
             <td>
@@ -73,9 +66,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   thunkDownloadFile: id => dispatch(thunkDownloadFile(id)),
-  setToggleTrashFile: file => dispatch(setToggleTrashFile(file)),
-  moveFile: (file, fileID, folderID) =>
-    dispatch(moveFile(file, fileID, folderID))
+  setToggleTrashFile: file => dispatch(setToggleTrashFile(file))
   // downloadFile: id => dispatch(downloadFile(id))
 })
 

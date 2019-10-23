@@ -1,7 +1,7 @@
 import { fetchFiles } from '../services/api'
 
-export const LOAD_FILES_DONE = 'LOAD_FILES'
-export const LOAD_FILES_FAILURE = 'LOAD_FILES_BEGIN'
+export const LOAD_FILES_DONE = 'LOAD_FILES_DONE'
+export const LOAD_FILES_FAILURE = 'LOAD_FILES_FAILURE'
 export const LOAD_FILES_BEGIN = 'LOAD_FILES_BEGIN'
 // export const LOAD_FOLDERS_BEGIN = 'LOAD_FOLDERS_BEGIN'
 // export const LOAD_FOLDERS_DONE = 'LOAD_FOLDERS_DONE'

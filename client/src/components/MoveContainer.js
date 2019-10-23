@@ -13,8 +13,6 @@ class MoveContainer extends React.Component {
 
   onClickMove = event => {
     this.props.moveFile(this.props.file, this.props.fileID, this.props.folderID)
-    console.log(this.props)
-    console.log('you clicked me')
   }
   render () {
     return (
