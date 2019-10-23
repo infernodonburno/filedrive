@@ -18,11 +18,21 @@ const folderContainer = props =>
     </MoveContainer>
   ))
 
+//   const rootFolderContainer = props =>
+
 const MoveFileModal = props => (
   <Popup trigger={<Link> {props.file.fileName} </Link>} modal>
     {close => (
       <div>
         {console.log(props)}
+        <MoveContainer
+          key='1'
+          folderID={1}
+          folderName='Root'
+          file={props.file}
+          fileID={props.file.id}
+          onClick={props.onClickMove}
+        />
         {folderContainer(props)}
       </div>
     )}

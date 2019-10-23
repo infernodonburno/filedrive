@@ -56,7 +56,6 @@ function postToServer (endpoint, req) {
     },
     body: JSON.stringify(req)
   }
-  console.log(`OPTIONS: ${options.body}`)
   return request(url, options)
 }
 
@@ -85,7 +84,6 @@ function patchToServer (endpoint, req) {
     },
     body: JSON.stringify(req)
   }
-  console.log(`OPTIONS: ${options.body}`)
   return request(url, options)
 }
 
@@ -99,7 +97,6 @@ export function deleteFolderFromServer (id) {
 
 function deleteFromServer (endpoint) {
   let url = [SERVER_ROOT, endpoint].join('/')
-  console.log(url)
   const options = {
     method: 'DELETE',
     headers: {
