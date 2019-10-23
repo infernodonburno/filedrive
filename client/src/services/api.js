@@ -3,8 +3,8 @@ import request from '../utils/request'
 const SERVER_ROOT = 'http://localhost:8080'
 
 // Fetch all files from root folder
-export function fetchFiles () {
-  return fetchFromServer('folders/1')
+export function fetchFiles (folderID) {
+  return fetchFromServer(`folders/${folderID}`)
 }
 
 // Fetch all folders from root
@@ -34,6 +34,7 @@ export function fetchTrashFolders () {
 
 function fetchFromServer (endpoint, options) {
   let url = [SERVER_ROOT, endpoint].join('/')
+  console.log(url)
   return request(url)
 }
 
@@ -42,7 +43,7 @@ export function postFile (file, folderID) {
 }
 
 export function postFolder (folderReq) {
-  return postToServer(`folders`, folderReq)
+  return postToServer('folders', folderReq)
 }
 
 function postToServer (endpoint, req) {

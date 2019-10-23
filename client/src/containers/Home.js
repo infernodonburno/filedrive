@@ -1,14 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import styled from 'styled-components'
 
 import { loadFiles, loadFolders } from '../ducks/config.duck'
 import FileContainer from '../components/FileContainer'
 import FolderContainer from '../components/FolderContainer'
 import UploadButton from '../components/UploadButton'
 import StyledCard from '../components/StyledCard'
-import FileUpload from '../utils/upload'
 
 class Home extends React.Component {
   componentDidMount () {
@@ -46,6 +44,7 @@ class Home extends React.Component {
 }
 Home.propTypes = {
   loadFiles: PropTypes.func.isRequired,
+  loadFolders: PropTypes.func.isRequired,
   files: PropTypes.array.isRequired,
   folders: PropTypes.array.isRequired
 }

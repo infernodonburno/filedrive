@@ -23,6 +23,10 @@ class FileContainer extends React.Component {
     this.props.setToggleTrashFile(this.props.file)
   }
 
+  // onClickMove = event => {
+  //   console.log('you clicked me')
+  // }
+
   render () {
     return (
       <ContainerStyle>
@@ -32,6 +36,9 @@ class FileContainer extends React.Component {
             <td>
               <Button text='Download' onClick={this.onClickDownload} />
             </td>
+            {/* <td>
+              <Button text='Move...' onClick={this.onClickMove} />
+            </td> */}
             <td>
               <TrashButton onClick={this.onClickTrash} />
             </td>

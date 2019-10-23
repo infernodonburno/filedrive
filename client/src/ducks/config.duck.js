@@ -77,7 +77,7 @@ const loadFoldersFailed = () => ({
 
 export const loadFiles = () => dispatch => {
   dispatch(loadFilesBegin())
-  fetchFiles()
+  fetchFiles(1)
     .then(({ files }) => {
       return dispatch(loadFilesDone(files))
     })

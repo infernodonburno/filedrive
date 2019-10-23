@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 
 import ContainerStyle from './ContainerStyle'
 import Button from './Button'
@@ -26,12 +27,15 @@ class FolderContainer extends React.Component {
   }
 
   render () {
-    // console.log(this.props.folder.data)
     return (
       <ContainerStyle>
         <tbody>
           <tr>
-            <td className='a'>{this.props.folderName}</td>
+            <td className='a'>
+              <Link to={`folders/${this.props.id}`}>
+                {this.props.folderName}
+              </Link>{' '}
+            </td>
             <td>
               <Button text='Download' onClick={this.onClickDownload} />
             </td>
