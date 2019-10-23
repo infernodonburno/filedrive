@@ -1,7 +1,5 @@
 import React from 'react'
 
-import { toggleTrashFile } from '../ducks/trash.duck'
-
 const TrashButton = props => {
   return (
     <div>

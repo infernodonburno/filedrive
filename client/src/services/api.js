@@ -71,6 +71,10 @@ export function patchTrashFolder (folder) {
   return patchToServer(endpoint, { trashed: folder.trashed })
 }
 
+export function patchMoveFile (fileID, folderID) {
+  return patchToServer(`/files/${fileID}/${folderID}/move`)
+}
+
 function patchToServer (endpoint, req) {
   let url = [SERVER_ROOT, endpoint].join('/')
   console.log(url)

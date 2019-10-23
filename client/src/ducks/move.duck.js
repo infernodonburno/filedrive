@@ -1,43 +1,63 @@
+import { patchMoveFile } from '../services/api'
+
+export const MOVE_FILE_PROGRESS = 'MOVE_FILE_PROGRESS'
 export const MOVE_FILE_DONE = 'MOVE_FILE_DONE'
 export const MOVE_FILE_FAILURE = 'MOVE_FILE_FAILURE'
-export const MOVE_FILE_BEGIN = 'MOVE_FILE_BEGIN'
 
 const initialState = {
-  files: [],
+  file: {},
   errorMovingFile: false
 }
 
 export default function reducer (state = initialState, action) {
   switch (action.type) {
+    case MOVE_FILE_PROGRESS:
+      return {
+        ...state,
+        errorMovingFile: false,
+        file: action.payload.file
+      }
     case MOVE_FILE_DONE:
       return {
         ...state,
-        errorMovingFiles: false,
-        files: action.payload.files
+        errorMovingFile: false
       }
     case MOVE_FILE_FAILURE:
       return {
         ...state,
-        files: initialState.files
+        errorMovingFile: true,
+        file: initialState.file
       }
     default:
       return state
   }
 }
 
-export const viewFileDone = (files) => ({
-  type: MOVE_FILE_DONE,
+const moveFileProgress = file => ({
+  type: MOVE_FILE_PROGRESS,
   payload: {
-    files
+    file
   }
 })
 
-export const viewFolderDone = () => ({
+const moveFileDone = () => ({
+  type: MOVE_FILE_DONE
+})
+
+const moveFileFailure = () => ({
   type: MOVE_FILE_FAILURE
 })
 
-const moveFileBegin = () => ({
-  type: MOVE_FILE_BEGIN
-})
-
-// TOTO API FETCH FOR FILES TO MOVE
+export const moveFile = (file, fileID, folderID) => dispatch => {
+  dispatch(moveFileProgress(file))
+  console.log(fileID, folderID)
+  patchMoveFile(fileID, folderID)
+    .then(response => {
+      console.log(response)
+      if (response === null) {
+        window.location.reload()
+        return dispatch(moveFileDone())
+      }
+    })
+    .catch(err => dispatch(moveFileFailure(err)))
+}

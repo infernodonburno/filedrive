@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 
 import ContainerStyle from './ContainerStyle'
 import Button from './Button'
+import MoveFileModal from './MoveFileModal'
 import TrashButton from './TrashButton'
 import { thunkDownloadFile, downloadFile } from '../ducks/download.duck'
 import { setToggleTrashFile } from '../ducks/trash.duck'
@@ -23,22 +24,28 @@ class FileContainer extends React.Component {
     this.props.setToggleTrashFile(this.props.file)
   }
 
-  // onClickMove = event => {
-  //   console.log('you clicked me')
-  // }
+  onClickMove = event => {
+    // moveFile(props.file, props.fileID, props.folderID)
+    // console.log(props)
+    console.log('you clicked me')
+  }
 
   render () {
+    console.log(this.props)
     return (
       <ContainerStyle>
         <tbody>
           <tr>
-            <td className='a'>{this.props.fileName}</td>
+            <td className='a'>
+              <MoveFileModal
+                folders={this.props.folders}
+                file={this.props.file}
+                onClickMove={this.onClickMove}
+              />
+            </td>
             <td>
               <Button text='Download' onClick={this.onClickDownload} />
             </td>
-            {/* <td>
-              <Button text='Move...' onClick={this.onClickMove} />
-            </td> */}
             <td>
               <TrashButton onClick={this.onClickTrash} />
             </td>
@@ -50,7 +57,8 @@ class FileContainer extends React.Component {
 }
 
 FileContainer.propTypes = {
-  fileName: PropTypes.string.isRequired,
+  file: PropTypes.object.isRequired,
+  folders: PropTypes.array.isRequired,
   thunkDownloadFile: PropTypes.func.isRequired,
   setToggleTrashFile: PropTypes.func.isRequired
   // downloadFile: PropTypes.func.isRequired
@@ -58,12 +66,16 @@ FileContainer.propTypes = {
 
 const mapStateToProps = state => ({
   downloadedFile: state.download.file,
-  trashedFile: state.trash.file
+  trashedFile: state.trash.file,
+  moveFile: state.move.file,
+  folders: state.config.folders
 })
 
 const mapDispatchToProps = dispatch => ({
   thunkDownloadFile: id => dispatch(thunkDownloadFile(id)),
-  setToggleTrashFile: file => dispatch(setToggleTrashFile(file))
+  setToggleTrashFile: file => dispatch(setToggleTrashFile(file)),
+  moveFile: (file, fileID, folderID) =>
+    dispatch(moveFile(file, fileID, folderID))
   // downloadFile: id => dispatch(downloadFile(id))
 })
 
