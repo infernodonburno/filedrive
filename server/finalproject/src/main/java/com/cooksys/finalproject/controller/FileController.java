@@ -16,11 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cooksys.finalproject.dto.FileRequestDto;
 import com.cooksys.finalproject.dto.FileResponseDto;
-import com.cooksys.finalproject.dto.FolderResponseDto;
-import com.cooksys.finalproject.dto.TrashFilesResponseDto;
+import com.cooksys.finalproject.dto.FilesInfoResponseDto;
 import com.cooksys.finalproject.dto.TrashRequestDto;
 import com.cooksys.finalproject.service.FileService;
-import com.cooksys.finalproject.service.FolderService;
 
 
 @RestController
@@ -28,11 +26,9 @@ import com.cooksys.finalproject.service.FolderService;
 public class FileController {
 
     private FileService fileService;
-    private FolderService folderService;
     
-    public FileController(FileService fileService, FolderService folderService) {
+    public FileController(FileService fileService) {
         this.fileService = fileService;
-        this.folderService = folderService;
     }
     
     @PreAuthorize("#oauth2.hasScope('profile')")
@@ -46,14 +42,8 @@ public class FileController {
      */
     @CrossOrigin
     @GetMapping("/{userName}/{folderID}")
-    public ResponseEntity<FolderResponseDto> getFiles(@PathVariable String userName, @PathVariable Integer folderID){
-    	return folderService.downloadFolder(userName, folderID);
-    }
-    
-    @CrossOrigin
-    @GetMapping("/{userName}/trash")
-    public ResponseEntity<TrashFilesResponseDto> getTrashFiles(@PathVariable String userName){
-    	return fileService.getTrashFiles(userName);
+    public ResponseEntity<FilesInfoResponseDto> getFiles(@PathVariable String userName, @PathVariable Integer folderID){
+    	return fileService.getFiles(userName, folderID);
     }
     
     @CrossOrigin

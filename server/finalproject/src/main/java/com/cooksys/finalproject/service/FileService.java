@@ -7,32 +7,30 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.cooksys.finalproject.dto.FileInfoResponseDto;
 import com.cooksys.finalproject.dto.FileRequestDto;
 import com.cooksys.finalproject.dto.FileResponseDto;
-import com.cooksys.finalproject.dto.TrashFilesResponseDto;
+import com.cooksys.finalproject.dto.FilesInfoResponseDto;
 import com.cooksys.finalproject.dto.TrashRequestDto;
 import com.cooksys.finalproject.entity.FileEntity;
 import com.cooksys.finalproject.entity.FolderEntity;
 import com.cooksys.finalproject.mapper.FileMapper;
 import com.cooksys.finalproject.repository.FileRepository;
 import com.cooksys.finalproject.repository.FolderRepository;
-import com.cooksys.finalproject.repository.TrashFileRepository;
 
 @Service
 public class FileService {
 
     private FileRepository fileRepository;
     private FolderRepository folderRepository;
-    private TrashFileRepository trashFileRepository;
     private FileMapper fileMapper;
     private static final Integer ROOT_FOLDER_ID = 1;
     private static final Integer ROOT_PARENT_ID = 0;
     
-    public FileService(FileRepository fileRepository, TrashFileRepository trashFileRepository, FileMapper fileMapper, FolderRepository folderRepository) {
+    public FileService(FileRepository fileRepository, FileMapper fileMapper, FolderRepository folderRepository) {
         this.fileRepository = fileRepository;
         this.folderRepository = folderRepository;
         this.fileMapper = fileMapper;
-        this.trashFileRepository = trashFileRepository;
     }
     
     /*
@@ -65,6 +63,29 @@ public class FileService {
 	/*
 	 * READ Ops
 	 */
+
+	public ResponseEntity<FilesInfoResponseDto> getFiles(String userName, Integer folderID) {
+		try {
+			FolderEntity folderEntity = folderRepository.getById(folderID);
+			if ((folderEntity != null) && !(folderEntity.getTrashed()) &&
+					((folderID == ROOT_FOLDER_ID) || (folderEntity.getUserName() == userName))) {
+				FilesInfoResponseDto filesToView = new FilesInfoResponseDto();
+				List<FileInfoResponseDto> files = new ArrayList<FileInfoResponseDto>();
+				for(FileEntity fileEntity: fileRepository.getByFolderId(folderID)) {
+					if(fileEntity.getUserName() == userName) {
+						files.add(fileMapper.entityToFileInfoDto(fileEntity));
+					}
+				}
+				filesToView.setFiles(files);
+		        return new ResponseEntity<FilesInfoResponseDto>(filesToView, HttpStatus.OK);
+			} else {
+		        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			}
+		} catch (Exception e) {
+	        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
 	public ResponseEntity<FileResponseDto> downloadFile(String userName, Integer id) {
 		try {
 			// check if the file is there and if not trashed
@@ -77,23 +98,6 @@ public class FileService {
 			}			
 		} catch (Exception e) {
 	        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}
-	
-	public ResponseEntity<TrashFilesResponseDto> getTrashFiles(String userName) {
-		try {
-			TrashFilesResponseDto response = new TrashFilesResponseDto();
-			List<FileEntity> trashFiles = trashFileRepository.getAllByTrashed(Boolean.TRUE);
-			List<FileResponseDto> files = new ArrayList<FileResponseDto>();
-			for(FileEntity fileEntity: trashFiles) {
-				if(fileEntity.getUserName() == userName) {
-					files.add(fileMapper.entityToDto(fileEntity));
-				}
-			}
-			response.setFiles(files);
-			return new ResponseEntity<TrashFilesResponseDto>(response, HttpStatus.OK); 	
-		} catch (Exception e) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
 

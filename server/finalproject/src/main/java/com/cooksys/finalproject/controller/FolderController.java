@@ -13,8 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cooksys.finalproject.dto.FolderRequestDto;
 import com.cooksys.finalproject.dto.FolderResponseDto;
-import com.cooksys.finalproject.dto.FoldersResponseDto;
-import com.cooksys.finalproject.dto.TrashFoldersResponseDto;
+import com.cooksys.finalproject.dto.FoldersInfoResponseDto;
 import com.cooksys.finalproject.dto.TrashRequestDto;
 import com.cooksys.finalproject.service.FolderService;
 
@@ -34,16 +33,10 @@ public class FolderController {
      */
     @CrossOrigin
     @GetMapping("/{userName}/{folderID}")
-    public ResponseEntity<FoldersResponseDto> getFolders(@PathVariable String userName, @PathVariable Integer folderID) {
+    public ResponseEntity<FoldersInfoResponseDto> getFolders(@PathVariable String userName, @PathVariable Integer folderID) {
     	return folderService.getFolders(userName, 1);
     }
-    
-    @CrossOrigin
-    @GetMapping("/{userName}/trash")
-    public ResponseEntity<TrashFoldersResponseDto> getTrashFolders(@PathVariable String userName){
-    	return folderService.getTrashFolders(userName);
-    }
-    
+        
     @CrossOrigin
     @GetMapping("/{userName}/{id}")
     public ResponseEntity<FolderResponseDto> downloadFolder(@PathVariable String userName, @PathVariable Integer id) {
