@@ -10,7 +10,7 @@ import StyledCard from '../components/StyledCard'
 
 class Home extends React.Component {
   componentDidMount () {
-    this.props.loadFiles(), this.props.loadFolders()
+    this.props.loadFiles(1), this.props.loadFolders()
   }
 
   render () {
@@ -37,7 +37,7 @@ class Home extends React.Component {
           {folders}
           {files}
         </StyledCard>
-        <UploadButton />
+        <UploadButton folderID='1' />
       </React.Fragment>
     )
   }
@@ -55,7 +55,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  loadFiles: () => dispatch(loadFiles()),
+  loadFiles: folderID => dispatch(loadFiles(folderID)),
   loadFolders: () => dispatch(loadFolders())
 })
 

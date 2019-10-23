@@ -102,12 +102,12 @@ const uploadFolderFailure = () => ({
 //   return { fileName: file.name, data: fileByteArray }
 // }
 
-export const uploadFile = file => dispatch => {
+export const uploadFile = (file, folderID) => dispatch => {
   console.log('loading')
   dispatch(uploadFileBegin())
   // let file = getFileRequest(fileListItem)
   console.log('posting')
-  postFile(file, 1)
+  postFile(file, folderID)
     .then(response => {
       // then, that file is used in postFile
       console.log('returned response')

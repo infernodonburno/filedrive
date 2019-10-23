@@ -76,7 +76,6 @@ class UploadButton extends React.Component {
 
     const onChangeFile = event => {
       let fileList = document.getElementById('uploadfile').files
-      console.log(fileList.item(0))
       let file = fileList.item(0)
       let reader = new FileReader()
       let fileByteArray = []
@@ -88,11 +87,10 @@ class UploadButton extends React.Component {
           for (let i = 0; i < array.length; i++) {
             fileByteArray.push(array[i])
           }
-          console.log(fileByteArray)
           let fileRequest = { fileName: file.name, data: fileByteArray }
-          console.log(fileRequest)
-          this.props.uploadFile(fileRequest)
-          
+          let folderID = this.props.folderID
+          console.log(folderID)
+          this.props.uploadFile(fileRequest, folderID)
         }
       }
     }
@@ -185,17 +183,17 @@ class UploadButton extends React.Component {
           {/* <UploadButtonStyle onClick={onClick}>Upload</UploadButtonStyle> */}
           <label>
             Upload a file:
-          <input type='file' id='uploadfile' onChange={onChangeFile} />
+            <input type='file' id='uploadfile' onChange={onChangeFile} />
           </label>
           <label>
             Upload a folder:
-          <input
-            directory=''
-            webkitdirectory=''
-            type='file'
-            id='uploadfolder'
-            onChange={onChangeFolder}
-          />
+            <input
+              directory=''
+              webkitdirectory=''
+              type='file'
+              id='uploadfolder'
+              onChange={onChangeFolder}
+            />
           </label>
         </div>
       </UploadCenter>
@@ -204,6 +202,7 @@ class UploadButton extends React.Component {
 }
 
 UploadButton.propTypes = {
+  folderID: PropTypes.string.isRequired,
   uploadFile: PropTypes.func.isRequired,
   uploadFolder: PropTypes.func.isRequired
 }
@@ -214,7 +213,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  uploadFile: file => dispatch(uploadFile(file)),
+  uploadFile: (file, folderID) => dispatch(uploadFile(file, folderID)),
   uploadFolder: folder => dispatch(uploadFolder(folder))
 })
 
