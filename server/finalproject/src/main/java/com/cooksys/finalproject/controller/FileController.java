@@ -41,6 +41,9 @@ public class FileController {
         return "Hello " + principal.getName();
     }
     
+    /*
+     * GET End-points
+     */
     @CrossOrigin
     @GetMapping("/{userName}/{folderID}")
     public ResponseEntity<FolderResponseDto> getFiles(@PathVariable String userName, @PathVariable Integer folderID){
@@ -59,12 +62,18 @@ public class FileController {
         return fileService.downloadFile(userName, id);
     }
 
+    /*
+     * POST End-points
+     */
     @CrossOrigin
     @PostMapping("/{userName}/{folderID}")
     public ResponseEntity<FileResponseDto> uploadFile(@PathVariable String userName, @RequestBody FileRequestDto fileRequest,@PathVariable Integer folderID ) {
         return fileService.uploadFile(userName, fileRequest, folderID);
     }
     
+    /*
+     * PATCH End-points
+     */
     @CrossOrigin
     @PatchMapping("/{userName}/{fileID}/{folderID}/move")
     public ResponseEntity<FileResponseDto> moveFile(@PathVariable String userName, @PathVariable Integer fileID, @PathVariable Integer folderID) {
@@ -77,6 +86,9 @@ public class FileController {
         return fileService.trashFile(userName, trashRequestDto, id);
     }
     
+    /*
+     * DELETE End-points
+     */
     @CrossOrigin
     @DeleteMapping("/{userName}/{id}/trash")
     public ResponseEntity<FileResponseDto> deleteFile(@PathVariable String userName, @PathVariable Integer id) {

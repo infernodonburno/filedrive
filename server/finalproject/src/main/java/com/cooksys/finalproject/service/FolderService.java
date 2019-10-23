@@ -44,18 +44,18 @@ public class FolderService {
     /*
      * CREATE Ops
      */
-	public ResponseEntity<FolderResponseDto> uploadFolder(String userName, FolderRequestDto folderRequest) {
+	public ResponseEntity<FolderResponseDto> uploadFolder(String userName, Integer folderID, FolderRequestDto folderRequest) {
 		try {
-			if ((folderRepository.getById(folderRequest.getFolderID()) != null)
-					&& ((folderRequest.getFolderID() == ROOT_FOLDER_ID) || 
-					((folderRepository.getById(folderRequest.getFolderID()).getUserName() == userName)))) {
-	    		createFolderInDB(userName, folderRequest, folderRequest.getFolderID());
+			if ((folderRepository.getById(folderID) != null)
+					&& ((folderID == ROOT_FOLDER_ID) || 
+					((folderRepository.getById(folderID).getUserName() == userName)))) {
+	    		createFolderInDB(userName, folderRequest, folderID);
 				return new ResponseEntity<>(HttpStatus.CREATED);			
 			}
 			// If root doesn't exist, create root folder
 			else if (folderRepository.getById(ROOT_FOLDER_ID) == null) {
 				createRootFolderInDB("Root");
-	        	if(folderRequest.getFolderID() == ROOT_FOLDER_ID) {
+	        	if(folderID == ROOT_FOLDER_ID) {
 	            	// create the folder requested if child of root
 	        		createFolderInDB(userName, folderRequest, ROOT_FOLDER_ID);
 	    			return new ResponseEntity<>(HttpStatus.CREATED);
@@ -77,11 +77,9 @@ public class FolderService {
 		FolderEntity folder = folderRepository.saveAndFlush(folderToCreate);
 		
 		for (FileRequestDto fileRequest : folderRequest.getFiles()) {
-			if(fileRequest.getUserName() == userName) {
-				FileEntity fileToCreate = fileMapper.dtoToEntity(fileRequest);
-				fileToCreate.setFolder(folder);
-		        fileRepository.saveAndFlush(fileToCreate);		
-			}
+			FileEntity fileToCreate = fileMapper.dtoToEntity(fileRequest);
+			fileToCreate.setFolder(folder);
+		    fileRepository.saveAndFlush(fileToCreate);		
 		}
 
 		for (FolderRequestDto folderRequestInThisFolder : folderRequest.getFolders()) {
@@ -90,7 +88,6 @@ public class FolderService {
 	}
 	
 	private void createRootFolderInDB(String username){
-		// create a root folder
     	FolderEntity rootFolderToCreate = new FolderEntity();
     	rootFolderToCreate.setFolderName("Root");
     	rootFolderToCreate.setFolderID(ROOT_PARENT_ID);
@@ -101,7 +98,6 @@ public class FolderService {
 	/*
 	 * READ Ops
 	 */
-	
 	public ResponseEntity<FoldersResponseDto> getFolders(String userName, Integer folderID) {
 		try {
 			FoldersResponseDto responseToSendBack = new FoldersResponseDto();
@@ -228,7 +224,6 @@ public class FolderService {
 	/*
 	 * DELETE Ops
 	 */
-	
 	public ResponseEntity<FolderResponseDto> deleteFolder(String userName, Integer id) {
 		try {
 			FolderEntity folderToDelete = folderRepository.getById(id);

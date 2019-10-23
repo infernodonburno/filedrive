@@ -29,6 +29,9 @@ public class FolderController {
         this.folderService = folderService;
     }
     
+    /*
+     * GET End-points
+     */
     @CrossOrigin
     @GetMapping("/{userName}/{folderID}")
     public ResponseEntity<FoldersResponseDto> getFolders(@PathVariable String userName, @PathVariable Integer folderID) {
@@ -47,12 +50,18 @@ public class FolderController {
         return folderService.downloadFolder(userName, id);
     }
     
+    /*
+     * POST End-points
+     */
     @CrossOrigin
-    @PostMapping("/{userName}")
-    public ResponseEntity<FolderResponseDto> uploadFolder(@PathVariable String userName, @RequestBody FolderRequestDto folderRequest) {
-        return folderService.uploadFolder(userName, folderRequest);
+    @PostMapping("/{userName}/{folderID}")
+    public ResponseEntity<FolderResponseDto> uploadFolder(@PathVariable String userName, @PathVariable Integer folderID, @RequestBody FolderRequestDto folderRequest) {
+        return folderService.uploadFolder(userName, folderID, folderRequest);
     }
 
+    /*
+     * PATCH End-points
+     */
     @CrossOrigin
     @PatchMapping("/{userName}/{folderID1}/{folderID2}/move")
     public ResponseEntity<FolderResponseDto> moveFolder(@PathVariable String userName, @PathVariable Integer folderID1, @PathVariable Integer folderID2) {
@@ -65,6 +74,9 @@ public class FolderController {
         return folderService.trashFolder(userName, trashRequestDto, id);
     }
     
+    /*
+     * DELETE End-points
+     */
     @CrossOrigin
     @DeleteMapping("/{userName}/{id}/delete")
     public ResponseEntity<FolderResponseDto> deleteFolder(@PathVariable String userName, @PathVariable Integer id) {

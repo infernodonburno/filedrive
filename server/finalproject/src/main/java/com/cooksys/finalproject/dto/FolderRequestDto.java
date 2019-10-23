@@ -5,21 +5,11 @@ import java.util.List;
 public class FolderRequestDto {
 
 	private String folderName;
-	private Integer folderID;
 	private List<FileRequestDto> files;
 	private List<FolderRequestDto> folders;
-    private String userName;
 
 	public FolderRequestDto() {
 
-	}
-
-	public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
 	}
 
 	public List<FolderRequestDto> getFolders() {
@@ -43,14 +33,6 @@ public class FolderRequestDto {
 
 	public void setFolderName(String folderName) {
 		this.folderName = folderName;
-	}
-
-	public Integer getFolderID() {
-		return folderID;
-	}
-
-	public void setFolderID(Integer folderID) {
-		this.folderID = folderID;
 	}
 
 	public List<FileRequestDto> getFiles() {

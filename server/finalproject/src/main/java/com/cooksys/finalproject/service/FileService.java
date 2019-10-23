@@ -35,15 +35,8 @@ public class FileService {
         this.trashFileRepository = trashFileRepository;
     }
     
-    /**
-     * /**
-     * Uploads a new file if not already in database for this folder
-     * If file is in database but trashed, will restore the file.
-     * @param userName 
-     * 
-     * @param fileRequest
-     * @param folderID 
-     * @return ResponseEntity<FileResponseDto>
+    /*
+     * CREATE Ops
      */
 	public ResponseEntity<FileResponseDto> uploadFile(String userName, FileRequestDto fileRequest, Integer folderID) {
 		try {
@@ -69,6 +62,9 @@ public class FileService {
 		}
 	}
 
+	/*
+	 * READ Ops
+	 */
 	public ResponseEntity<FileResponseDto> downloadFile(String userName, Integer id) {
 		try {
 			// check if the file is there and if not trashed
@@ -83,7 +79,27 @@ public class FileService {
 	        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	
+	public ResponseEntity<TrashFilesResponseDto> getTrashFiles(String userName) {
+		try {
+			TrashFilesResponseDto response = new TrashFilesResponseDto();
+			List<FileEntity> trashFiles = trashFileRepository.getAllByTrashed(Boolean.TRUE);
+			List<FileResponseDto> files = new ArrayList<FileResponseDto>();
+			for(FileEntity fileEntity: trashFiles) {
+				if(fileEntity.getUserName() == userName) {
+					files.add(fileMapper.entityToDto(fileEntity));
+				}
+			}
+			response.setFiles(files);
+			return new ResponseEntity<TrashFilesResponseDto>(response, HttpStatus.OK); 	
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	}
 
+	/*
+	 * UPDATE Ops
+	 */
 	public ResponseEntity<FileResponseDto> trashFile(String userName, TrashRequestDto trashRequestDto, Integer id) {
 		try {
 			FileEntity fileToTrash = fileRepository.getById(id);
@@ -116,21 +132,6 @@ public class FileService {
 		}
 	}
 	
-	public ResponseEntity<FileResponseDto> deleteFile(String userName, Integer id) {
-		try {
-			FileEntity fileToDeletePermanently = fileRepository.getById(id);
-			if (fileToDeletePermanently != null && fileToDeletePermanently.getTrashed()
-					&& (fileToDeletePermanently.getUserName() == userName)) {
-				fileRepository.deleteById(id);
-				return new ResponseEntity<>(HttpStatus.RESET_CONTENT); 
-			} else {
-				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-			}		
-		} catch (Exception e) {
-	        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}
-
 	public ResponseEntity<FileResponseDto> moveFile(String userName, Integer fileID, Integer folderID) {
 		try {
 			FileEntity fileToMove = fileRepository.getById(fileID);
@@ -152,21 +153,22 @@ public class FileService {
 	        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-
-	public ResponseEntity<TrashFilesResponseDto> getTrashFiles(String userName) {
+	
+	/*
+	 * DELETE Ops
+	 */
+	public ResponseEntity<FileResponseDto> deleteFile(String userName, Integer id) {
 		try {
-			TrashFilesResponseDto response = new TrashFilesResponseDto();
-			List<FileEntity> trashFiles = trashFileRepository.getAllByTrashed(Boolean.TRUE);
-			List<FileResponseDto> files = new ArrayList<FileResponseDto>();
-			for(FileEntity fileEntity: trashFiles) {
-				if(fileEntity.getUserName() == userName) {
-					files.add(fileMapper.entityToDto(fileEntity));
-				}
-			}
-			response.setFiles(files);
-			return new ResponseEntity<TrashFilesResponseDto>(response, HttpStatus.OK); 	
+			FileEntity fileToDeletePermanently = fileRepository.getById(id);
+			if (fileToDeletePermanently != null && fileToDeletePermanently.getTrashed()
+					&& (fileToDeletePermanently.getUserName() == userName)) {
+				fileRepository.deleteById(id);
+				return new ResponseEntity<>(HttpStatus.RESET_CONTENT); 
+			} else {
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			}		
 		} catch (Exception e) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+	        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 }
