@@ -99,12 +99,22 @@ export const thunkDownloadFile = id => dispatch => {
     .then(file => {
       console.log('This is the file: ', file)
       // console.log(file.data)
-      var fileDownload = require('js-file-download')
+
+      var JSZip = require('jszip')
+      var zip = new JSZip()
+
+      console.log('yo')
 
       // convert file data back to real data
       var decodedData = window.atob(file.data) // decode the string
 
-      fileDownload(decodedData, file.fileName)
+      file.data = decodedData
+      zip.file(file.fileName, file.data, { binary: true })
+
+      zip.generateAsync({ type: 'blob' }).then(function (content) {
+        saveAs(content, `${file.fileName}.zip`)
+      })
+
       return dispatch(downloadFileDone(file))
     })
     .catch(err => dispatch(downloadFileFailure(err)))

@@ -25,7 +25,7 @@ const ViewFolderContainer = props => {
     <FolderContainerStyle>
       <span>{folderNames}</span>
       <DownloadButton />
-      <TrashButton />{' '}
+      <TrashButton src='https://vignette.wikia.nocookie.net/tana-mongeau4885/images/3/36/Photo.jpg/revision/latest?cb=20170412031044' />{' '}
     </FolderContainerStyle>
   )
 }
