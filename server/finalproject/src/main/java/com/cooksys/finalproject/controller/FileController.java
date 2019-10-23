@@ -37,49 +37,49 @@ public class FileController {
     
     @PreAuthorize("#oauth2.hasScope('profile')")
     @GetMapping("/protected/")
-    public String helloWorldProtected(Principal principal) {
-        return "Hello VIP " + principal.getName();
+    public String helloProtected(Principal principal) {
+        return "Hello " + principal.getName();
     }
     
     @CrossOrigin
-    @GetMapping("/{folderID}")
-    public ResponseEntity<FolderResponseDto> getFiles(@PathVariable Integer folderID){
-    	return folderService.downloadFolder(1);
+    @GetMapping("/{userName}/{folderID}")
+    public ResponseEntity<FolderResponseDto> getFiles(@PathVariable String userName, @PathVariable Integer folderID){
+    	return folderService.downloadFolder(userName, folderID);
     }
     
     @CrossOrigin
-    @GetMapping("/trash")
-    public ResponseEntity<TrashFilesResponseDto> getTrashFiles(){
-    	return fileService.getTrashFiles();
+    @GetMapping("/{userName}/trash")
+    public ResponseEntity<TrashFilesResponseDto> getTrashFiles(@PathVariable String userName){
+    	return fileService.getTrashFiles(userName);
     }
     
     @CrossOrigin
-    @GetMapping("/{id}")
-    public ResponseEntity<FileResponseDto> downloadFile(@PathVariable Integer id) {
-        return fileService.downloadFile(id);
+    @GetMapping("/{userName}/{id}")
+    public ResponseEntity<FileResponseDto> downloadFile(@PathVariable String userName, @PathVariable Integer id) {
+        return fileService.downloadFile(userName, id);
     }
 
     @CrossOrigin
-    @PostMapping("/{folderID}")
-    public ResponseEntity<FileResponseDto> uploadFile(@RequestBody FileRequestDto fileRequest,@PathVariable Integer folderID ) {
-        return fileService.uploadFile(fileRequest, folderID);
+    @PostMapping("/{userName}/{folderID}")
+    public ResponseEntity<FileResponseDto> uploadFile(@PathVariable String userName, @RequestBody FileRequestDto fileRequest,@PathVariable Integer folderID ) {
+        return fileService.uploadFile(userName, fileRequest, folderID);
     }
     
     @CrossOrigin
-    @PatchMapping("/{fileID}/{folderID}/move")
-    public ResponseEntity<FileResponseDto> moveFile(@PathVariable Integer fileID, @PathVariable Integer folderID) {
-        return fileService.moveFile(fileID, folderID);
+    @PatchMapping("/{userName}/{fileID}/{folderID}/move")
+    public ResponseEntity<FileResponseDto> moveFile(@PathVariable String userName, @PathVariable Integer fileID, @PathVariable Integer folderID) {
+        return fileService.moveFile(userName, fileID, folderID);
     }
     
     @CrossOrigin
-    @PatchMapping("/{id}/trash")
-    public ResponseEntity<FileResponseDto> trashFile(@RequestBody TrashRequestDto trashRequestDto, @PathVariable Integer id) {
-        return fileService.trashFile(trashRequestDto, id);
+    @PatchMapping("/{userName}/{id}/trash")
+    public ResponseEntity<FileResponseDto> trashFile(@PathVariable String userName, @RequestBody TrashRequestDto trashRequestDto, @PathVariable Integer id) {
+        return fileService.trashFile(userName, trashRequestDto, id);
     }
     
     @CrossOrigin
-    @DeleteMapping("/{id}/trash")
-    public ResponseEntity<FileResponseDto> deleteFile(@PathVariable Integer id) {
-        return fileService.deleteFile(id);
+    @DeleteMapping("/{userName}/{id}/trash")
+    public ResponseEntity<FileResponseDto> deleteFile(@PathVariable String userName, @PathVariable Integer id) {
+        return fileService.deleteFile(userName, id);
     }
 }

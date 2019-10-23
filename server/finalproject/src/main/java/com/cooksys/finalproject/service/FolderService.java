@@ -40,18 +40,24 @@ public class FolderService {
         this.folderMapper = folderMapper;
         this.trashFolderRepository =  trashFolderRepository;
     }
-	public ResponseEntity<FolderResponseDto> uploadFolder(FolderRequestDto folderRequest) {
+    
+    /*
+     * CREATE Ops
+     */
+	public ResponseEntity<FolderResponseDto> uploadFolder(String userName, FolderRequestDto folderRequest) {
 		try {
-			if (folderRepository.getById(folderRequest.getFolderID()) != null) {
-	    		createFolderInDB(folderRequest, folderRequest.getFolderID());
+			if ((folderRepository.getById(folderRequest.getFolderID()) != null)
+					&& ((folderRequest.getFolderID() == ROOT_FOLDER_ID) || 
+					((folderRepository.getById(folderRequest.getFolderID()).getUserName() == userName)))) {
+	    		createFolderInDB(userName, folderRequest, folderRequest.getFolderID());
 				return new ResponseEntity<>(HttpStatus.CREATED);			
 			}
 			// If root doesn't exist, create root folder
 			else if (folderRepository.getById(ROOT_FOLDER_ID) == null) {
-				createRootFolderInDB(folderRequest.getUserName());
+				createRootFolderInDB("Root");
 	        	if(folderRequest.getFolderID() == ROOT_FOLDER_ID) {
 	            	// create the folder requested if child of root
-	        		createFolderInDB(folderRequest, ROOT_FOLDER_ID);
+	        		createFolderInDB(userName, folderRequest, ROOT_FOLDER_ID);
 	    			return new ResponseEntity<>(HttpStatus.CREATED);
 	        	} else {
 	    			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -65,19 +71,21 @@ public class FolderService {
 		}
 	}
 	
-	private void createFolderInDB(FolderRequestDto folderRequest, Integer parentID){
+	private void createFolderInDB(String userName, FolderRequestDto folderRequest, Integer parentID){
 		FolderEntity folderToCreate = folderMapper.dtoToEntity(folderRequest);
 		folderToCreate.setFolderID(parentID);
 		FolderEntity folder = folderRepository.saveAndFlush(folderToCreate);
 		
 		for (FileRequestDto fileRequest : folderRequest.getFiles()) {
-			FileEntity fileToCreate = fileMapper.dtoToEntity(fileRequest);
-			fileToCreate.setFolder(folder);
-	        fileRepository.saveAndFlush(fileToCreate);
+			if(fileRequest.getUserName() == userName) {
+				FileEntity fileToCreate = fileMapper.dtoToEntity(fileRequest);
+				fileToCreate.setFolder(folder);
+		        fileRepository.saveAndFlush(fileToCreate);		
+			}
 		}
 
 		for (FolderRequestDto folderRequestInThisFolder : folderRequest.getFolders()) {
-			createFolderInDB(folderRequestInThisFolder, folder.getId());
+			createFolderInDB(userName, folderRequestInThisFolder, folder.getId());
 		}
 	}
 	
@@ -90,99 +98,18 @@ public class FolderService {
     	folderRepository.saveAndFlush(rootFolderToCreate);
 	}
 	
-	public ResponseEntity<FolderResponseDto> downloadFolder(Integer id) {
-		try {
-			if ((folderRepository.getById(id) != null) && !(folderRepository.getById(id).getTrashed())) {
-				FolderResponseDto folderToDownload = folderMapper.entityToDto(folderRepository.getById(id));
-				List<FileResponseDto> fileResponses = new ArrayList<FileResponseDto>();
-				List<FolderResponseDto> folderResponses = new ArrayList<FolderResponseDto>();
-				folderToDownload.setFiles(fileResponses);
-				folderToDownload.setFolders(folderResponses);
-				folderToDownload.setFolderID(id);
-				folderToDownload = addToDownloadFolder(folderToDownload, id);
-		        return new ResponseEntity<>(folderToDownload, HttpStatus.OK);
-			} else {
-		        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-			}
-		} catch (Exception e) {
-	        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}
+	/*
+	 * READ Ops
+	 */
 	
-	private FolderResponseDto addToDownloadFolder(FolderResponseDto folderToDownload, Integer id) throws Exception{
-		for (FileEntity fileEntity : fileRepository.getByFolderId(id)) {
-			if(!(fileEntity.getTrashed())) {
-				folderToDownload.getFiles().add(fileMapper.entityToDto(fileEntity));
-			}
-		}
-		for (FolderEntity folderEntity : folderRepository.getAllFoldersByfolderID(id)) {
-			if(!(folderEntity.getTrashed())) {
-				folderToDownload.getFolders().add(folderMapper.entityToDto(folderEntity));
-				folderToDownload = addToDownloadFolder(folderToDownload, folderEntity.getId());
-			}
-		}
-		return folderToDownload;
-	}
-	
-	
-	public ResponseEntity<FolderResponseDto> trashFolder(TrashRequestDto trashRequestDto, Integer id) {
-		try {
-			if (folderRepository.getById(id) != null) {	
-				// Get all the files with that folder_id
-				FolderEntity folderToTrash = folderRepository.getById(id);
-				boolean isTrashed = trashRequestDto.getTrashed();
-				
-				for (FileEntity fileEntity : folderToTrash.getFiles()) {
-					fileEntity.setTrashed(isTrashed);
-					fileRepository.saveAndFlush(fileEntity);
-				}
-				for (FolderEntity folderEntity : folderRepository.getAllFoldersByfolderID(id)) {
-					trashFolder(trashRequestDto, folderEntity.getId());
-				}
-				folderToTrash.setTrashed(isTrashed);
-				folderRepository.saveAndFlush(folderToTrash);
-				return new ResponseEntity<>(HttpStatus.RESET_CONTENT);
-			} else {
-				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-			}		
-		} catch (Exception e) {
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}
-	
-	public ResponseEntity<FolderResponseDto> deleteFolder(Integer id) {
-		try {
-			if (folderRepository.getById(id) != null && folderRepository.getById(id).getTrashed()) {
-				FolderEntity folderToDelete = folderRepository.getById(id);
-
-				for (FileEntity fileEntity : folderToDelete.getFiles()) {
-					fileRepository.deleteById(fileEntity.getId());
-				}
-				for (FolderEntity folderEntity : folderRepository.getAllFoldersByfolderID(id)) {
-					deleteFolder(folderEntity.getId());
-				}
-				if(id != ROOT_FOLDER_ID) {
-					// home cannot be deleted
-					folderRepository.deleteById(id);
-				}
-				return new ResponseEntity<>(HttpStatus.RESET_CONTENT); 
-			}
-			else {
-				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-			}
-		} catch (Exception e) {
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}
-	
-	public ResponseEntity<FoldersResponseDto> getFolders(Integer folderID) {
+	public ResponseEntity<FoldersResponseDto> getFolders(String userName, Integer folderID) {
 		try {
 			FoldersResponseDto responseToSendBack = new FoldersResponseDto();
 			responseToSendBack.setFolders(new ArrayList<>());
 			List<FolderEntity> foldersToSendBack = folderRepository.getAllFoldersByfolderID(folderID);
 			if(foldersToSendBack != null) {
 				for(FolderEntity folderEntity: foldersToSendBack) {
-					if(!(folderEntity.getTrashed())) {
+					if(!(folderEntity.getTrashed()) && (folderEntity.getUserName() == userName)) {
 						responseToSendBack.getFolders().add(folderMapper.entityToDto(folderEntity));
 					}
 				}
@@ -195,10 +122,98 @@ public class FolderService {
 		}
 	}
 
-	public ResponseEntity<FolderResponseDto> moveFolder(Integer folderID1, Integer folderID2) {
+
+	public ResponseEntity<TrashFoldersResponseDto> getTrashFolders(String userName) {
 		try {
-			if (folderRepository.getById(folderID1) != null && folderRepository.getById(folderID2) != null) {
-				FolderEntity folderToMove = folderRepository.getById(folderID1);
+			TrashFoldersResponseDto response = new TrashFoldersResponseDto();
+			List<FolderEntity> trashFolders = trashFolderRepository.getAllByTrashed(Boolean.TRUE);
+			List<FolderResponseDto> folders = new ArrayList<FolderResponseDto>();
+			for(FolderEntity folderEntity: trashFolders) {
+				if(folderEntity.getUserName() == userName) {
+					folders.add(folderMapper.entityToDto(folderEntity));
+				}
+			}
+			response.setFolders(folders);
+			return new ResponseEntity<TrashFoldersResponseDto>(response, HttpStatus.OK); 	
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	public ResponseEntity<FolderResponseDto> downloadFolder(String userName, Integer id) {
+		try {
+			FolderEntity folderEntity = folderRepository.getById(id);
+			if ((folderEntity != null) && !(folderEntity.getTrashed()) &&
+					(folderEntity.getUserName() == userName)) {
+				FolderResponseDto folderToDownload = folderMapper.entityToDto(folderRepository.getById(id));
+				List<FileResponseDto> fileResponses = new ArrayList<FileResponseDto>();
+				List<FolderResponseDto> folderResponses = new ArrayList<FolderResponseDto>();
+				folderToDownload.setFiles(fileResponses);
+				folderToDownload.setFolders(folderResponses);
+				folderToDownload.setFolderID(id);
+				folderToDownload = addToDownloadFolder(userName, folderToDownload, id);
+		        return new ResponseEntity<>(folderToDownload, HttpStatus.OK);
+			} else {
+		        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			}
+		} catch (Exception e) {
+	        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	private FolderResponseDto addToDownloadFolder(String userName, FolderResponseDto folderToDownload, Integer id) throws Exception{
+		for (FileEntity fileEntity : fileRepository.getByFolderId(id)) {
+			if(!(fileEntity.getTrashed()) && (fileEntity.getUserName() == userName)) {
+				folderToDownload.getFiles().add(fileMapper.entityToDto(fileEntity));
+			}
+		}
+		for (FolderEntity folderEntity : folderRepository.getAllFoldersByfolderID(id)) {
+			if(!(folderEntity.getTrashed()) && (folderEntity.getUserName() == userName)) {
+				folderToDownload.getFolders().add(folderMapper.entityToDto(folderEntity));
+				folderToDownload = addToDownloadFolder(userName, folderToDownload, folderEntity.getId());
+			}
+		}
+		return folderToDownload;
+	}
+	
+	/*
+	 * UPDATE Ops (temp. delete & move)
+	 */
+	
+	public ResponseEntity<FolderResponseDto> trashFolder(String userName, TrashRequestDto trashRequestDto, Integer id) {
+		try {
+			FolderEntity folderToTrash = folderRepository.getById(id);
+			if ((folderToTrash != null) && (folderToTrash.getUserName() == userName)) {	
+				// Get all the files with that folder_id
+				boolean isTrashed = trashRequestDto.getTrashed();
+				
+				for (FileEntity fileEntity : folderToTrash.getFiles()) {
+					if(fileEntity.getUserName() == userName) {
+						fileEntity.setTrashed(isTrashed);
+						fileRepository.saveAndFlush(fileEntity);					
+					}
+				}
+				for (FolderEntity folderEntity : folderRepository.getAllFoldersByfolderID(id)) {
+					trashFolder(userName, trashRequestDto, folderEntity.getId());
+				}
+				folderToTrash.setTrashed(isTrashed);
+				folderRepository.saveAndFlush(folderToTrash);
+				return new ResponseEntity<>(HttpStatus.RESET_CONTENT);
+			} else {
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			}		
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	public ResponseEntity<FolderResponseDto> moveFolder(String userName, Integer folderID1, Integer folderID2) {
+		try {
+			FolderEntity folderToMove = folderRepository.getById(folderID1);
+			FolderEntity folderToMoveTo = folderRepository.getById(folderID2);
+			if (folderToMove != null && folderToMoveTo != null
+					&& ((folderToMove.getUserName() == userName) && 
+							(folderID2 == ROOT_FOLDER_ID || (folderToMoveTo.getUserName() == userName)))) {
 				folderToMove.setFolderID(folderID2);
 				folderRepository.saveAndFlush(folderToMove);
 				return new ResponseEntity<>(HttpStatus.OK); 
@@ -209,19 +224,36 @@ public class FolderService {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-
-	public ResponseEntity<TrashFoldersResponseDto> getTrashFolders() {
+	
+	/*
+	 * DELETE Ops
+	 */
+	
+	public ResponseEntity<FolderResponseDto> deleteFolder(String userName, Integer id) {
 		try {
-			TrashFoldersResponseDto response = new TrashFoldersResponseDto();
-			List<FolderEntity> trashFolders = trashFolderRepository.getAllByTrashed(Boolean.TRUE);
-			List<FolderResponseDto> folders = new ArrayList<FolderResponseDto>();
-			for(FolderEntity folderEntity: trashFolders) {
-				folders.add(folderMapper.entityToDto(folderEntity));
+			FolderEntity folderToDelete = folderRepository.getById(id);
+			if ((folderToDelete != null) && (folderToDelete.getTrashed())
+					&& (folderToDelete.getUserName() == userName)) {
+
+				for (FileEntity fileEntity : folderToDelete.getFiles()) {
+					if(fileEntity.getUserName() == userName) {
+						fileRepository.deleteById(fileEntity.getId());
+					}
+				}
+				for (FolderEntity folderEntity : folderRepository.getAllFoldersByfolderID(id)) {
+					deleteFolder(userName, folderEntity.getId());
+				}
+				if(id != ROOT_FOLDER_ID) {
+					// home cannot be deleted
+					folderRepository.deleteById(id);
+				}
+				return new ResponseEntity<>(HttpStatus.RESET_CONTENT); 
 			}
-			response.setFolders(folders);
-			return new ResponseEntity<TrashFoldersResponseDto>(response, HttpStatus.OK); 	
+			else {
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			}
 		} catch (Exception e) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 }

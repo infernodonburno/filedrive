@@ -30,44 +30,44 @@ public class FolderController {
     }
     
     @CrossOrigin
-    @GetMapping("/{folderID}")
-    public ResponseEntity<FoldersResponseDto> getFolders(@PathVariable Integer folderID) {
-    	return folderService.getFolders(1);
+    @GetMapping("/{userName}/{folderID}")
+    public ResponseEntity<FoldersResponseDto> getFolders(@PathVariable String userName, @PathVariable Integer folderID) {
+    	return folderService.getFolders(userName, 1);
     }
     
     @CrossOrigin
-    @GetMapping("/trash")
-    public ResponseEntity<TrashFoldersResponseDto> getTrashFolders(){
-    	return folderService.getTrashFolders();
+    @GetMapping("/{userName}/trash")
+    public ResponseEntity<TrashFoldersResponseDto> getTrashFolders(@PathVariable String userName){
+    	return folderService.getTrashFolders(userName);
     }
     
     @CrossOrigin
-    @GetMapping("/{id}")
-    public ResponseEntity<FolderResponseDto> downloadFolder(@PathVariable Integer id) {
-        return folderService.downloadFolder(id);
+    @GetMapping("/{userName}/{id}")
+    public ResponseEntity<FolderResponseDto> downloadFolder(@PathVariable String userName, @PathVariable Integer id) {
+        return folderService.downloadFolder(userName, id);
     }
     
     @CrossOrigin
-    @PostMapping
-    public ResponseEntity<FolderResponseDto> uploadFolder(@RequestBody FolderRequestDto folderRequest) {
-        return folderService.uploadFolder(folderRequest);
+    @PostMapping("/{userName}")
+    public ResponseEntity<FolderResponseDto> uploadFolder(@PathVariable String userName, @RequestBody FolderRequestDto folderRequest) {
+        return folderService.uploadFolder(userName, folderRequest);
     }
 
     @CrossOrigin
-    @PatchMapping("/{folderID1}/{folderID2}/move")
-    public ResponseEntity<FolderResponseDto> moveFolder(@PathVariable Integer folderID1, @PathVariable Integer folderID2) {
-        return folderService.moveFolder(folderID1, folderID2);
+    @PatchMapping("/{userName}/{folderID1}/{folderID2}/move")
+    public ResponseEntity<FolderResponseDto> moveFolder(@PathVariable String userName, @PathVariable Integer folderID1, @PathVariable Integer folderID2) {
+        return folderService.moveFolder(userName, folderID1, folderID2);
     }
     
     @CrossOrigin
-    @PatchMapping("/{id}/trash")
-    public ResponseEntity<FolderResponseDto> trashFolder(@RequestBody TrashRequestDto trashRequestDto, @PathVariable Integer id) {
-        return folderService.trashFolder(trashRequestDto, id);
+    @PatchMapping("/{userName}/{id}/trash")
+    public ResponseEntity<FolderResponseDto> trashFolder(@PathVariable String userName, @RequestBody TrashRequestDto trashRequestDto, @PathVariable Integer id) {
+        return folderService.trashFolder(userName, trashRequestDto, id);
     }
     
     @CrossOrigin
-    @DeleteMapping("/{id}/delete")
-    public ResponseEntity<FolderResponseDto> deleteFolder(@PathVariable Integer id) {
-        return folderService.deleteFolder(id);
+    @DeleteMapping("/{userName}/{id}/delete")
+    public ResponseEntity<FolderResponseDto> deleteFolder(@PathVariable String userName, @PathVariable Integer id) {
+        return folderService.deleteFolder(userName, id);
     }
 }
