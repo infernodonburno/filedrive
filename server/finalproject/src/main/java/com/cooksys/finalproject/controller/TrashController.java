@@ -19,7 +19,7 @@ public class TrashController {
 		this.folderService = folderService;
 	}
 	
-    @CrossOrigin
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("/{userName}")
     public ResponseEntity<TrashResponseDto> getTrash(@PathVariable String userName){
     	return folderService.getTrash(userName);

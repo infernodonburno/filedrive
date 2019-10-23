@@ -22,6 +22,7 @@ import com.cooksys.finalproject.entity.FolderEntity;
 import com.cooksys.finalproject.mapper.FileMapper;
 import com.cooksys.finalproject.mapper.FolderMapper;
 import com.cooksys.finalproject.repository.FileRepository;
+import com.cooksys.finalproject.repository.Folder2Repository;
 import com.cooksys.finalproject.repository.FolderRepository;
 import com.cooksys.finalproject.repository.TrashFileRepository;
 import com.cooksys.finalproject.repository.TrashFolderRepository;
@@ -31,6 +32,7 @@ public class FolderService {
 
     private FileRepository fileRepository;
     private FolderRepository folderRepository;
+    private Folder2Repository folder2Repository;
     private TrashFolderRepository trashFolderRepository;
     private TrashFileRepository trashFileRepository;
     private FileMapper fileMapper;
@@ -38,13 +40,14 @@ public class FolderService {
     private static final Integer ROOT_FOLDER_ID = 1;
     private static final Integer ROOT_PARENT_ID = 0;
 
-    public FolderService(FileRepository fileRepository, TrashFileRepository trashFileRepository, TrashFolderRepository trashFolderRepository, FileMapper fileMapper, FolderRepository folderRepository, FolderMapper folderMapper) {
+    public FolderService(FileRepository fileRepository, Folder2Repository folder2Repository, TrashFileRepository trashFileRepository, TrashFolderRepository trashFolderRepository, FileMapper fileMapper, FolderRepository folderRepository, FolderMapper folderMapper) {
         this.fileRepository = fileRepository;
         this.folderRepository = folderRepository;
         this.fileMapper = fileMapper;
         this.folderMapper = folderMapper;
         this.trashFolderRepository =  trashFolderRepository;
         this.trashFileRepository = trashFileRepository;
+        this.folder2Repository = folder2Repository;
     }
 	
     /*
@@ -116,6 +119,28 @@ public class FolderService {
 				List<FolderInfoResponseDto> folders = new ArrayList<FolderInfoResponseDto>();
 				for(FolderEntity folderEntity2: folderRepository.getAllFoldersByfolderID(folderID)) {
 					if(!(folderEntity2.getTrashed()) && (folderEntity2.getUserName().equals(userName))) {
+						folders.add(folderMapper.entityToFolderInfoDto(folderEntity2));
+					}
+				}
+				responseToSendBack.setFolders(folders);
+				return new ResponseEntity<FoldersInfoResponseDto>(responseToSendBack, HttpStatus.OK);
+			} else {
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			}
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	public ResponseEntity<FoldersInfoResponseDto> getAllFolders(String userName) {
+		try {
+			FoldersInfoResponseDto responseToSendBack = new FoldersInfoResponseDto();
+			FolderEntity folderEntity = folderRepository.getById(ROOT_FOLDER_ID);
+
+			if ((folderEntity != null) && !(folderEntity.getTrashed())) {
+				List<FolderInfoResponseDto> folders = new ArrayList<FolderInfoResponseDto>();
+				for(FolderEntity folderEntity2: folder2Repository.getAllFoldersByuserName(userName)) {
+					if(!(folderEntity2.getTrashed())) {
 						folders.add(folderMapper.entityToFolderInfoDto(folderEntity2));
 					}
 				}

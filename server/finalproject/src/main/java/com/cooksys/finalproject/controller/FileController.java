@@ -40,13 +40,13 @@ public class FileController {
     /*
      * GET End-points
      */
-    @CrossOrigin
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("/{userName}/{folderID}/all")
     public ResponseEntity<FilesInfoResponseDto> getFiles(@PathVariable String userName, @PathVariable Integer folderID){
     	return fileService.getFiles(userName, folderID);
     }
     
-    @CrossOrigin
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("/{userName}/{id}")
     public ResponseEntity<FileResponseDto> downloadFile(@PathVariable String userName, @PathVariable Integer id) {
         return fileService.downloadFile(userName, id);
@@ -55,7 +55,7 @@ public class FileController {
     /*
      * POST End-points
      */
-    @CrossOrigin
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @PostMapping("/{userName}/{folderID}")
     public ResponseEntity<FileResponseDto> uploadFile(@PathVariable String userName, @RequestBody FileRequestDto fileRequest,@PathVariable Integer folderID ) {
         return fileService.uploadFile(userName, fileRequest, folderID);
@@ -64,13 +64,13 @@ public class FileController {
     /*
      * PATCH End-points
      */
-    @CrossOrigin
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @PatchMapping("/{userName}/{fileID}/{folderID}/move")
     public ResponseEntity<FileResponseDto> moveFile(@PathVariable String userName, @PathVariable Integer fileID, @PathVariable Integer folderID) {
         return fileService.moveFile(userName, fileID, folderID);
     }
     
-    @CrossOrigin
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @PatchMapping("/{userName}/{id}/trash")
     public ResponseEntity<FileResponseDto> trashFile(@PathVariable String userName, @RequestBody TrashRequestDto trashRequestDto, @PathVariable Integer id) {
         return fileService.trashFile(userName, trashRequestDto, id);
@@ -79,8 +79,8 @@ public class FileController {
     /*
      * DELETE End-points
      */
-    @CrossOrigin
-    @DeleteMapping("/{userName}/{id}/trash")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    @DeleteMapping("/{userName}/{id}/delete")
     public ResponseEntity<FileResponseDto> deleteFile(@PathVariable String userName, @PathVariable Integer id) {
         return fileService.deleteFile(userName, id);
     }
