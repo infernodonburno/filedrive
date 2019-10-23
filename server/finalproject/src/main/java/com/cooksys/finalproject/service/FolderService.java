@@ -41,7 +41,7 @@ public class FolderService {
         this.trashFolderRepository =  trashFolderRepository;
     }
 	public ResponseEntity<FolderResponseDto> uploadFolder(FolderRequestDto folderRequest) {
-//		try {
+		try {
 			if (folderRepository.getById(folderRequest.getFolderID()) != null) {
 	    		createFolderInDB(folderRequest, folderRequest.getFolderID());
 				return new ResponseEntity<>(HttpStatus.CREATED);			
@@ -60,9 +60,9 @@ public class FolderService {
 			else {
 				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			}
-//		} catch (Exception e) {
-//			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//		}
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 	
 	private void createFolderInDB(FolderRequestDto folderRequest, Integer parentID){
@@ -75,13 +75,10 @@ public class FolderService {
 			fileToCreate.setFolder(folder);
 	        fileRepository.saveAndFlush(fileToCreate);
 		}
-		// May need re-factoring -JC 
-		System.out.print("HERERERER   1");
+
 		for (FolderRequestDto folderRequestInThisFolder : folderRequest.getFolders()) {
-			System.out.print("HERERERER   2");
 			createFolderInDB(folderRequestInThisFolder, folder.getId());
 		}
-		System.out.print("HERERERER   3");
 	}
 	
 	private void createRootFolderInDB(String username){
@@ -118,7 +115,6 @@ public class FolderService {
 				folderToDownload.getFiles().add(fileMapper.entityToDto(fileEntity));
 			}
 		}
-		// May need re-factoring -JC 
 		for (FolderEntity folderEntity : folderRepository.getAllFoldersByfolderID(id)) {
 			if(!(folderEntity.getTrashed())) {
 				folderToDownload.getFolders().add(folderMapper.entityToDto(folderEntity));
@@ -145,7 +141,7 @@ public class FolderService {
 				}
 				folderToTrash.setTrashed(isTrashed);
 				folderRepository.saveAndFlush(folderToTrash);
-				return new ResponseEntity<>(HttpStatus.OK);
+				return new ResponseEntity<>(HttpStatus.RESET_CONTENT);
 			} else {
 				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			}		
@@ -169,7 +165,7 @@ public class FolderService {
 					// home cannot be deleted
 					folderRepository.deleteById(id);
 				}
-				return new ResponseEntity<>(HttpStatus.OK); 
+				return new ResponseEntity<>(HttpStatus.RESET_CONTENT); 
 			}
 			else {
 				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

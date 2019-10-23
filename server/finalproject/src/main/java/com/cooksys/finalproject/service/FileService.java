@@ -82,7 +82,7 @@ public class FileService {
 				FileEntity fileToTrash = fileRepository.getById(id);
 				fileToTrash.setTrashed(trashRequestDto.getTrashed());
 				fileRepository.saveAndFlush(fileToTrash);
-				return new ResponseEntity<>(HttpStatus.OK);
+				return new ResponseEntity<>(HttpStatus.RESET_CONTENT);
 			}
 			else {
 				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -98,7 +98,7 @@ public class FileService {
 				FileEntity fileToRestore = fileRepository.getById(id);
 				fileToRestore.setTrashed(false);
 				fileRepository.saveAndFlush(fileToRestore);
-				return new ResponseEntity<>(HttpStatus.OK);
+				return new ResponseEntity<>(HttpStatus.RESET_CONTENT);
 			}
 			else {
 				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -112,7 +112,7 @@ public class FileService {
 		try {
 			if (fileRepository.getById(id) != null && fileRepository.getById(id).getTrashed()) {
 				fileRepository.deleteById(id);
-				return new ResponseEntity<>(HttpStatus.OK); 
+				return new ResponseEntity<>(HttpStatus.RESET_CONTENT); 
 			} else {
 				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			}		
@@ -132,7 +132,7 @@ public class FileService {
 				fileRepository.saveAndFlush(fileToMove);
 				folderToAddTo.getFiles().add(fileToMove);
 				folderRepository.saveAndFlush(folderToAddTo);
-				return new ResponseEntity<>(HttpStatus.OK); 
+				return new ResponseEntity<>(HttpStatus.RESET_CONTENT); 
 			} else {
 				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			}
