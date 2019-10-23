@@ -27,6 +27,12 @@ export default function reducer (state = initialState, action) {
         errorDownloadingFile: false,
         file: action.payload.file
       }
+    case DOWNLOAD_FILE_FAILURE:
+      return {
+        ...state,
+        errorDownloadingFile: true,
+        file: initialState.file
+      }
     case DOWNLOAD_FOLDER_DONE:
       return {
         ...state,
@@ -36,12 +42,8 @@ export default function reducer (state = initialState, action) {
     case DOWNLOAD_FOLDER_FAILURE:
       return {
         ...state,
+        errorDownloadingFolder: true,
         folder: initialState.folder
-      }
-    case DOWNLOAD_FILE_FAILURE:
-      return {
-        ...state,
-        file: initialState.file
       }
     default:
       return state
@@ -136,11 +138,12 @@ export const thunkDownloadFolder = folderID => dispatch => {
           let decodedData = window.atob(folderArr[j].data) // decode the string
           folderArr[j].data = decodedData
         }
-
+        console.log('are we here yet?')
         const fol = zip.folder(`${folder.folderName}`)
         folderArr.forEach(file =>
           fol.file(file.fileName, file.data, { binary: true })
         )
+        console.log('what about here???')
         zip
           .generateAsync({ type: 'blob' })
           .then(content => saveAs(content, `${folder.folderName}.zip`))

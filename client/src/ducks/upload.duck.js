@@ -112,7 +112,10 @@ export const uploadFile = file => dispatch => {
       // then, that file is used in postFile
       console.log('returned response')
       console.log(response)
-      return response
+      if (response === null) {
+        window.location.reload()
+        return dispatch(uploadFileDone({}))
+      }
     })
     .catch(err => dispatch(uploadFileFailure(err)))
 }
@@ -123,7 +126,10 @@ export const uploadFolder = folder => dispatch => {
   postFolder(folder)
     .then(response => {
       console.log(response)
-      return dispatch(uploadFolderDone(response))
+      if (response === null) {
+        window.location.reload()
+        return dispatch(uploadFolderDone({}))
+      }
     })
     .catch(err => dispatch(uploadFolderFailure(err)))
 }

@@ -58,20 +58,20 @@ const loadFilesFailure = () => ({
   type: LOAD_FILES_FAILURE
 })
 
-const loadFoldersBegin = () => ({
-  type: LOAD_FOLDERS_BEGIN
-})
+// const loadFoldersBegin = () => ({
+//   type: LOAD_FOLDERS_BEGIN
+// })
 
-const loadFoldersDone = folders => ({
-  type: LOAD_FOLDERS_DONE,
-  payload: {
-    folders
-  }
-})
+// const loadFoldersDone = folders => ({
+//   type: LOAD_FOLDERS_DONE,
+//   payload: {
+//     folders
+//   }
+// })
 
-const loadFoldersFailure = () => ({
-  type: LOAD_FOLDERS_FAILURE
-})
+// const loadFoldersFailure = () => ({
+//   type: LOAD_FOLDERS_FAILURE
+// })
 
 export const loadFiles = folderID => dispatch => {
   dispatch(loadFilesBegin())
