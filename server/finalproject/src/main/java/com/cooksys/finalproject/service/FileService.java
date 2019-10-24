@@ -74,7 +74,7 @@ public class FileService {
 				FilesInfoResponseDto filesToView = new FilesInfoResponseDto();
 				List<FileInfoResponseDto> files = new ArrayList<FileInfoResponseDto>();
 				for(FileEntity fileEntity: fileRepository.getByFolderId(folderID)) {
-					if(fileEntity.getUserName().equals(userName) && (!(fileEntity.getTrashed()))) {
+					if(fileEntity.getUserName().equals(userName)) {
 						files.add(fileMapper.entityToFileInfoDto(fileEntity));
 					}
 				}
