@@ -1,39 +1,36 @@
 import request from '../utils/request'
+import { Authorization as token, username } from './auth'
 
 const SERVER_ROOT = 'http://localhost:8080'
-const header = {
-  Authorization:
-    'Bearer eyJraWQiOiJpZXA2dmZuSTJGWVN5VDFBS3Z1ZENsRjhfWDh0MFRFT2VvREQtcTFyYXNJIiwiYWxnIjoiUlMyNTYifQ.eyJ2ZXIiOjEsImp0aSI6IkFULmhocGxfVDJOZmxtSk9YOGRCN29UYXpPajB4TDlORllHRGJ6Q2xWT1ZSNVkiLCJpc3MiOiJodHRwczovL2Rldi0yMDUwNzMub2t0YS5jb20vb2F1dGgyL2RlZmF1bHQiLCJhdWQiOiJhcGk6Ly9kZWZhdWx0IiwiaWF0IjoxNTcxODcwNzA2LCJleHAiOjE1NzE4NzQzMDYsImNpZCI6IjBvYTFtdTUxNzREWXVMSGpNMzU3IiwidWlkIjoiMDB1MW1yeTFlMzdFQ0lTeGEzNTciLCJzY3AiOlsib3BlbmlkIiwicHJvZmlsZSIsImVtYWlsIl0sInN1YiI6ImZpbGVkcml2ZXByb2plY3Rjb29rc3lzQGdtYWlsLmNvbSJ9.mSJoLjLO31RyDATzMgjpVAqJgTtb29kC5d_3Lw_iD_oniGWI-T-wJpebzKY0NZHjmsL8L7bpfhSoEJsY0DRYULPC_E1maGTCoP8TEhOAHY-D-07OD2bubrsY5nxTn4yUzmmncnMP9p5LraPF_UNXU20KVHZWH8rt4O9VaVZOnIg2MsCagl5uqFykccMg1FyWo81klEyPgT9FBYuP6WdbfDJnKApqlN4BXVWc4kFaCXj4twP5uWrvpoYZPqHaaNvlkHX7PerBy-2KzdYjJWFQnrc1Eyd9BQG1c3wMBCBVEILyK7FhpWvCUPdYKVM66AsIfezrgvn7OYdpFEcOJBYGTQ'
+const headers = {
+  'Access-Control-Allow-Origin': '*',
+  Authorization: token
 }
 
-// Fetch all files from root folder
+// Fetch all files from specified folder
 export function fetchFiles (folderID) {
-  return fetchFromServer(`files/${folderID}/all`)
+  return fetchFromServer(`files/${username}/${folderID}/all`)
 }
 
-// Fetch all folders from root
-export function fetchFolders () {
-  return fetchFromServer('folders')
+// Fetch all folders from specifed folder
+export function fetchFolders (folderID) {
+  folderID = 1 // TODO: REMOVE
+  return fetchFromServer(`folders/${username}/${folderID}/all`)
 }
 
 // Download single file
 export function fetchDownloadFile (id) {
-  return fetchFromServer(`files/${id}`)
+  return fetchFromServer(`files/${username}/${id}`)
 }
 
 // Download folder
 export function fetchDownloadFolder (id) {
-  return fetchFromServer(`folders/${id}`)
+  return fetchFromServer(`folders/${username}/${id}`)
 }
 
-// Fetch all files marked as trash
-export function fetchTrashFiles () {
-  return fetchFromServer('files/trash')
-}
-
-// Fetch all folders marked as trash
-export function fetchTrashFolders () {
-  return fetchFromServer('folders/trash')
+// Fetch all items marked as trash
+export function fetchTrash () {
+  return fetchFromServer(`trash/${username}`)
 }
 
 function fetchFromServer (endpoint) {
@@ -43,19 +40,20 @@ function fetchFromServer (endpoint) {
     method: 'GET',
     headers: {
       'Access-Control-Allow-Origin': '*',
-      Authorization:
-        'Bearer eyJraWQiOiJpZXA2dmZuSTJGWVN5VDFBS3Z1ZENsRjhfWDh0MFRFT2VvREQtcTFyYXNJIiwiYWxnIjoiUlMyNTYifQ.eyJ2ZXIiOjEsImp0aSI6IkFULmhocGxfVDJOZmxtSk9YOGRCN29UYXpPajB4TDlORllHRGJ6Q2xWT1ZSNVkiLCJpc3MiOiJodHRwczovL2Rldi0yMDUwNzMub2t0YS5jb20vb2F1dGgyL2RlZmF1bHQiLCJhdWQiOiJhcGk6Ly9kZWZhdWx0IiwiaWF0IjoxNTcxODcwNzA2LCJleHAiOjE1NzE4NzQzMDYsImNpZCI6IjBvYTFtdTUxNzREWXVMSGpNMzU3IiwidWlkIjoiMDB1MW1yeTFlMzdFQ0lTeGEzNTciLCJzY3AiOlsib3BlbmlkIiwicHJvZmlsZSIsImVtYWlsIl0sInN1YiI6ImZpbGVkcml2ZXByb2plY3Rjb29rc3lzQGdtYWlsLmNvbSJ9.mSJoLjLO31RyDATzMgjpVAqJgTtb29kC5d_3Lw_iD_oniGWI-T-wJpebzKY0NZHjmsL8L7bpfhSoEJsY0DRYULPC_E1maGTCoP8TEhOAHY-D-07OD2bubrsY5nxTn4yUzmmncnMP9p5LraPF_UNXU20KVHZWH8rt4O9VaVZOnIg2MsCagl5uqFykccMg1FyWo81klEyPgT9FBYuP6WdbfDJnKApqlN4BXVWc4kFaCXj4twP5uWrvpoYZPqHaaNvlkHX7PerBy-2KzdYjJWFQnrc1Eyd9BQG1c3wMBCBVEILyK7FhpWvCUPdYKVM66AsIfezrgvn7OYdpFEcOJBYGTQ'
+      Authorization: token
     }
   }
+  console.log(options)
   return request(url, options)
 }
 
 export function postFile (file, folderID) {
-  return postToServer(`files/${folderID}`, file)
+  return postToServer(`files/${username}/${folderID}`, file)
 }
 
-export function postFolder (folderReq) {
-  return postToServer('folders', folderReq)
+export function postFolder (folderReq, folderID) {
+  folderID = 1 // TODO: REMOVE
+  return postToServer(`folders/${username}/${folderID}`, folderReq)
 }
 
 function postToServer (endpoint, req) {
@@ -64,7 +62,8 @@ function postToServer (endpoint, req) {
   const options = {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      Authorization: token
     },
     body: JSON.stringify(req)
   }
@@ -72,18 +71,23 @@ function postToServer (endpoint, req) {
 }
 
 export function patchTrashFile (file) {
-  let endpoint = `files/${file.id}/trash`
+  let endpoint = `files/${username}/${file.id}/trash`
   return patchToServer(endpoint, { trashed: file.trashed })
 }
 
 export function patchTrashFolder (folder) {
-  console.log('folder: ', folder)
-  let endpoint = `folders/${folder.id}/trash`
+  let endpoint = `folders/${username}/${folder.id}/trash`
   return patchToServer(endpoint, { trashed: folder.trashed })
 }
 
 export function patchMoveFile (fileID, folderID) {
-  return patchToServer(`/files/${fileID}/${folderID}/move`)
+  return patchToServer(`/files/${username}/${fileID}/${folderID}/move`)
+}
+
+export function patchMoveFolder (thisFolderID, moveFolderID) {
+  return patchToServer(
+    `/files/${username}/${thisFolderID}/${moveFolderID}/move`
+  )
 }
 
 function patchToServer (endpoint, req) {
@@ -92,7 +96,8 @@ function patchToServer (endpoint, req) {
   const options = {
     method: 'PATCH',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      Authorization: token
     },
     body: JSON.stringify(req)
   }
@@ -100,11 +105,11 @@ function patchToServer (endpoint, req) {
 }
 
 export function deleteFileFromServer (id) {
-  return deleteFromServer(`files/${id}/trash`)
+  return deleteFromServer(`files/${username}/${id}/delete`)
 }
 
 export function deleteFolderFromServer (id) {
-  return deleteFromServer(`folders/${id}/trash`)
+  return deleteFromServer(`folders/${username}/${id}/delete`)
 }
 
 function deleteFromServer (endpoint) {
@@ -112,7 +117,8 @@ function deleteFromServer (endpoint) {
   const options = {
     method: 'DELETE',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      Authorization: token
     }
   }
   return request(url, options)

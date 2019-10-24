@@ -133,7 +133,7 @@ class UploadButton extends React.Component {
       event.persist()
       fileReader.readAsArrayBuffer(myFile)
       fileReader.onloadend = function (evt) {
-        let fileRequests = []
+        let files = []
         let fileByteArray = []
         for (let x of fileList) {
           console.log('LENGTH: ', fileList.length)
@@ -148,14 +148,14 @@ class UploadButton extends React.Component {
             }
             // console.log('FILEBYTEARRAY: ', fileByteArray)
             // console.log('YESSSS', array)
-            fileRequests.push({ fileName: x.name, data: fileByteArray })
-            console.log('REQUESTS INSIDE: ', fileRequests)
+            files.push({ fileName: x.name, data: fileByteArray })
+            console.log('REQUESTS INSIDE: ', files)
             fileByteArray = []
-            if (fileRequests.length === fileList.length) {
+            if (files.length === fileList.length) {
               let folderReq = {
                 folderName: folderName,
-                folderID: 1,
-                fileRequests
+                files,
+                folders: []
               }
               uploadFolder(folderReq)
             }
