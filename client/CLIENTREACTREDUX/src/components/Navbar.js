@@ -16,14 +16,14 @@ const NavBar = props => {
   return (
     <StyledNavBar>
       <div>
-        <NavItem to='/' exact>
-              Home
+        <NavItem to='/home' exact>
+          Home
         </NavItem>
       </div>
 
       <div>
         <NavItem to='/trash' exact>
-              Trash
+          Trash
         </NavItem>
       </div>
     </StyledNavBar>
