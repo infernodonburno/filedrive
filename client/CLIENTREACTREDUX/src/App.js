@@ -26,12 +26,12 @@ const App = props => (
       <Route path='/login' exact component={Login} />
       <Route path='/implicit/callback' component={ImplicitCallback} />
     </Security>
-    <NavBar />
+    {/* <NavBar />
     <SidebarExample />
     <Route path='/' component={Header} />
     <Route exact path='/' component={Home} />
     <Route exact path='/trash' component={Trash} />
-    <Route path='/folders/:id' exact component={Folder} />
+    <Route path='/folders/:id' exact component={Folder} /> */}
   </div>
 )
 
