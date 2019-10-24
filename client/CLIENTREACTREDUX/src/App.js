@@ -26,14 +26,14 @@ const App = props => (
       <Route path='/' exact component={Login} />
       <Route path='/login' exact component={Login} />
       <Route path='/implicit/callback' component={ImplicitCallback} />
-      {/* <div>
+      <div>
         <NavBar />
         <SidebarExample />
-        <Route path='/home' component={Header} />
+        {/* <Route exact path='/home' component={Header} /> */}
         <Route exact path='/home' component={Home} />
         <Route exact path='/trash' component={Trash} />
         <Route path='/folders/:id' exact component={Folder} />
-      </div> */}
+      </div>
     </Security>
   </div>
 )
