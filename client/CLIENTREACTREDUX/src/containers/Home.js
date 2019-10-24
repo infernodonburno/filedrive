@@ -37,11 +37,11 @@ class Home extends React.Component {
       <React.Fragment>
         <NavBar />
         <Header />
+        <UploadButton folderID='1' />
         <StyledCard>
           {folders}
           {files}
         </StyledCard>
-        <UploadButton folderID='1' />
       </React.Fragment>
     )
   }
