@@ -22,16 +22,14 @@ const config = {
 const App = props => (
   <div>
     <Security {...config}>
-      <Route path='/' exact component={Login} />
-      <Route path='/login' exact component={Login} />
-      <Route path='/implicit/callback' component={ImplicitCallback} />
+      <Route exact path='/' exact component={Login} />
+      <Route exact path='/login' exact component={Login} />
+      <Route exact path='/implicit/callback' component={ImplicitCallback} />
+      <Route exact path='/home' exact component={Home} />
+      <Route exact path='/trash' exact component={Trash} />
+      <Route exact path='/folders/:id' exact component={Folder} />
     </Security>
-    {/* <NavBar />
-    <SidebarExample />
-    <Route path='/' component={Header} />
-    <Route exact path='/' component={Home} />
-    <Route exact path='/trash' component={Trash} />
-    <Route path='/folders/:id' exact component={Folder} /> */}
+    {/* <SidebarExample /> */}
   </div>
 )
 

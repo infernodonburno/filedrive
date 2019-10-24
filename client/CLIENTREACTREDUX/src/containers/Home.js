@@ -7,7 +7,8 @@ import FileContainer from '../components/FileContainer'
 import FolderContainer from '../components/FolderContainer'
 import UploadButton from '../components/UploadButton'
 import StyledCard from '../components/StyledCard'
-
+import Header from '../components/Header'
+import NavBar from '../components/Navbar'
 class Home extends React.Component {
   componentDidMount () {
     this.props.loadFiles(1)
@@ -34,6 +35,8 @@ class Home extends React.Component {
 
     return (
       <React.Fragment>
+        <NavBar />
+        <Header />
         <StyledCard>
           {folders}
           {files}
