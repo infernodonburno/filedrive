@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
-import { loadTrashedFiles, loadTrashedFolders } from '../ducks/trashview.duck'
+import { loadTrash } from '../ducks/trashview.duck'
 // import { emptyAllTrash } from '../ducks/trash.duck'
 import TrashContainer from '../components/TrashContainer'
 import StyledCard from '../components/StyledCard'
@@ -10,7 +10,7 @@ import StyledCard from '../components/StyledCard'
 
 class Trash extends React.Component {
   componentDidMount () {
-    this.props.loadTrashedFiles(), this.props.loadTrashedFolders()
+    this.props.loadTrash()
   }
 
   // onClick = event => {
@@ -18,7 +18,7 @@ class Trash extends React.Component {
   // }
 
   render () {
-    const trashedFiles = this.props.files.map(file => (
+    const trashedFiles = this.props.trashedFiles.map(file => (
       <TrashContainer
         isFile='true'
         file={file}
@@ -28,7 +28,7 @@ class Trash extends React.Component {
       />
     ))
 
-    const trashedFolders = this.props.folders.map(folder => (
+    const trashedFolders = this.props.trashedFolders.map(folder => (
       <TrashContainer
         isFile='false'
         folder={folder}
@@ -51,18 +51,17 @@ class Trash extends React.Component {
 }
 
 Trash.propTypes = {
-  files: PropTypes.array.isRequired,
-  folders: PropTypes.array.isRequired
+  trashedFiles: PropTypes.array.isRequired,
+  trashedFolders: PropTypes.array.isRequired
 }
 
 const mapStateToProps = state => ({
-  files: state.trashview.files,
-  folders: state.trashview.folders
+  trashedFiles: state.trashview.files,
+  trashedFolders: state.trashview.folders
 })
 
 const mapDispatchToProps = dispatch => ({
-  loadTrashedFiles: () => dispatch(loadTrashedFiles()),
-  loadTrashedFolders: () => dispatch(loadTrashedFolders())
+  loadTrash: () => dispatch(loadTrash())
   // emptyAllTrash: () => dispatch(emptyAllTrash())
 })
 
