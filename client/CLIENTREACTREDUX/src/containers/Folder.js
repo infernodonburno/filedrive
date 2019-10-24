@@ -9,7 +9,8 @@ import StyledCard from '../components/StyledCard'
 
 class Folder extends React.Component {
   componentDidMount () {
-    this.props.loadFiles(this.props.match.params.id), this.props.loadFolders()
+    this.props.loadFiles(this.props.match.params.id)
+    this.props.loadFolders()
   }
 
   render () {

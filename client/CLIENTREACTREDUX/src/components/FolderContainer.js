@@ -10,10 +10,6 @@ import { thunkDownloadFolder } from '../ducks/download.duck'
 import { setToggleTrashFolder } from '../ducks/trash.duck'
 
 class FolderContainer extends React.Component {
-  constructor (props) {
-    super(props)
-  }
-
   onClickDownload = event => {
     console.log('This is folderID: ', this.props.id)
     this.props.thunkDownloadFolder(this.props.id)

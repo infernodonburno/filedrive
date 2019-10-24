@@ -13,9 +13,6 @@ import {
 } from '../ducks/trash.duck'
 
 class TrashContainer extends React.Component {
-  constructor (props) {
-    super(props)
-  }
   onClickRestore = event => {
     console.log(`${this.props.name} restored`)
     if (this.props.isFile === 'true') {

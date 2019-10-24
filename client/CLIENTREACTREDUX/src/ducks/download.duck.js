@@ -1,9 +1,5 @@
 import { fetchDownloadFile, fetchDownloadFolder } from '../services/api'
-
-import { fileDownload } from 'js-file-download'
-
 import { saveAs } from 'file-saver'
-import { decode } from 'punycode'
 
 export const DOWNLOAD_FILE_FAILURE = 'DOWNLOAD_FILE_FAILURE'
 export const DOWNLOAD_FILE_DONE = 'DOWNLOAD_FILE_DONE'

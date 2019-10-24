@@ -2,10 +2,6 @@ import request from '../utils/request'
 import { Authorization as token, username } from './auth'
 
 const SERVER_ROOT = 'http://localhost:8080'
-const headers = {
-  'Access-Control-Allow-Origin': '*',
-  Authorization: token
-}
 
 // Fetch all files from specified folder
 export function fetchFiles (folderID) {

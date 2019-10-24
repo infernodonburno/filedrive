@@ -10,70 +10,9 @@ const UploadCenter = styled.div`
   justify-content: center;
   align-items: center;
 `
-const UploadButtonStyle = styled.button`
-  .upload-btn-wrapper {
-    position: relative;
-    overflow: hidden;
-    display: inline-block;
-  }
-
-  .btn {
-    border: 2px solid gray;
-    color: gray;
-    background-color: white;
-    padding: 8px 20px;
-    border-radius: 8px;
-    font-size: 20px;
-    font-weight: bold;
-  }
-
-  .upload-btn-wrapper input[type='file'] {
-    font-size: 100px;
-    position: absolute;
-    left: 0;
-    top: 0;
-    opacity: 0;
-  }
-`
 
 class UploadButton extends React.Component {
   render () {
-    const getFileRequest = file => {
-      let reader = new FileReader()
-      let fileByteArray = []
-      reader.readAsArrayBuffer(file)
-      reader.onloadend = event => {
-        if (event.target.readyState == FileReader.DONE) {
-          console.log('you are here')
-          let array = new Uint8Array(event.target.result)
-          for (let i = 0; i < array.length; i++) {
-            fileByteArray.push(array[i])
-          }
-          console.log(fileByteArray)
-        }
-      }
-      return { fileName: file.name, data: fileByteArray }
-    }
-
-    const getFileRequests = fileList => {
-      let fileRequests = []
-      for (let file of fileList) {
-        fileRequests.push(getFileRequest(file))
-      }
-      return fileRequests
-    }
-
-    const getFolderName = folderPath => {
-      let folderName = ''
-      for (let char of folderPath) {
-        if (char === '/') {
-          break
-        }
-        folderName += char
-      }
-      return folderName
-    }
-
     const onChangeFile = event => {
       let fileList = document.getElementById('uploadfile').files
       let file = fileList.item(0)
@@ -81,7 +20,7 @@ class UploadButton extends React.Component {
       let fileByteArray = []
       reader.readAsArrayBuffer(file)
       reader.onloadend = event => {
-        if (event.target.readyState == FileReader.DONE) {
+        if (event.target.readyState === FileReader.DONE) {
           console.log('you are here')
           let array = new Uint8Array(event.target.result)
           for (let i = 0; i < array.length; i++) {

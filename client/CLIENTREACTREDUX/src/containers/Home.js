@@ -10,7 +10,8 @@ import StyledCard from '../components/StyledCard'
 
 class Home extends React.Component {
   componentDidMount () {
-    this.props.loadFiles(1), this.props.loadFolders()
+    this.props.loadFiles(1)
+    this.props.loadFolders()
   }
 
   render () {
