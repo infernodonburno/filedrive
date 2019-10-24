@@ -16,7 +16,7 @@ class MoveContainer extends React.Component {
         <tbody>
           <tr>
             <td>
-              <Link onClick={this.onClickMove}>{this.props.folderName}</Link>
+              <Link style={{border:'2px solid', marginTop:'10px', textAlign:'center'}} onClick={this.onClickMove}>{this.props.folderName}</Link>
             </td>
           </tr>
         </tbody>

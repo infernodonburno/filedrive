@@ -4,6 +4,8 @@ import { connect } from 'react-redux'
 import styled from 'styled-components'
 
 import { uploadFile, uploadFolder } from '../ducks/upload.duck'
+import 'bootstrap/dist/css/bootstrap.min.css';
+import ButtonToolBar from 'react-bootstrap/ButtonToolbar'
 
 const UploadCenter = styled.div`
   display: flex;
@@ -121,11 +123,11 @@ class UploadButton extends React.Component {
         <div className='upload-btn-wrapper'>
           {/* <UploadButtonStyle onClick={onClick}>Upload</UploadButtonStyle> */}
           <label>
-            Upload a file:
+          <h4> Upload a file:</h4>
             <input type='file' id='uploadfile' onChange={onChangeFile} />
           </label>
           <label>
-            Upload a folder:
+            <h4>Upload a folder:</h4>
             <input
               directory=''
               webkitdirectory=''
