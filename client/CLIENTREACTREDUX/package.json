@@ -1,27 +1,22 @@
 {
   "name": "file-drive",
-  "version": "1.0.0",
-  "description": "",
-  "main": "dist/index.js",
+  "version": "2.0.0",
+  "description": "File Drive Project",
+  "main": "src/index.js",
   "scripts": {
-    "start": "webpack-dev-server --open --mode development",
-    "build": "webpack --mode production",
-    "lint": "eslint src/",
-    "lint-fix": "eslint --fix src/",
-    "precommit": "npm run lint",
-    "prepush": "npm run lint && npm run build"
+    "start": "react-scripts start",
+    "build": "react-scripts build"
   },
-  "author": "Quinton Bolt",
+  "author": "J.Hwang, A.Mathur, C.Purnell, C.Wilson",
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
     "@babel/preset-react": "^7.0.0",
-    "babel-loader": "^8.0.2",
     "babel-plugin-styled-components": "^1.7.1",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "css-loader": "^1.0.0",
-    "eslint": "^5.5.0",
+    "eslint": "^6.5.1",
     "eslint-config-standard": "^12.0.0",
     "eslint-config-standard-react": "^7.0.2",
     "eslint-plugin-import": "^2.14.0",
@@ -34,10 +29,7 @@
     "husky": "^0.14.3",
     "prop-types": "^15.6.2",
     "redux-devtools-extension": "^2.13.5",
-    "style-loader": "^0.23.0",
-    "webpack": "^4.17.3",
-    "webpack-cli": "^3.1.0",
-    "webpack-dev-server": "^3.8.2"
+    "style-loader": "^0.23.0"
   },
   "dependencies": {
     "@material-ui/core": "^4.5.1",
@@ -63,6 +55,7 @@
     "react-play-button": "^0.1.1",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.3.1",
+    "react-scripts": "^3.2.0",
     "react-simple-tree-menu": "^1.1.6",
     "react-sortable-tree": "^2.6.2",
     "reactjs-popup": "^1.5.0",
@@ -71,7 +64,20 @@
     "redux-thunk": "^2.3.0",
     "reinstall": "^2.0.0",
     "styled-components": "^3.4.5",
+    "typescript": "^3.6.4",
     "url-loader": "^2.2.0",
     "whatwg-fetch": "^3.0.0"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }
