@@ -14,7 +14,6 @@ export default function reducer (state = initialState, action) {
   switch (action.type) {
     case LOAD_TRASH_DONE:
       return {
-        ...state,
         errorLoadingTrash: false,
         files: action.payload.files,
         folders: action.payload.folders

@@ -79,6 +79,7 @@ export const loadFiles = folderID => dispatch => {
   dispatch(loadFilesBegin())
   fetchFiles(folderID)
     .then(({ files }) => {
+      console.log(files)
       return dispatch(loadFilesDone(files))
     })
     .catch(err => dispatch(loadFilesFailed(err)))
