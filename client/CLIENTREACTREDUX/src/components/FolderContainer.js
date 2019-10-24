@@ -32,7 +32,7 @@ class FolderContainer extends React.Component {
           <tr>
             <td className='a'>
               <Link to={`folders/${this.props.id}`}>
-                {this.props.folderName}
+                <h3 style={{border:'2px solid', marginTop:'10px', textAlign:'center', backgroundColor:'lightgray'}}>{this.props.folderName}</h3>
                 {console.log('HI')}
               </Link>{' '}
             </td>

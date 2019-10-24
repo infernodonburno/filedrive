@@ -7,8 +7,8 @@ const PermanentDeleteButton = props => {
         type='image'
         src='./resources/x-delete-round-flat-icon-free-download.png'
         onClick={props.onClick}
-        width='125px'
-        height='90px'
+        
+        height='50px'
         alt='deletebutton'
       />
     </div>

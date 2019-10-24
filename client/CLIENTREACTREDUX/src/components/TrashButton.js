@@ -8,6 +8,7 @@ const TrashButton = props => {
         src='http://localhost:3000/resources/trashicon.png'
         onClick={props.onClick}
         alt='trashbutton'
+        height='50px'
       />
     </div>
   )
