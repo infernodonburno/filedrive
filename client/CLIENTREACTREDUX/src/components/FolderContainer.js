@@ -8,6 +8,8 @@ import Button from './Button'
 import TrashButton from './TrashButton'
 import { thunkDownloadFolder } from '../ducks/download.duck'
 import { setToggleTrashFolder } from '../ducks/trash.duck'
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Table from 'react-bootstrap/Table'
 
 class FolderContainer extends React.Component {
   onClickDownload = event => {
@@ -25,6 +27,7 @@ class FolderContainer extends React.Component {
   render () {
     return (
       <ContainerStyle>
+        <Table sriped  hover variant="light">
         <tbody>
           <tr>
             <td className='a'>
@@ -41,6 +44,7 @@ class FolderContainer extends React.Component {
             </td>
           </tr>
         </tbody>
+        </Table>
       </ContainerStyle>
     )
   }

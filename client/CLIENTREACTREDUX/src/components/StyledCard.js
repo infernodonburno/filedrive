@@ -3,7 +3,7 @@ import styled from 'styled-components'
 const StyledCard = styled.div`
   box-shadow: 5px 5px 5px #ccc;
   border: 1px solid #ccc;
-  height: 2000px;
+  height: 75vh;
   width: 750px;
   overflow: scroll;
   display: flex;
