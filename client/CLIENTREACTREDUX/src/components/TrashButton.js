@@ -5,7 +5,7 @@ const TrashButton = props => {
     <div>
       <input
         type='image'
-        src='http://localhost:8081/src/resources/trashicon.png'
+        src='./resources/trashicon.png'
         onClick={props.onClick}
         alt='trashbutton'
       />
