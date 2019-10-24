@@ -9,6 +9,7 @@ const PermanentDeleteButton = props => {
         onClick={props.onClick}
         width='125px'
         height='90px'
+        alt='deletebutton'
       />
     </div>
   )

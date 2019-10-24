@@ -7,10 +7,6 @@ import Link from './Link'
 import ContainerStyle from './ContainerStyle'
 
 class MoveContainer extends React.Component {
-  constructor (props) {
-    super(props)
-  }
-
   onClickMove = event => {
     this.props.moveFile(this.props.file, this.props.fileID, this.props.folderID)
   }

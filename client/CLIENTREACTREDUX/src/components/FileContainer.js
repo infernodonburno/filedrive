@@ -6,14 +6,10 @@ import ContainerStyle from './ContainerStyle'
 import Button from './Button'
 import MoveFileModal from './MoveFileModal'
 import TrashButton from './TrashButton'
-import { thunkDownloadFile, downloadFile } from '../ducks/download.duck'
+import { thunkDownloadFile } from '../ducks/download.duck'
 import { setToggleTrashFile } from '../ducks/trash.duck'
 
 class FileContainer extends React.Component {
-  constructor (props) {
-    super(props)
-  }
-
   onClickDownload = event => {
     this.props.thunkDownloadFile(this.props.id)
   }

@@ -3,11 +3,10 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 import { loadTrash } from '../ducks/trashview.duck'
-// import { emptyAllTrash } from '../ducks/trash.duck'
 import TrashContainer from '../components/TrashContainer'
 import StyledCard from '../components/StyledCard'
-// import Button from '../components/Button'
-
+import Header from '../components/Header'
+import NavBar from '../components/Navbar'
 class Trash extends React.Component {
   componentDidMount () {
     this.props.loadTrash()
@@ -40,6 +39,8 @@ class Trash extends React.Component {
 
     return (
       <React.Fragment>
+        <NavBar />
+        <Header />
         <StyledCard>
           {trashedFolders}
           {trashedFiles}

@@ -6,10 +6,12 @@ import { loadFiles, loadFolders } from '../ducks/config.duck'
 import FileContainer from '../components/FileContainer'
 import UploadButton from '../components/UploadButton'
 import StyledCard from '../components/StyledCard'
-
+import Header from '../components/Header'
+import NavBar from '../components/Navbar'
 class Folder extends React.Component {
   componentDidMount () {
-    this.props.loadFiles(this.props.match.params.id), this.props.loadFolders()
+    this.props.loadFiles(this.props.match.params.id)
+    this.props.loadFolders()
   }
 
   render () {
@@ -25,6 +27,8 @@ class Folder extends React.Component {
     ))
     return (
       <React.Fragment>
+        <NavBar />
+        <Header />
         <StyledCard>{files}</StyledCard>
         <UploadButton folderID={this.props.match.params.id} />
       </React.Fragment>
