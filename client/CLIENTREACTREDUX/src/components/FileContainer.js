@@ -8,6 +8,9 @@ import MoveFileModal from './MoveFileModal'
 import TrashButton from './TrashButton'
 import { thunkDownloadFile } from '../ducks/download.duck'
 import { setToggleTrashFile } from '../ducks/trash.duck'
+import Table from 'react-bootstrap/Table'
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 class FileContainer extends React.Component {
   onClickDownload = event => {
@@ -24,6 +27,7 @@ class FileContainer extends React.Component {
     console.log(this.props)
     return (
       <ContainerStyle>
+        <Table  hover variant="light">
         <tbody>
           <tr>
             <td className='a'>
@@ -40,6 +44,7 @@ class FileContainer extends React.Component {
             </td>
           </tr>
         </tbody>
+        </Table>
       </ContainerStyle>
     )
   }

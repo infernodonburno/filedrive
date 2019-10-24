@@ -1,10 +1,9 @@
 import '../App.css'
 import HeaderAppBar from '../components/GlobalHeader'
 import React, { Component } from 'react'
+import { Redirect } from 'react-router-dom'
 import { withAuth } from '@okta/okta-react'
 import OktaSignInWidget from '../components/OktaSignInWidget'
-import ContainedButtons from '../components/FileDriveButton'
-import StyledCardRedirect from '../components/StyledCardRedirect'
 
 export default withAuth(
   class Login extends Component {
@@ -62,15 +61,7 @@ export default withAuth(
       if (this.state.authenticated === null) return null
       if (this.state.authenticated) {
         return (
-          <div className='App'>
-            <header className='App-header'>
-              <HeaderAppBar />
-              <StyledCardRedirect>
-                <ContainedButtons />
-                <button onClick={this.logout}>Logout</button>
-              </StyledCardRedirect>
-            </header>
-          </div>
+          <Redirect to='/home' />
         )
       } else {
         return (

@@ -29,8 +29,8 @@ class Folder extends React.Component {
       <React.Fragment>
         <NavBar />
         <Header />
-        <StyledCard>{files}</StyledCard>
         <UploadButton folderID={this.props.match.params.id} />
+        <StyledCard>{files}</StyledCard>
       </React.Fragment>
     )
   }

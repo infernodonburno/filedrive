@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+
 import NavItem from './NavItem'
 
 const StyledNavBar = styled.div`
@@ -13,6 +14,10 @@ const StyledNavBar = styled.div`
 `
 
 const NavBar = props => {
+  const logout = () => {
+    localStorage.clear()
+  }
+
   return (
     <StyledNavBar>
       <div>
@@ -20,10 +25,14 @@ const NavBar = props => {
           Home
         </NavItem>
       </div>
-
       <div>
         <NavItem to='/trash' exact>
           Trash
+        </NavItem>
+      </div>
+      <div>
+        <NavItem to='/' exact onClick={logout}>
+          Logout
         </NavItem>
       </div>
     </StyledNavBar>
