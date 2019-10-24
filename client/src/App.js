@@ -11,7 +11,6 @@ import SidebarExample from './components/Breadcrumb'
 const App = props => (
   <div>
     <NavBar />
-    <SidebarExample />
     <Route path='/' component={Header} />
     <Route exact path='/' component={Home} />
     <Route exact path='/trash' component={Trash} />
