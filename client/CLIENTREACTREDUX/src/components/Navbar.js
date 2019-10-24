@@ -1,6 +1,5 @@
 import React from 'react'
 import styled from 'styled-components'
-import { withAuth } from '@okta/okta-react'
 
 import NavItem from './NavItem'
 
@@ -40,4 +39,4 @@ const NavBar = props => {
   )
 }
 
-export default withAuth(NavBar)
+export default NavBar
