@@ -3,6 +3,8 @@ import HeaderAppBar from '../components/GlobalHeader'
 import React, { Component } from 'react'
 import { withAuth } from '@okta/okta-react'
 import OktaSignInWidget from '../components/OktaSignInWidget'
+import ContainedButtons from '../components/FileDriveButton'
+import StyledCardRedirect from '../components/StyledCardRedirect'
 
 export default withAuth(
   class Login extends Component {
@@ -63,14 +65,10 @@ export default withAuth(
           <div className='App'>
             <header className='App-header'>
               <HeaderAppBar />
-
-              {/* <SimpleCard /> */}
-
-              <OktaSignInWidget
-                onSuccess={this.onSuccess}
-                onError={this.onError}
-              />
-              <button onClick={this.logout}>Logout</button>
+              <StyledCardRedirect>
+                <ContainedButtons />
+                <button onClick={this.logout}>Logout</button>
+              </StyledCardRedirect>
             </header>
           </div>
         )
