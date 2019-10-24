@@ -1,4 +1,25 @@
-export const Authorization =
-  'Bearer eyJraWQiOiJpZXA2dmZuSTJGWVN5VDFBS3Z1ZENsRjhfWDh0MFRFT2VvREQtcTFyYXNJIiwiYWxnIjoiUlMyNTYifQ.eyJ2ZXIiOjEsImp0aSI6IkFULlNIbGRETzd1bGhwOXZDNDlHVHQteXpCSXVsdEh3Z2FVdy1SSDVYQVNWdU0iLCJpc3MiOiJodHRwczovL2Rldi0yMDUwNzMub2t0YS5jb20vb2F1dGgyL2RlZmF1bHQiLCJhdWQiOiJhcGk6Ly9kZWZhdWx0IiwiaWF0IjoxNTcxOTMzMjgxLCJleHAiOjE1NzE5MzY4ODEsImNpZCI6IjBvYTFtdTUxNzREWXVMSGpNMzU3IiwidWlkIjoiMDB1MW1yeTFlMzdFQ0lTeGEzNTciLCJzY3AiOlsicHJvZmlsZSIsImVtYWlsIiwib3BlbmlkIl0sInN1YiI6ImZpbGVkcml2ZXByb2plY3Rjb29rc3lzQGdtYWlsLmNvbSJ9.QnRSyw8IZdejyTROXHOcXZugUWXZeqrF5YQJ_i3DTylF8vAcfZqcRuYN7AfoAkmIlmVInMTIcMD4h180yFR6bXHDBUMTwvASh5bHE8vm3Athr5bdpGJlIejpnFzvt4dCiZXEeY58a_yfKTt9OBdXDQ5r-DqO_CXxI6PJL6pUX7ajWS69fUEJRTqJe1aqgho5K5DSrdGt53UU6oIyAwmnMqv8TaNzZgQ-3Us_2tZsqPIBHGvaSj0h95dDUaXNhSveTasyV7FnQEq3VNWTeGHDYj6F6pC3YsUWA4eBdVO5ILzyzhhWncUkSutaT23AzXN5Wftw0JxeKfFYmmNlMltGEg'
+// import { getAuthToken } from './api'
+// import { getAuthEmail } from './api'
 
-export const username = 'filedriveprojectcooksys@gmail.com'
+function getAuthToken () {
+  const okta = localStorage.getItem('okta-token-storage')
+  const obj = JSON.parse(okta)
+
+  let token = obj.accessToken.accessToken
+
+  return token
+}
+function getAuthEmail () {
+  const okta = localStorage.getItem('okta-token-storage')
+  const obj = JSON.parse(okta)
+
+  let email = obj.idToken.claims.email
+
+  return email
+}
+
+console.log('THIS SHOULD BE THE TOKEN: ', getAuthToken())
+
+export const Authorization = `Bearer ${getAuthToken()}`
+
+export const username = `${getAuthEmail()}`

@@ -1,5 +1,6 @@
 import request from '../utils/request'
 import { Authorization as token, username } from './auth'
+import { ModalManager } from '@material-ui/core'
 
 const SERVER_ROOT = 'http://localhost:8080'
 
@@ -39,7 +40,16 @@ function fetchFromServer (endpoint) {
       Authorization: token
     }
   }
+
+  // console.log('Token: ', [okta].accessToken)
+  // console.log("Token", accessToken)
+
   console.log(options)
+
+  // const map = new Map(Object.entries(okta))
+  // console.log("MAP: ", map)
+  // console.log('TOKEN: ', map.get('accessToken'))
+
   return request(url, options)
 }
 
@@ -78,13 +88,11 @@ export function patchTrashFolder (folder) {
 }
 
 export function patchMoveFile (fileID, folderID) {
-  return patchToServer(`/files/${username}/${fileID}/${folderID}/move`)
+  return patchToServer(`files/${username}/${fileID}/${folderID}/move`)
 }
 
 export function patchMoveFolder (thisFolderID, moveFolderID) {
-  return patchToServer(
-    `/files/${username}/${thisFolderID}/${moveFolderID}/move`
-  )
+  return patchToServer(`files/${username}/${thisFolderID}/${moveFolderID}/move`)
 }
 
 function patchToServer (endpoint, req) {
@@ -122,3 +130,20 @@ function deleteFromServer (endpoint) {
   }
   return request(url, options)
 }
+
+// export function getAuthToken () {
+//   const okta = localStorage.getItem('okta-token-storage')
+//   const obj = JSON.parse(okta)
+
+//   let token2 = obj.accessToken.accessToken
+
+//   return token2
+// }
+// export function getAuthEmail () {
+//   const okta = localStorage.getItem('okta-token-storage')
+//   const obj = JSON.parse(okta)
+
+//   let email = obj.idToken.claims.email
+
+//   return email
+// }
