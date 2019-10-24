@@ -33,11 +33,11 @@ class Home extends React.Component {
 
     return (
       <React.Fragment>
+        <UploadButton folderID='1' />
         <StyledCard>
           {folders}
           {files}
         </StyledCard>
-        <UploadButton folderID='1' />
       </React.Fragment>
     )
   }
