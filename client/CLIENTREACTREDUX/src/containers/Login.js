@@ -5,7 +5,7 @@ import { Redirect } from 'react-router-dom'
 import { withAuth } from '@okta/okta-react'
 import OktaSignInWidget from '../components/OktaSignInWidget'
 import ContainedButtons from '../components/FileDriveButton'
-import StyledCard from '../components/StyledCard'
+import StyledCardRedirect from '../components/StyledCardRedirect'
 
 export default withAuth(
   class Login extends Component {

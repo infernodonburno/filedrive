@@ -11,7 +11,6 @@ const StyledCard = styled.div`
   align-items: center;
   justify-content: center;
   margin: 0 auto;
-  background-color: white;
 `
 
 export default StyledCard

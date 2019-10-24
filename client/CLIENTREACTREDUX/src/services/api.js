@@ -58,6 +58,7 @@ function postToServer (endpoint, req) {
   const options = {
     method: 'POST',
     headers: {
+      'Access-Control-Allow-Origin': '*',
       'Content-Type': 'application/json',
       Authorization: token
     },
@@ -92,6 +93,7 @@ function patchToServer (endpoint, req) {
   const options = {
     method: 'PATCH',
     headers: {
+      'Access-Control-Allow-Origin': '*',
       'Content-Type': 'application/json',
       Authorization: token
     },
@@ -113,6 +115,7 @@ function deleteFromServer (endpoint) {
   const options = {
     method: 'DELETE',
     headers: {
+      'Access-Control-Allow-Origin': '*',
       'Content-Type': 'application/json',
       Authorization: token
     }
