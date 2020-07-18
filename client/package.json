@@ -37,7 +37,7 @@
     "history": "latest",
     "js-file-download": "^0.4.8",
     "jszip": "^3.2.2",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "material-ui": "^0.20.2",
     "material-ui-treeview": "^3.4.0",
     "react": "^16.5.0",
